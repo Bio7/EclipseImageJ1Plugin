@@ -701,7 +701,6 @@ public class IJ {
 			cal = imp.getCalibration();
 			imp.setCalibration(null);
 		}
-		ImageStatistics stats = imp.getStatistics(measurements);
 		ResultsTable rt = new ResultsTable();
 		Analyzer analyzer = new Analyzer(imp, measurements, rt);
 		analyzer.measure();
@@ -1667,6 +1666,7 @@ public class IJ {
 			ImageWindow win = imp.getWindow();
 			if (win != null) {
 				win.toFront();
+				win.setState(Frame.NORMAL);
 				/*Changed for Bio7 to open the specified tab!*/
 				IJTabs.setActiveTabWindow(win);
 
@@ -1696,7 +1696,7 @@ public class IJ {
 
 	/** Activates the window with the specified title. */
 	public static void selectWindow(String title) {
-		if (title.equals("ImageJ") && ij != null) {
+		if (title.equals("ImageJ")&&ij!=null) {
 			ij.toFront();
 			return;
 		}
@@ -1730,6 +1730,7 @@ public class IJ {
 			// IJTabs.setActiveTabWindow(win);
 		} else if (win instanceof Frame) {
 			((Frame) win).toFront();
+			((Frame)win).setState(Frame.NORMAL);
 		} else
 			((Dialog) win).toFront();
 		long start = System.currentTimeMillis();

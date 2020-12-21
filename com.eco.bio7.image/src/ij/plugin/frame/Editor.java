@@ -30,9 +30,9 @@ public class Editor extends PlugInFrame implements ActionListener, ItemListener,
 			+ "importPackage(Packages.ij.util);" + "importPackage(Packages.ij.macro);"
 			+ "importPackage(Packages.ij.plugin);" + "importPackage(Packages.ij.io);"
 			+ "importPackage(Packages.ij.plugin.filter);" + "importPackage(Packages.ij.plugin.frame);"
-			+ "importPackage(java.lang);" + "importPackage(java.awt);" + "importPackage(java.awt.image);"
-			+ "importPackage(java.awt.geom);" + "importPackage(java.util);" + "importPackage(java.io);"
-			+ "function print(s) {IJ.log(s);};";
+			+ "importPackage(Packages.ij.plugin.tool);" + "importPackage(java.lang);" + "importPackage(java.awt);"
+			+ "importPackage(java.awt.image);" + "importPackage(java.awt.geom);" + "importPackage(java.util);"
+			+ "importPackage(java.io);" + "function print(s) {IJ.log(s);};";
 
 	private static String JS_EXAMPLES = "img = IJ.openImage(\"http://imagej.net/images/blobs.gif\")\n"
 			+ "img = IJ.createImage(\"Untitled\", \"16-bit ramp\", 500, 500, 1)\n" + "img.show()\n"
@@ -111,7 +111,7 @@ public class Editor extends PlugInFrame implements ActionListener, ItemListener,
 	}
 
 	public Editor(String name) {
-		this(24, 80, 0, isScript(name)?RUN_BAR+MENU_BAR:MENU_BAR);
+		this(24, 80, 0, isScript(name) ? RUN_BAR + MENU_BAR : MENU_BAR);
 	}
 
 	public Editor(int rows, int columns, int fontSize, int options) {
@@ -146,9 +146,9 @@ public class Editor extends PlugInFrame implements ActionListener, ItemListener,
 		if (!IJ.isJava18() && !IJ.isLinux())
 			insertSpaces = false;
 	}
-	
+
 	private static boolean isScript(String name) {
-		if (name==null)
+		if (name == null)
 			return false;
 		else
 			return name.endsWith(".ijm") || name.endsWith(".js") || name.endsWith(".bsh") || name.endsWith(".py");

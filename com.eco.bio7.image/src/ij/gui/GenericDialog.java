@@ -120,7 +120,8 @@ public class GenericDialog extends Dialog implements ActionListener, TextListene
 			setForeground(SystemColor.controlText);
 			setBackground(SystemColor.control);
 		}
-		setForeground(Color.black);
+		//if (IJ.isMacOSX() && System.getProperty("java.vendor").contains("Azul"))
+		//	setForeground(Color.black);  // work around bug on Azul Java 8 on Apple Silicon
 		GridBagLayout grid = new GridBagLayout();
 		c = new GridBagConstraints();
 		setLayout(grid);

@@ -728,7 +728,7 @@ public class ImageCanvas extends JPanel implements MouseListener, MouseWheelList
 		Overlay o = showAllOverlay;
 		if (o == null)
 			o = imp.getOverlay();
-		if (o == null || !o.isSelectable() || !o.getDrawLabels() || labelRects == null)
+		if (o==null || !o.isSelectable() || !o.isDraggable()|| !o.getDrawLabels() || labelRects==null)
 			return false;
 		for (int i = o.size() - 1; i >= 0; i--) {
 			if (labelRects != null && labelRects[i] != null && labelRects[i].contains(sx, sy)) {
@@ -1565,7 +1565,7 @@ public class ImageCanvas extends JPanel implements MouseListener, MouseWheelList
 			roi.handleMouseUp(sx, sy); // polygon or polyline selection
 			return;
 		}
-		if (roi != null) { // show ROI popup?
+		if (roi!=null && !(e.isAltDown()||e.isShiftDown())) {  // show ROI popup?
 			if (roi.contains(ox, oy)) {
 				if (roiPopupMenu == null)
 					addRoiPopupMenu();

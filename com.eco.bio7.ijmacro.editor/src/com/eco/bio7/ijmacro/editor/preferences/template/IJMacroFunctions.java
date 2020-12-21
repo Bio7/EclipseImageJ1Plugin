@@ -100,6 +100,7 @@ public class IJMacroFunctions {
 			"File.getName(path)####Returns the last name in path's name sequence."+linSeparator + 
 			"File.getParent(path)####Returns the parent of the file specified by path."+linSeparator + 
 			"File.isDirectory(path)####Returns \"1\" (true) if the specified file is a directory."+linSeparator + 
+			"File.isFile()####Returns \"1\" (true) if the specified file is a file."+linSeparator + 
 			"File.lastModified(path)####Returns the time the specified file was last modified as the number of milliseconds since January 1,1970."+linSeparator + 
 			"File.length(path)####Returns the length in bytes of the specified file."+linSeparator + 
 			"File.makeDirectory(path)####Creates a directory."+linSeparator + 
@@ -356,6 +357,7 @@ public class IJMacroFunctions {
 			"Overlay.moveSelection(index,x,y)####Moves the specified selection to the specified location."+linSeparator + 
 			"Overlay.removeSelection(index)####Removes the specified selection from the overlay."+linSeparator + 
 			"Overlay.copy####Copies the overlay on the current image to the overlay clipboard."+linSeparator + 
+			"Overlay.fill()####Fills the overlay."+linSeparator + 
 			"Overlay.paste####Copies the overlay on the overlay clipboard to the current image."+linSeparator + 
 			"Overlay.drawLabels(boolean)####Enables/disables overlay labels."+linSeparator +
 			"Overlay.setLabelFontSize(size,options)####Sets the label font size. The options string can contain 'scale' (enlarge labels when image zoomed),'bold' (display bold labels) or 'back' (display labels with contrasting background color."+linSeparator +
