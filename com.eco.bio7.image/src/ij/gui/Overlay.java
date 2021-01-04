@@ -2,7 +2,7 @@ package ij.gui;
 import java.awt.*;
 import java.util.Vector;
 import java.awt.geom.Rectangle2D;
-import java.util.Iterator;
+import java.util.*;
 import ij.*;
 import ij.process.ImageProcessor;
 import ij.plugin.filter.*;
@@ -149,32 +149,38 @@ public class Overlay implements Iterable<Roi> {
     	return (Roi[])list.toArray(array);
     }
     
+    /** Returns on array containing the ROIs with the specified indexes. */
+    public Roi[] toArray(int[] indexes) {
+		ArrayList rois = new ArrayList();
+		for (int i=0; i<size(); i++) {
+			if (indexes[i]>=0 && indexes[i]<size())
+				rois.add(get(indexes[i]));
+		}
+		return (Roi[])rois.toArray(new Roi[rois.size()]);
+	}
+
     /** Sets the stroke color of all the ROIs in this overlay. */
     public void setStrokeColor(Color color) {
-		Roi[] rois = toArray();
-		for (int i=0; i<rois.length; i++)
-			rois[i].setStrokeColor(color);
+		for (int i=0; i<size(); i++)
+			get(i).setStrokeColor(color);
 	}
 
     /** Sets the stroke width of all the ROIs in this overlay. */
     public void setStrokeWidth(Double width) {
-		Roi[] rois = toArray();
-		for (int i=0; i<rois.length; i++)
-			rois[i].setStrokeWidth(width);
+		for (int i=0; i<size(); i++)
+			get(i).setStrokeWidth(width);
 	}
 
     /** Sets the fill color of all the ROIs in this overlay. */
     public void setFillColor(Color color) {
-		Roi[] rois = toArray();
-		for (int i=0; i<rois.length; i++)
-			rois[i].setFillColor(color);
+		for (int i=0; i<size(); i++)
+			get(i).setFillColor(color);
 	}
 
 	/** Moves all the ROIs in this overlay. */
 	public void translate(int dx, int dy) {
-		Roi[] rois = toArray();
-		for (int i=0; i<rois.length; i++) {
-			Roi roi = rois[i];
+		for (int i=0; i<size(); i++) {
+			Roi roi = get(i);
 			if (roi.subPixelResolution()) {
 				Rectangle2D r = roi.getFloatBounds();
 				roi.setLocation(r.getX()+dx, r.getY()+dy);
@@ -189,10 +195,9 @@ public class Overlay implements Iterable<Roi> {
 	* Marcel Boeglin, October 2013
 	*/
 	public void translate(double dx, double dy) {
-		Roi[] rois = toArray();
 		boolean intArgs = (int)dx==dx && (int)dy==dy;
-		for (int i=0; i<rois.length; i++) {
-			Roi roi = rois[i];
+		for (int i=0; i<size(); i++) {
+			Roi roi = get(i);
 			if (roi.subPixelResolution() || !intArgs) {
 				Rectangle2D r = roi.getFloatBounds();
 				roi.setLocation(r.getX()+dx, r.getY()+dy);
@@ -313,6 +318,10 @@ public class Overlay implements Iterable<Roi> {
 		return new Rectangle(xmin, ymin, xmax-xmin, ymax-ymin);
 	}
 	*/
+	
+	public Roi xor(int[] indexes) {
+    	return Roi.xor(toArray(indexes));
+	}
 
 	/** Returns a new Overlay that has the same properties as this one. */
 	public Overlay create() {

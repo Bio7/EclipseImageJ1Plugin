@@ -369,6 +369,7 @@ public class IJMacroFunctions {
 			"Overlay.setStrokeWidth(width)####Sets the stroke width all the selections in the current overlay."+linSeparator+			
 			"Overlay.flatten####Creates a new RGB image that has the overlay rendered as pixel data."+linSeparator+		
 			"Overlay.useNamesAsLabels(boolean)####Sets the overlay names as labels."+linSeparator+
+			"Overlay.xor()####Applies the xor function to the overlay."+linSeparator +
 			"parseFloat(string)####Converts the string argument to a number and returns it. Returns NaN (Not a Number) if the string cannot be converted into a number. Use the isNaN() function to test for NaN. For examples,see ParseFloatIntExamples."+linSeparator + 
 			"parseInt(string)####Converts string to an integer and returns it. Returns NaN if the string cannot be converted into a integer."+linSeparator + 
 			"parseInt(string,radix)####Converts string to an integer and returns it. The optional second argument (radix) specifies the base of the number contained in the string. The radix must be an integer between 2 and 36. For radixes above 10,the letters of the alphabet indicate numerals greater than 9. Set radix to 16 to parse hexadecimal numbers. Returns NaN if the string cannot be converted into a integer. For examples,see ParseFloatIntExamples."+linSeparator + 

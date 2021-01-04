@@ -1721,13 +1721,13 @@ public class ImageCanvas extends JPanel implements MouseListener, MouseWheelList
 					imp.createNewRoi(sx, sy);
 				}
 				return;
-			}
-			if ((type == Roi.POLYGON || type == Roi.POLYLINE || type == Roi.ANGLE)
+			}			
+			boolean segmentedTool = tool==Toolbar.POLYGON || tool==Toolbar.POLYLINE || tool==Toolbar.ANGLE;
+			if (segmentedTool && (type==Roi.POLYGON || type==Roi.POLYLINE || type==Roi.ANGLE)
 					&& roi.getState() == roi.CONSTRUCTING)
 				return;
 
-			if ((tool == Toolbar.POLYGON || tool == Toolbar.POLYLINE || tool == Toolbar.ANGLE)
-					&& !(IJ.shiftKeyDown() || IJ.altKeyDown())) {
+			if (segmentedTool&& !(IJ.shiftKeyDown()||IJ.altKeyDown())) {
 				imp.deleteRoi();
 				return;
 			}

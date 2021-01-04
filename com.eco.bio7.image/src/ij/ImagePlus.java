@@ -28,7 +28,7 @@ import ij.plugin.frame.*;
  * @see ij.gui.ImageCanvas
  */
 
-public class ImagePlus implements ImageObserver, Measurements, Cloneable {
+public class ImagePlus implements ImageObserver, Measurements, Cloneable, AutoCloseable {
 
 	/** 8-bit grayscale (unsigned) */
 	public static final int GRAY8 = 0;
@@ -56,7 +56,7 @@ public class ImagePlus implements ImageObserver, Measurements, Cloneable {
 	protected ImageWindow win;
 	protected Roi roi;
 	protected int currentSlice; // current stack index (one-based)
-	protected static final int OPENED = 0, CLOSED = 1, UPDATED = 2;
+	protected static final int OPENED=0, CLOSED=1, UPDATED=2, SAVED=3;
 	protected boolean compositeImage;
 	protected int width;
 	protected int height;
@@ -874,8 +874,13 @@ public class ImagePlus implements ImageObserver, Measurements, Cloneable {
 	 * getOriginalFileInfo().
 	 */
 	public void setFileInfo(FileInfo fi) {
-		if (fi != null)
+		if (fi!=null) {
 			fi.pixels = null;
+			if (fi.imageSaved) {
+				notifyListeners(SAVED);
+				fi.imageSaved = false;
+			}
+		}
 		fileInfo = fi;
 	}
 
@@ -3212,6 +3217,9 @@ public class ImagePlus implements ImageObserver, Measurements, Cloneable {
 						break;
 					case UPDATED:
 						listener.imageUpdated(imp);
+						break;
+					case SAVED:
+						listener.imageSaved(imp);
 						break;
 					}
 				}
