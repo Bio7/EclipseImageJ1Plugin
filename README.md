@@ -1,6 +1,13 @@
 # EclipseImageJ1Plugin
 A repository for an Eclipse ImageJ1 plugin contributed from the Bio7 project.
 
+### New in 1.53.h (1.53.h30):
+
+1. Updated ImageJ plugin to version 1.53.h30
+2. Improved the context menu of the ROI Manager (using SWT)
+3. Added new ImageJ macro templates
+4. Improved template description
+
 ### New in 1.53.g (1.53.g57):
 
 1. Updated ImageJ plugin to version 1.53.g57
