@@ -32,7 +32,7 @@ public class Interpreter implements MacroConstants {
 	boolean checkingType;
 	int prefixValue;
 	
-	public Variable[] stack;
+	Variable[] stack;
 	int topOfStack = -1;
 	int topOfGlobals = -1;
 	int startOfLocals = 0;
@@ -42,11 +42,11 @@ public class Interpreter implements MacroConstants {
 	static Vector imageTable; // images opened in batch mode
 	static Vector imageActivations; // images ordered by activation time
 	volatile boolean done;
-	public Program pgm;
+	Program pgm;
 	Functions func;
 	boolean inFunction;
 	String macroName;
-	public String argument;
+	String argument;
 	String returnValue;
 	boolean calledMacro; // macros envoked by eval() or runMacro()
 	boolean batchMacro; // macros envoked by Process/Batch commands
@@ -54,7 +54,7 @@ public class Interpreter implements MacroConstants {
 	boolean inPrint;
 	static String additionalFunctions;
 	Debugger debugger;
-	public int debugMode = Debugger.NOT_DEBUGGING;
+	int debugMode = Debugger.NOT_DEBUGGING;
 	boolean showDebugFunctions;
 	static boolean showVariables;
 	boolean wasError;
@@ -872,7 +872,7 @@ public class Interpreter implements MacroConstants {
 		if (tok==VARIABLE_FUNCTION) {
 			int address = rightSideToken>>TOK_SHIFT;
 			int type = pgm.table[address].type;
-			if (type==TABLE || type==ROI  || type==ROI_MANAGER2 || type==PROPERTY) {
+			if (type==TABLE || type==ROI  || type==ROI_MANAGER2 || type==PROPERTY || type==IMAGE) {
 				if (isString(pc+2))
 					return Variable.STRING;
 				int token2 = pgm.code[pc+4];
@@ -1182,7 +1182,7 @@ public class Interpreter implements MacroConstants {
 		if ((tok&0xff)==VARIABLE_FUNCTION) {
 			int address = tok>>TOK_SHIFT;
 			int type = pgm.table[address].type;
-			if (type==TABLE || type==ROI || type==PROPERTY || type==ROI_MANAGER2) {
+			if (type==TABLE || type==ROI || type==PROPERTY || type==ROI_MANAGER2 || type==IMAGE) {
 				int token2 = pgm.code[pcLoc+2];
 				String name = pgm.table[token2>>TOK_SHIFT].str;
 				if (Functions.isStringFunction(name,type))
@@ -1310,7 +1310,7 @@ public class Interpreter implements MacroConstants {
 		}
 	}
 
-	public void error (String message) {
+	void error (String message) {
 		errorMessage = message;
 		if (ignoreErrors)
 			return;
@@ -1415,7 +1415,7 @@ public class Interpreter implements MacroConstants {
 
 	private static String[] prevVars; //previous variables for comparison
 
-	public String[] markChanges(String[] newVars) {//add asterisk if variable has changed
+	private String[] markChanges(String[] newVars) {//add asterisk if variable has changed
 		int len = newVars.length;
 		String[] copyOfNew = new String[len];
 		String[] hilitedVars = new String[len];

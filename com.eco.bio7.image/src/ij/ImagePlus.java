@@ -28,7 +28,7 @@ import ij.plugin.frame.*;
  * @see ij.gui.ImageCanvas
  */
 
-public class ImagePlus implements ImageObserver, Measurements, Cloneable, AutoCloseable {
+public class ImagePlus implements ImageObserver, Measurements, Cloneable {
 
 	/** 8-bit grayscale (unsigned) */
 	public static final int GRAY8 = 0;
@@ -3219,7 +3219,7 @@ public class ImagePlus implements ImageObserver, Measurements, Cloneable, AutoCl
 						listener.imageUpdated(imp);
 						break;
 					case SAVED:
-						listener.imageSaved(imp);
+						//listener.imageSaved(imp);
 						break;
 					}
 				}
