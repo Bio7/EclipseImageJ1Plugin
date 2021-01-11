@@ -32,6 +32,7 @@ public class OpenDialog {
 	private String title;
 	protected FileDialog fd;
 	private static String lastDir, lastName;
+	private static boolean defaultDirectorySet;
 
 	/** Displays a file open dialog with 'title' as the title. */
 	public OpenDialog(String title) {
@@ -258,6 +259,8 @@ public class OpenDialog {
 	 * character ("/" or "\"), or an empty or null string.
 	 */
 	public static String getDefaultDirectory() {
+		if (Prefs.commandLineMacro() && !defaultDirectorySet)
+			return IJ.getDir("cwd");
 		if (defaultDirectory == null)
 			defaultDirectory = Prefs.getDefaultDirectory();
 		return defaultDirectory;
@@ -271,6 +274,7 @@ public class OpenDialog {
 	public static void setDefaultDirectory(String dir) {
 		dir = IJ.addSeparator(dir);
 		defaultDirectory = dir;
+		defaultDirectorySet = true;
 	}
 
 	/**

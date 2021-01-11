@@ -97,15 +97,7 @@ public class Opener {
 			(new PluginInstaller()).install(path);
 			return;
 		}
-		boolean fullPath = path.startsWith("/") || path.startsWith("\\") || path.indexOf(":\\") == 1
-				|| path.indexOf(":/") == 1 || isURL;
-		if (!fullPath) {
-			String defaultDir = OpenDialog.getDefaultDirectory();
-			if (defaultDir != null)
-				path = defaultDir + path;
-			else
-				path = (new File(path)).getAbsolutePath();
-		}
+		path = makeFullPath(path);
 		if (!silentMode)
 			IJ.showStatus("Opening: " + path);
 		long start = System.currentTimeMillis();
@@ -165,16 +157,14 @@ public class Opener {
 				break;
 			case UNKNOWN:
 				File f = new File(path);
-				String msg = (f.exists()) ?
-					"Format not supported or reader plugin not found:"
-					: "File not found:";	
+				String msg = (f.exists()) ? "Format not supported or reader plugin not found:" : "File not found:";
 				if (path != null) {
 					if (path.length() > 64)
 						path = (new File(path)).getName();
-					if (path.length()<=64)
-						msg += " \n"+path;
+					if (path.length() <= 64)
+						msg += " \n" + path;
 				}
-				if (openUsingPlugins && msg.length()>20)
+				if (openUsingPlugins && msg.length() > 20)
 					msg += "\n \nNOTE: The \"OpenUsingPlugins\" option is set.";
 				IJ.wait(IJ.isMacro() ? 500 : 100); // work around for OS X thread deadlock problem
 				IJ.error("Opener", msg);
@@ -283,6 +273,21 @@ public class Opener {
 		double rate = mb / time;
 		int digits = rate < 100.0 ? 1 : 0;
 		return "" + IJ.d2s(time, 2) + " seconds (" + IJ.d2s(mb / time, digits) + " MB/sec)";
+	}
+
+	public static String makeFullPath(String path) {
+		if (path == null)
+			return path;
+		boolean fullPath = path.startsWith("/") || path.startsWith("\\") || path.indexOf(":\\") == 1
+				|| path.indexOf(":/") == 1 || path.contains("://");
+		if (!fullPath) {
+			String defaultDir = OpenDialog.getDefaultDirectory();
+			if (defaultDir != null)
+				path = defaultDir + path;
+			else
+				path = (new File(path)).getAbsolutePath();
+		}
+		return path;
 	}
 
 	private boolean isText(String path) {

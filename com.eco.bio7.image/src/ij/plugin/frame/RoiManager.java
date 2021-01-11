@@ -2467,7 +2467,7 @@ public class RoiManager extends PlugInFrame implements ActionListener, ItemListe
 		cmd = cmd.toLowerCase();
 		macro = true;
 		if (cmd.equals("open")) {
-			open(name);
+			open(Opener.makeFullPath(name));
 			macro = false;
 			return true;
 		} else if (cmd.equals("save")) {

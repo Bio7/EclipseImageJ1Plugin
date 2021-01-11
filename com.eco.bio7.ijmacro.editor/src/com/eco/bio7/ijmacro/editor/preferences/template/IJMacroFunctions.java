@@ -141,6 +141,7 @@ public class IJMacroFunctions {
 			"getCursorLoc(x,y,z,modifiers)####Returns the cursor location in pixels and the mouse event modifier flags. The z coordinate is zero for 2D images. For stacks,it is one less than the slice number. For examples,see the GetCursorLocDemo and the GetCursorLocDemoTool macros."+linSeparator + 
 			"getDateAndTime(year,month,dayOfWeek,dayOfMonth,hour,minute,second,msec)####Returns the current date and time. For an example,refer to the GetDateAndTime macro. See also: getTime."+linSeparator + 
 			"getDimensions(width,height,channels,slices,frames)####Returns the dimensions of the current image. Requires 1.38s."+linSeparator + 
+			"getDir(\"cwd\")####Returns the  current working directory."+linSeparator + 
 			"getDir(\"file\")####Returns the  directory of most recently opened or saved file."+linSeparator + 
 			"getDirectory(string)####Displays a \"choose directory\" dialog and returns the selected directory,or returns the path to a specified directory,such as \"plugins\",\"home\",etc. The returned path ends with a file separator,either \"\\\" (Windows) or \"/\". Returns an empty string if the specified directory is not found or aborts the macro if the user cancels the \"choose directory\" dialog box. For examples,see the GetDirectoryDemo and ListFilesRecursively macros. See also: getFileList and the File functions."+linSeparator+
 			"getDirectory(\"Choose a Directory\")####Displays a file open dialog,using the argument as a title,and returns the path to the directory selected by the user."+linSeparator + 
@@ -446,6 +447,7 @@ public class IJMacroFunctions {
 			"Roi.getDefaultColor####Returns the current default selection color."+linSeparator + 	
 			"Roi.getDefaultGroup####Returns the default group (a positive number) of the current selection, or zero if the selection is not in a group. Requires 1.52t."+linSeparator + 
 			"Roi.getDefaultStrokeWidth####Returns the default ROI stroke width."+linSeparator + 
+			"Roi.getFloatBounds()####Returns the ROI bounds as float values."+linSeparator +
 			"Roi.getGroup(group)####Returns the group (a positive number) of the current selection, or zero if the selection is not in a group. Requires 1.52t."+linSeparator + 		
 			"Roi.getGroupNames()####Returns the group names as a comma-delimeted string. Requires 1.53b."+linSeparator + 	
 			"Roi.getFeretPoints####Returns,as two arrays,the x and y coordinates of the Feret diameter points."+linSeparator + 

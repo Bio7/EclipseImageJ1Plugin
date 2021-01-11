@@ -507,6 +507,7 @@ public class Prefs {
 	/** Saves user preferences in the IJ_Prefs.txt properties file. */
 	public static void savePreferences() {
 		String path = null;
+		commandLineMacro = false;
 		try {
 			Properties prefs = new Properties();
 			String dir = OpenDialog.getDefaultDirectory();
@@ -861,5 +862,11 @@ public class Prefs {
 			return defaultColor;
 		return new Color((i >> 16) & 0xFF, (i >> 8) & 0xFF, i & 0xFF);
 	}
+	
+	public static boolean commandLineMacro() {
+		return commandLineMacro;
+	}
+
+
 
 }
