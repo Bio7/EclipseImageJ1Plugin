@@ -43,7 +43,11 @@ public class IJMacroFunctions {
 			"charCodeAt(string,index)####Returns the Unicode value of the character at the specified index in string. Index values can range from 0 to lengthOf(string). Use the fromCharCode() function to convert one or more Unicode characters to a string."+linSeparator + 
 			"close()####Closes the active image. This function has the advantage of not closing the \"Log\" or \"Results\" window when you meant to close the active image."+linSeparator + 
 			"close(pattern)####Closes all image windows whose title matches pattern. Pattern may contain the wildcard characters \"*\" (matches any character sequence) or \"?\" (matches any single character). For example,close(\"Histo*\") could be used to dispose all histogram windows. The front image remains in front if it still exists. Pattern is not case sensitive. Use close(\"\\\\Others\") to close all except the front image."+linSeparator+
-			"cos(angle)####Returns the cosine of an angle (in radians).####"+linSeparator + 
+			"cos(angle)####Returns the cosine of an angle (in radians)."+linSeparator + 
+			"Color.background####Returns the background color."+linSeparator +
+			"Color.foreground####Returns the foreground color."+linSeparator +
+			"Color.toArray(color)####Returns the color array."+linSeparator +
+			"Color.toString(r,g,b)####Returns a string representation of the color."+linSeparator +
 			"d2s(n,decimalPlaces)####Converts the number n into a string using the specified number of decimal places. Note that d2s stands for \"double to string\". This function will probably be replaced by one with a better name."+linSeparator +
 			"Dialog.create(\"Title\")####Creates a dialog box with the specified title. Call Dialog.addString(),Dialog.addNumber(),etc. to add components to the dialog. Call Dialog.show() to display the dialog and Dialog.getString(),Dialog.getNumber(),etc. to retrieve the values entered by the user. Refer to the DialogDemo macro for an example."+linSeparator+
 			"Dialog.addFile(label,defaultPath)####Adds a file field and \"Browse\" button. The field width is determined by the length of 'defaultPath', with a minimum of 25 columns. Use Dialog getString to retrieve the file path. Requires 1.53d.####"+linSeparator + 
@@ -241,6 +245,7 @@ public class IJMacroFunctions {
 			"imageCalculator(operator,img1,img2)####Runs the Process>Image Calculator tool,where operator (\"add\",\"subtract\",\"multiply\",\"divide\",\"and\",\"or\",\"xor\",\"min\",\"max\",\"average\",\"difference\" or \"copy\") specifies the operation,and img1 and img2 specify the operands. img1 and img2 can be either an image title (a string) or an image ID (an integer). The operator string can include up to three modifiers: \"create\" (e.g.,\"add create\") causes the result to be stored in a new window,\"32-bit\" causes the result to be 32-bit floating-point and \"stack\" causes the entire stack to be processed. See the ImageCalculatorDemo macros for examples."+linSeparator + 
 			"Image.copy####Copies the image."+linSeparator+
 			"Image.height####Returns the image height."+linSeparator+
+			"Image.title####Returns the image title."+linSeparator+
 			"Image.width####Returns the image width."+linSeparator+
             "Image.paste(x,y)####Pastes the image at the given coordinates."+linSeparator+
 			"indexOf(string,substring)####Returns the index within string of the first occurrence of substring. See also: lastIndexOf,startsWith,endsWith,substring,toLowerCase,replace,matches."+linSeparator + 
