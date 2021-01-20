@@ -8061,7 +8061,10 @@ public class Functions implements MacroConstants, Measurements {
 		if (!(interp.token==WORD||interp.token==PREDEFINED_FUNCTION||interp.token==STRING_FUNCTION))
 			interp.error("Function name expected: ");
 		String name = interp.tokenString;
-		if (name.equals("foreground")) {
+		if (name.equals("set")) {
+			setColor();
+			return null;
+		} else if (name.equals("foreground")) {
 			interp.getParens();
 			Color color = Toolbar.getForegroundColor();
 			return new Variable(Colors.colorToString(color));
@@ -8069,6 +8072,10 @@ public class Functions implements MacroConstants, Measurements {
 			interp.getParens();
 			Color color = Toolbar.getBackgroundColor();
 			return new Variable(Colors.colorToString(color));
+		} else if (name.equals("setForeground")) {
+			return setForegroundOrBackground(true);
+		} else if (name.equals("setBackground")) {
+			return setForegroundOrBackground(false);
 		} else if (name.equals("toString")) {
 			int red = (int)getFirstArg();
 			int green = (int)getNextArg();
@@ -8083,8 +8090,34 @@ public class Functions implements MacroConstants, Measurements {
 			array[1] = new Variable((rgb&0xff00)>>8);
 			array[2] = new Variable(rgb&0xff);
 			return new Variable(array);
+		} else if (name.equals("setLut")) {
+			setLut();
+			return null;
+		} else if (name.equals("getLut")) {
+			getLut();
+			return null;
 		} else
 			interp.error("Unrecognized Color function");
+		return null;
+	}
+	
+	private Variable setForegroundOrBackground(boolean foreground) {
+		interp.getLeftParen();
+		Color color = null;
+		if (isStringArg()) {
+			String arg = getString();
+			interp.getRightParen();
+			color = Colors.decode(arg, Color.black);
+		} else {
+			int red = (int)interp.getExpression();
+			int green = (int)getNextArg();
+			int blue = (int)getLastArg();
+			color = Colors.toColor(red, green, blue);
+		}
+		if (foreground)		
+			Toolbar.setForegroundColor(color);
+		else
+			Toolbar.setBackgroundColor(color);
 		return null;
 	}
 

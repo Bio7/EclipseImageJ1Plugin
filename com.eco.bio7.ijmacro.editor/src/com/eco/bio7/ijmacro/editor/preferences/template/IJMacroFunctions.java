@@ -46,6 +46,12 @@ public class IJMacroFunctions {
 			"cos(angle)####Returns the cosine of an angle (in radians)."+linSeparator + 
 			"Color.background####Returns the background color."+linSeparator +
 			"Color.foreground####Returns the foreground color."+linSeparator +
+			"Color.setForeground(r,g,b)####Sets the foreground color from the given r,g,b arguments."+linSeparator + 
+			"Color.setBackground(r,b,g)####Sets the background color from the given r,g,b arguments."+linSeparator +  
+			"Color.setForeground(string)####Sets the foreground color from the given string."+linSeparator +
+			"Color.setBackground(string)####Sets the background color from the given string."+linSeparator +
+			"Color.setLut(reds, greens, blues)####Sets the LUT color from the given reds, greens, blues arguments."+linSeparator +
+			"Color.getLut(reds, greens, blues)####Returns the LUT color."+linSeparator +
 			"Color.toArray(color)####Returns the color array."+linSeparator +
 			"Color.toString(r,g,b)####Returns a string representation of the color."+linSeparator +
 			"d2s(n,decimalPlaces)####Converts the number n into a string using the specified number of decimal places. Note that d2s stands for \"double to string\". This function will probably be replaced by one with a better name."+linSeparator +
