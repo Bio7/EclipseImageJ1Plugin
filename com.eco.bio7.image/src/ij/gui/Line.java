@@ -811,7 +811,6 @@ public class Line extends Roi {
 			throw new UnsupportedOperationException();
 		}
 	}
-
 	@Override
 	public Iterator<Point> iterator() {
 		if (getStrokeWidth() <= 1.0)
