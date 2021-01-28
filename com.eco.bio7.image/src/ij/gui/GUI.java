@@ -1,5 +1,4 @@
 package ij.gui;
-
 import ij.*;
 import java.awt.*;
 import javax.swing.JComponent;
@@ -11,9 +10,9 @@ import javax.swing.UIManager;
 /** This class consists of static GUI utility methods. */
 public class GUI {
 	private static final Font DEFAULT_FONT = IJ.font12;
-	private static Color lightGray = new Color(240, 240, 240);
+	private static Color lightGray = new Color(240,240,240);
 	private static boolean isWindows8;
-	private static Color scrollbarBackground = new Color(245, 245, 245);
+	private static Color scrollbarBackground = new Color(245,245,245);
 
 	static {
 		if (IJ.isWindows()) {
@@ -22,10 +21,7 @@ public class GUI {
 		}
 	}
 
-	/**
-	 * Positions the specified window in the center of the screen that contains
-	 * target.
-	 */
+	/** Positions the specified window in the center of the screen that contains target. */
 	public static void center(Window win, Component target) {
 		if (win == null)
 			return;
@@ -37,11 +33,9 @@ public class GUI {
 		int top = bounds.y + Math.max(0, (bounds.height - window.height) / 4);
 		win.setLocation(left, top);
 	}
-
-	/**
-	 * Positions the specified window in the center of the screen containing the
-	 * "ImageJ" window.
-	 */
+	
+	/** Positions the specified window in the center of the
+		 screen containing the "ImageJ" window. */
 	public static void centerOnImageJScreen(Window win) {
 		center(win, IJ.getInstance());
 	}
@@ -49,7 +43,7 @@ public class GUI {
 	public static void center(Window win) {
 		center(win, win);
 	}
-
+	
 	private static java.util.List<GraphicsConfiguration> getScreenConfigs() {
 		java.util.ArrayList<GraphicsConfiguration> configs = new java.util.ArrayList<GraphicsConfiguration>();
 		for (GraphicsDevice device : GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()) {
@@ -57,19 +51,16 @@ public class GUI {
 		}
 		return configs;
 	}
-
+	
 	/**
 	 * Get maximum bounds for the screen that contains a given point.
-	 * 
-	 * @param point            Coordinates of point.
-	 * @param accountForInsets Deduct the space taken up by menu and status bars,
-	 *                         etc. (after point is found to be inside bonds)
-	 * @return Rectangle of bounds or <code>null</code> if point not inside of any
-	 *         screen.
+	 * @param point Coordinates of point.
+	 * @param accountForInsets Deduct the space taken up by menu and status bars, etc. (after point is found to be inside bonds)
+	 * @return Rectangle of bounds or <code>null</code> if point not inside of any screen.
 	 */
 	public static Rectangle getScreenBounds(Point point, boolean accountForInsets) {
 		if (GraphicsEnvironment.isHeadless())
-			return new Rectangle(0, 0, 0, 0);
+			return new Rectangle(0,0,0,0);
 		for (GraphicsConfiguration config : getScreenConfigs()) {
 			Rectangle bounds = config.getBounds();
 			if (bounds != null && bounds.contains(point)) {
@@ -77,39 +68,37 @@ public class GUI {
 				return shrinkByInsets(bounds, insets);
 			}
 		}
-		return null;
+		return null;		
 	}
-
+	
 	/**
 	 * Get maximum bounds for the screen that contains a given component.
-	 * 
-	 * @param component        An AWT component located on the desired screen. If
-	 *                         <code>null</code> is provided, the default screen is
-	 *                         used.
-	 * @param accountForInsets Deduct the space taken up by menu and status bars,
-	 *                         etc.
+	 * @param component An AWT component located on the desired screen.
+	 * If <code>null</code> is provided, the default screen is used.
+	 * @param accountForInsets Deduct the space taken up by menu and status bars, etc.
 	 * @return Rectangle of bounds.
-	 */
+	 */	
 	public static Rectangle getScreenBounds(Component component, boolean accountForInsets) {
 		if (GraphicsEnvironment.isHeadless())
-			return new Rectangle(0, 0, 0, 0);
-		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-		GraphicsConfiguration gc = component == null ? ge.getDefaultScreenDevice().getDefaultConfiguration() : component.getGraphicsConfiguration();
+			return new Rectangle(0,0,0,0);
+		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();		
+		GraphicsConfiguration gc = component == null ? ge.getDefaultScreenDevice().getDefaultConfiguration() :
+													   component.getGraphicsConfiguration();   
 		Insets insets = accountForInsets ? Toolkit.getDefaultToolkit().getScreenInsets(gc) : null;
 		return shrinkByInsets(gc.getBounds(), insets);
 	}
 
 	public static Rectangle getScreenBounds(Point point) {
 		return getScreenBounds(point, false);
-	}
+	}		
 
 	public static Rectangle getScreenBounds(Component component) {
 		return getScreenBounds(component, false);
-	}
+	}			
 
 	public static Rectangle getScreenBounds() {
-		return getScreenBounds((Component) null);
-	}
+		return getScreenBounds((Component)null);
+	}			
 
 	public static Rectangle getMaxWindowBounds(Point point) {
 		return getScreenBounds(point, true);
@@ -118,22 +107,21 @@ public class GUI {
 	public static Rectangle getMaxWindowBounds(Component component) {
 		return getScreenBounds(component, true);
 	}
-
+	
 	public static Rectangle getMaxWindowBounds() {
-		return getMaxWindowBounds((Component) null);
+		return getMaxWindowBounds((Component)null);
 	}
-
+	
 	private static Rectangle shrinkByInsets(Rectangle bounds, Insets insets) {
 		Rectangle shrunk = new Rectangle(bounds);
-		if (insets == null)
-			return shrunk;
+		if (insets == null) return shrunk; 
 		shrunk.x += insets.left;
 		shrunk.y += insets.top;
 		shrunk.width -= insets.left + insets.right;
 		shrunk.height -= insets.top + insets.bottom;
 		return shrunk;
 	}
-
+	
 	public static Rectangle getZeroBasedMaxBounds() {
 		for (GraphicsConfiguration config : getScreenConfigs()) {
 			Rectangle bounds = config.getBounds();
@@ -142,7 +130,7 @@ public class GUI {
 		}
 		return null;
 	}
-
+	
 	public static Rectangle getUnionOfBounds() {
 		Rectangle unionOfBounds = new Rectangle();
 		for (GraphicsConfiguration config : getScreenConfigs()) {
@@ -150,48 +138,46 @@ public class GUI {
 		}
 		return unionOfBounds;
 	}
-
-	static private Frame frame;
-
-	/** Obsolete */
-	public static Image createBlankImage(int width, int height) {
-		if (width == 0 || height == 0)
-			throw new IllegalArgumentException("");
-		if (frame == null) {
+	
+    static private Frame frame;
+    
+    /** Obsolete */
+    public static Image createBlankImage(int width, int height) {
+        if (width==0 || height==0)
+            throw new IllegalArgumentException("");
+		if (frame==null) {
 			frame = new Frame();
 			frame.pack();
 			frame.setBackground(Color.white);
 		}
-		Image img = frame.createImage(width, height);
-		return img;
-	}
-
-	/** Lightens overly dark scrollbar background on Windows 8. */
-	public static void fix(Scrollbar sb) {
-	}
-
-	public static boolean showCompositeAdvisory(ImagePlus imp, String title) {
-		if (imp == null || imp.getCompositeMode() != IJ.COMPOSITE || imp.getNChannels() == 1 || IJ.macroRunning())
-			return true;
-		String msg = "Channel " + imp.getC() + " of this color composite image will be processed.";
+        Image img = frame.createImage(width, height);
+        return img;
+    }
+    
+    /** Lightens overly dark scrollbar background on Windows 8. */
+    public static void fix(Scrollbar sb) {
+    }
+    
+    public static boolean showCompositeAdvisory(ImagePlus imp, String title) {
+    	if (imp==null || imp.getCompositeMode()!=IJ.COMPOSITE || imp.getNChannels()==1 || IJ.macroRunning())
+    		return true;
+    	String msg = "Channel "+imp.getC()+" of this color composite image will be processed.";
 		GenericDialog gd = new GenericDialog(title);
 		gd.addMessage(msg);
 		gd.showDialog();
 		return !gd.wasCanceled();
 	}
-
+	
 	/**
 	 * Scales an AWT component according to {@link Prefs#getGuiScale()}.
-	 * 
-	 * @param component the AWT component to be scaled. If a container, scaling is
-	 *                  applied to all its child components
+	 * @param component the AWT component to be scaled. If a container, scaling is applied to all its child components
 	 */
 	public static void scale(final Component component) {
-		final float scale = (float) Prefs.getGuiScale();
-		if (scale == 1f)
+		final float scale = (float)Prefs.getGuiScale();
+		if (scale==1f)
 			return;
 		if (component instanceof Container)
-			scaleComponents((Container) component, scale);
+			scaleComponents((Container)component, scale);
 		else
 			scaleComponent(component, scale);
 	}
@@ -209,21 +195,21 @@ public class GUI {
 		Font font = component.getFont();
 		if (font == null)
 			font = DEFAULT_FONT;
-		font = font.deriveFont(scale * font.getSize());
+		font = font.deriveFont(scale*font.getSize());
 		component.setFont(font);
 	}
 
 	public static void scalePopupMenu(final PopupMenu popup) {
 		final float scale = (float) Prefs.getGuiScale();
-		if (scale == 1f)
+		if (scale==1f)
 			return;
 		Font font = popup.getFont();
 		if (font == null)
 			font = DEFAULT_FONT;
-		font = font.deriveFont(scale * font.getSize());
+		font = font.deriveFont(scale*font.getSize());
 		popup.setFont(font);
 	}
-
+	
 	/**
 	 * Tries to detect if a Swing component is unscaled and scales it it according
 	 * to {@link #getGuiScale()}.
@@ -263,16 +249,16 @@ public class GUI {
 		component.setFont(font.deriveFont((float) guiScale * font.getSize()));
 		return true;
 	}
-
-	/**
-	 * Works around an OpenJDK bug on Windows that causes the scrollbar thumb color
-	 * and background color to be almost identical.
-	 */
-	public static final void fixScrollbar(Scrollbar s) {
+	
+	/** Works around an OpenJDK bug on Windows that
+	 * causes the scrollbar thumb color and background
+	 * color to be almost identical.
+	*/
+	public static final void fixScrollbar(Scrollbar sb) {
 		if (IJ.isWindows())
-			s.setBackground(scrollbarBackground);
+			sb.setBackground(scrollbarBackground);
 	}
-
+	
 	/*Changed for Bio7!*/
 	/**
 	 * Works around an OpenJDK bug on Windows that causes the scrollbar thumb color
@@ -282,5 +268,32 @@ public class GUI {
 		if (IJ.isWindows())
 			sb.setBackground(scrollbarBackground);
 	}
+	
+	/** Returns a new NonBlockingGenericDialog with the given title,
+	 *  except when Java is running in headless mode, in which case
+	*  a GenericDialog is be returned.
+	*/
+	public static GenericDialog newNonBlockingDialog(String title) {
+		if (GraphicsEnvironment.isHeadless())
+			return new GenericDialog(title);
+		else
+			return new NonBlockingGenericDialog(title);
+	}
 
+	/** Returns a new NonBlockingGenericDialog with the given title if
+	 * Prefs.nonBlockingFilterDialogs is 'true' and 'imp' is not null and
+	 * 'imp' is displayed, otherwise returns a GenericDialog.
+	 *  @param title Dialog title
+	 *  @param imp   The image associated with this dialog
+	*/
+	public static GenericDialog newNonBlockingDialog(String title, ImagePlus imp) {
+		if (Prefs.nonBlockingFilterDialogs && imp!=null && imp.getWindow()!=null) {
+			NonBlockingGenericDialog gd = new NonBlockingGenericDialog(title);
+			gd.imp = imp;
+			return gd;
+		} else
+			return new GenericDialog(title);
+	}
+
+	
 }
