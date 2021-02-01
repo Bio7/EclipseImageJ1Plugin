@@ -248,7 +248,9 @@ public class HistogramWindow extends ImageWindow
 		buttons.setLayout(new GridLayout(10, 4, 0, 0));
 		int hgap = IJ.isMacOSX() || isRGB ? 1 : 5;
 		buttons.setLayout(new FlowLayout(FlowLayout.RIGHT, hgap, 0));
-		int trim = IJ.isMacOSX() ? 6 : 0;
+		//int trim = IJ.isMacOSX() ? 6 : 0;
+		//Changed for Bio7!
+		int trim = IJ.isMacOSX() ? 0 : 0;
 		list = new TrimmedButton("List", trim);
 		list.setBorderPainted(false);
 		list.setBackground(swtBackgroundToAWT);

@@ -1083,7 +1083,7 @@ public class IJMacroEditor extends TextEditor implements IPropertyChangeListener
 
 	private String markerExpression;
 
-	private static void goToLine(IEditorPart editorPart, int toLine) {
+	private void goToLine(IEditorPart editorPart, int toLine) {
 		if ((editorPart instanceof IJMacroEditor) || toLine <= 0) {
 
 			ITextEditor editor = (ITextEditor) editorPart;
@@ -1102,7 +1102,15 @@ public class IJMacroEditor extends TextEditor implements IPropertyChangeListener
 
 					}
 					if (region != null) {
-						editor.selectAndReveal(region.getOffset(), region.getLength());
+						//editor.selectAndReveal(region.getOffset(), region.getLength());
+						//getSourceViewer().getTextWidget().setSelection(0,0);					
+						ISourceViewer sourceViewer = getSourceViewer();
+						int offset = region.getOffset();
+						sourceViewer.revealRange(offset, region.getLength());
+						StyledText textWidget = sourceViewer.getTextWidget();
+						textWidget.setSelection(offset, offset+region.getLength());
+						editor.selectAndReveal(offset, 0);
+						textWidget.redraw();
 					}
 				}
 			}
