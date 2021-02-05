@@ -8,6 +8,7 @@ A repository for an Eclipse ImageJ1 plugin contributed from the Bio7 project.
 3. Added new ImageJ macro templates
 4. Improved template description
 5. Fixed a corrupted button layout in the histogram canvas on MacOSX
+6. Improved the debug start action
 
 
 ### New in 1.53.h (1.53.h30):
