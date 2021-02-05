@@ -51,7 +51,7 @@ public class IJMacroFunctions {
 			"Color.setForeground(string)####Sets the foreground color from the given string."+linSeparator +
 			"Color.setBackground(string)####Sets the background color from the given string."+linSeparator +
 			"Color.setLut(reds, greens, blues)####Sets the LUT color from the given reds, greens, blues arguments."+linSeparator +
-			"Color.getLut(reds, greens, blues)####Returns the LUT color."+linSeparator +
+			"Color.getLut(reds, greens, blues)####Returns three arrays containing the red, green and blue intensity values from the current lookup table. See the LookupTables macros for examples."+linSeparator +
 			"Color.toArray(color)####Returns the color array."+linSeparator +
 			"Color.toString(r,g,b)####Returns a string representation of the color."+linSeparator +
 			"d2s(n,decimalPlaces)####Converts the number n into a string using the specified number of decimal places. Note that d2s stands for \"double to string\". This function will probably be replaced by one with a better name."+linSeparator +
@@ -110,7 +110,7 @@ public class IJMacroFunctions {
 			"File.getName(path)####Returns the last name in path's name sequence."+linSeparator + 
 			"File.getParent(path)####Returns the parent of the file specified by path."+linSeparator + 
 			"File.isDirectory(path)####Returns \"1\" (true) if the specified file is a directory."+linSeparator + 
-			"File.isFile()####Returns \"1\" (true) if the specified file is a file."+linSeparator + 
+			"File.isFile()####Returns \"1\" (true) if the specified file is not a directory."+linSeparator + 
 			"File.lastModified(path)####Returns the time the specified file was last modified as the number of milliseconds since January 1,1970."+linSeparator + 
 			"File.length(path)####Returns the length in bytes of the specified file."+linSeparator + 
 			"File.makeDirectory(path)####Creates a directory."+linSeparator + 
@@ -249,11 +249,11 @@ public class IJMacroFunctions {
 			"IJ.renameResults(name)####Changes the title of the Results table to the string name. Requires 1.44c."+linSeparator+
 			"IJ.renameResults(oldName,newName)####Changes the title of a results table from oldName to newName."+linSeparator+
 			"imageCalculator(operator,img1,img2)####Runs the Process>Image Calculator tool,where operator (\"add\",\"subtract\",\"multiply\",\"divide\",\"and\",\"or\",\"xor\",\"min\",\"max\",\"average\",\"difference\" or \"copy\") specifies the operation,and img1 and img2 specify the operands. img1 and img2 can be either an image title (a string) or an image ID (an integer). The operator string can include up to three modifiers: \"create\" (e.g.,\"add create\") causes the result to be stored in a new window,\"32-bit\" causes the result to be 32-bit floating-point and \"stack\" causes the entire stack to be processed. See the ImageCalculatorDemo macros for examples."+linSeparator + 
-			"Image.copy####Copies the image."+linSeparator+
+			"Image.copy####Copies the contents of the current selection, or the entire image if there is no selection, to the internal clipboard."+linSeparator+
 			"Image.height####Returns the image height."+linSeparator+
-			"Image.title####Returns the image title."+linSeparator+
+			"Image.title####Returns the title of the active image. Requires 1.53h."+linSeparator+
 			"Image.width####Returns the image width."+linSeparator+
-            "Image.paste(x,y)####Pastes the image at the given coordinates."+linSeparator+
+            "Image.paste(x,y)####Inserts the contents of the internal clipboard at the specified location in the active image."+linSeparator+
 			"indexOf(string,substring)####Returns the index within string of the first occurrence of substring. See also: lastIndexOf,startsWith,endsWith,substring,toLowerCase,replace,matches."+linSeparator + 
 			"indexOf(string,substring,fromIndex)####Returns the index within string of the first occurrence of substring,with the search starting at fromIndex."+linSeparator + 
 			"is(\"animated\")####Returns true if the current image is an animated stack."+linSeparator+
@@ -369,7 +369,8 @@ public class IJMacroFunctions {
 			"Overlay.moveSelection(index,x,y)####Moves the specified selection to the specified location."+linSeparator + 
 			"Overlay.removeSelection(index)####Removes the specified selection from the overlay."+linSeparator + 
 			"Overlay.copy####Copies the overlay on the current image to the overlay clipboard."+linSeparator + 
-			"Overlay.fill()####Fills the overlay."+linSeparator + 
+			"Overlay.fill(color)####Fills all the selections in the overlay with 'color'. Requires 1.53h."+linSeparator + 
+			"Overlay.fill(color1, color2)####Fills all the selections in the overlay with 'color1' after clearing the the image to 'color2'. Requires 1.53h."+linSeparator + 
 			"Overlay.paste####Copies the overlay on the overlay clipboard to the current image."+linSeparator + 
 			"Overlay.drawLabels(boolean)####Enables/disables overlay labels."+linSeparator +
 			"Overlay.setLabelFontSize(size,options)####Sets the label font size. The options string can contain 'scale' (enlarge labels when image zoomed),'bold' (display bold labels) or 'back' (display labels with contrasting background color."+linSeparator +
@@ -381,7 +382,7 @@ public class IJMacroFunctions {
 			"Overlay.setStrokeWidth(width)####Sets the stroke width all the selections in the current overlay."+linSeparator+			
 			"Overlay.flatten####Creates a new RGB image that has the overlay rendered as pixel data."+linSeparator+		
 			"Overlay.useNamesAsLabels(boolean)####Sets the overlay names as labels."+linSeparator+
-			"Overlay.xor()####Applies the xor function to the overlay."+linSeparator +
+			"Overlay.xor()####Creates a selection that is the result of XORing all the selections in the overlay that have an index in 'array'. Requires 1.53h."+linSeparator +
 			"parseFloat(string)####Converts the string argument to a number and returns it. Returns NaN (Not a Number) if the string cannot be converted into a number. Use the isNaN() function to test for NaN. For examples,see ParseFloatIntExamples."+linSeparator + 
 			"parseInt(string)####Converts string to an integer and returns it. Returns NaN if the string cannot be converted into a integer."+linSeparator + 
 			"parseInt(string,radix)####Converts string to an integer and returns it. The optional second argument (radix) specifies the base of the number contained in the string. The radix must be an integer between 2 and 36. For radixes above 10,the letters of the alphabet indicate numerals greater than 9. Set radix to 16 to parse hexadecimal numbers. Returns NaN if the string cannot be converted into a integer. For examples,see ParseFloatIntExamples."+linSeparator + 
@@ -458,7 +459,7 @@ public class IJMacroFunctions {
 			"Roi.getDefaultColor####Returns the current default selection color."+linSeparator + 	
 			"Roi.getDefaultGroup####Returns the default group (a positive number) of the current selection, or zero if the selection is not in a group. Requires 1.52t."+linSeparator + 
 			"Roi.getDefaultStrokeWidth####Returns the default ROI stroke width."+linSeparator + 
-			"Roi.getFloatBounds()####Returns the ROI bounds as float values."+linSeparator +
+			"Roi.getFloatBounds(x, y, width, height)####Returns the location and size of the selection's bounding rectangle as real numbers."+linSeparator +
 			"Roi.getGroup(group)####Returns the group (a positive number) of the current selection, or zero if the selection is not in a group. Requires 1.52t."+linSeparator + 		
 			"Roi.getGroupNames()####Returns the group names as a comma-delimeted string. Requires 1.53b."+linSeparator + 	
 			"Roi.getFeretPoints####Returns,as two arrays,the x and y coordinates of the Feret diameter points."+linSeparator + 
@@ -665,7 +666,7 @@ public class IJMacroFunctions {
 			"Table.title()####Title of the current table."+linSeparator +
 			"Table.headings()####Column headings as a tab-delimited string."+linSeparator + 
 			"Table.get(columnName,rowIndex)####Returns a numeric value."+linSeparator + 
-			"Table.getColumn(columnName)####Returns a column as an array."+linSeparator + 
+			"Table.getColumn(columnName)####Returns the specified column as an array."+linSeparator + 
 			"Table.getString(columnName,rowIndex)####Returns a string value."+linSeparator + 
 			"Table.set(columnName,rowIndex,value)####Sets numeric or string value.\r\n" +
 			"Table.setColumn(columnName,array)####Sets an array as a column."+linSeparator + 

@@ -1532,7 +1532,8 @@ public class ImageCanvas extends JPanel implements MouseListener, MouseWheelList
 	}
 
 	private boolean drawingTool() {
-		return Toolbar.getToolId() >= 15;
+		int id = Toolbar.getToolId();
+		return id==Toolbar.POLYLINE || id==Toolbar.FREELINE || id>=Toolbar.CUSTOM1;
 	}
 
 	void zoomToSelection(int x, int y) {

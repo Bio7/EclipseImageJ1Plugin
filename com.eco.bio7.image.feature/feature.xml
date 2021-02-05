@@ -2,7 +2,7 @@
 <feature
       id="com.eco.bio7.image.feature"
       label="ImageJ Plugin"
-      version="1.53.0830.qualifier"
+      version="1.53.0862.qualifier"
       provider-name="Bio7">
 
    <description url="https://github.com/Bio7/EclipseImageJ1Plugin">
@@ -138,6 +138,6 @@ This Agreement is governed by the laws of the State of New York and the intellec
          id="com.eco.bio7.image"
          download-size="0"
          install-size="0"
-         version="1.53.830"/>
+         version="1.53.862"/>
 
 </feature>
