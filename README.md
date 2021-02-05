@@ -1,7 +1,7 @@
 # EclipseImageJ1Plugin
 A repository for an Eclipse ImageJ1 plugin contributed from the Bio7 project.
 
-### New in 1.53h (1.53h.h62):
+### New in 1.53h (1.53.h62):
 
 1. Updated ImageJ plugin to version 1.53.h62
 2. Fixed and improved the outline navigation for MacOSX
