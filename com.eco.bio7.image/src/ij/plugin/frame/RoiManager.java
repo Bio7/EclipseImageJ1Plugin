@@ -1653,9 +1653,9 @@ public class RoiManager extends PlugInFrame implements ActionListener, ItemListe
 			Roi roi = (Roi) rois.get(indexes[i]);
 			if (roi == null)
 				continue;
-			if (color != null)
+			if (color!=null)
 				roi.setStrokeColor(color);
-			if (lineWidth >= 0)
+			if (lineWidth>=0)
 				roi.setStrokeWidth(lineWidth);
 			roi.setFillColor(fillColor);
 			if (group >= 0)

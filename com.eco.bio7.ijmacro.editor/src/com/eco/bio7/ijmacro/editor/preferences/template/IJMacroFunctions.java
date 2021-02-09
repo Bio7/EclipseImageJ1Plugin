@@ -593,6 +593,7 @@ public class IJMacroFunctions {
 			"showProgress(progress)####Updates the ImageJ progress bar,where 0.0<=progress<=1.0. The progress bar is not displayed if the time between the first and second calls to this function is less than 30 milliseconds. It is erased when the macro terminates or progress is >=1.0."+linSeparator + 
 			"showProgress(currentIndex,finalIndex)####Updates the progress bar,where the length of the bar is set to currentIndex/finalIndex of the maximum bar length. The bar is erased if currentIndex>finalIndex or finalIndex==0."+linSeparator+
 			"showStatus(\"message\")####Displays a message in the ImageJ status bar."+linSeparator + 
+			"showStatus(message,options)####Displays a message in the ImageJ status bar with the given options."+linSeparator + 
 			"showText(\"string\")####Displays a string in a text window."+linSeparator + 
 			"showText(\"Title\",\"string\")####Displays a string in a text window using the specified title."+linSeparator+
 			"sin(angle)####Returns the sine of an angle (in radians)."+linSeparator + 
