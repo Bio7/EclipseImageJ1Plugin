@@ -30,11 +30,13 @@ import java.nio.ByteBuffer;
 import java.math.RoundingMode;
 
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PlatformUI;
 
+import com.eco.bio7.image.CanvasView;
 import com.eco.bio7.image.IJTabs;
 import com.eco.bio7.image.Util;
 
@@ -507,15 +509,16 @@ public class IJ {
 				ic.setShowCursorStatus(s.length() == 0 ? true : false);
 		}
 	}
-	
-	/**Displays a message in the status bar and flashes it,
-	 * or the active image, by default for 1000ms. Example 'options' strings:
-	 * "flash", "flash 50ms", "flash image", "flash image 100ms", "flash red",
-	 *  "flash yellow 2000ms" and "flash image orange 500ms".
-	*/ 
+
+	/**
+	 * Displays a message in the status bar and flashes it, or the active image, by
+	 * default for 1000ms. Example 'options' strings: "flash", "flash 50ms", "flash
+	 * image", "flash image 100ms", "flash red", "flash yellow 2000ms" and "flash
+	 * image orange 500ms".
+	 */
 	public static void showStatus(String message, String options) {
 		showStatus(message);
-		if (options==null)
+		if (options == null)
 			return;
 		options = options.replace("flash", "");
 		options = options.replace("ms", "");
@@ -533,25 +536,31 @@ public class IJ {
 		ImagePlus imp = WindowManager.getCurrentImage();
 		if (flashImage) {
 			options = options.replace("image", "");
-			if (imp!=null && imp.getWindow()!=null) {
+			if (imp != null && imp.getWindow() != null) {
 				defaultColor = Color.black;
 				defaultDelay = 100;
-			}
-			else
+			} else
 				flashImage = false;
 		}
-		Color color = optionalColor!=null?optionalColor:defaultColor;
-		int delay = (int)Tools.parseDouble(options, defaultDelay);
-		if (delay>8000)
+		Color color = optionalColor != null ? optionalColor : defaultColor;
+		int delay = (int) Tools.parseDouble(options, defaultDelay);
+		if (delay > 8000)
 			delay = 8000;
 		String colorString = null;
 		ImageJ ij = IJ.getInstance();
 		if (flashImage) {
-			Color previousColor = imp.getWindow().getBackground();
+			//Color previousColor = imp.getWindow().getBackground();
+			/*Changed for Bio7!*/
+			Color previousColor = Util.getSWTBackgroundToAWT();
 			imp.getWindow().setBackground(color);
-			wait(delay);
-			imp.getWindow().setBackground(previousColor);
-		} else if (ij!=null) {
+			JPanel current = CanvasView.getCanvas_view().getCurrent();
+			if (current != null) {
+				current.setBackground(color);
+				wait(delay);
+				imp.getWindow().setBackground(previousColor);
+				current.setBackground(previousColor);
+			}
+		} else if (ij != null) {
 			ij.getStatusBar().setBackground(color);
 			wait(delay);
 			ij.getStatusBar().setBackground(ij.backgroundColor);
@@ -1746,7 +1755,7 @@ public class IJ {
 
 	/** Activates the window with the specified title. */
 	public static void selectWindow(String title) {
-		if (title.equals("ImageJ")&&ij!=null) {
+		if (title.equals("ImageJ") && ij != null) {
 			ij.toFront();
 			return;
 		}
@@ -1780,7 +1789,7 @@ public class IJ {
 			// IJTabs.setActiveTabWindow(win);
 		} else if (win instanceof Frame) {
 			((Frame) win).toFront();
-			((Frame)win).setState(Frame.NORMAL);
+			((Frame) win).setState(Frame.NORMAL);
 		} else
 			((Dialog) win).toFront();
 		long start = System.currentTimeMillis();
@@ -2004,13 +2013,13 @@ public class IJ {
 	/**
 	 * Returns the path to the specified directory if <code>title</code> is "home"
 	 * ("user.home"), "downloads", "startup", "imagej" (ImageJ directory),
-	 * "plugins", "macros", "luts", "temp", "current", "default", "image" (directory active image was loaded from), "file" 
-		(directory most recently used to open or save a file) or "cwd"
-		(current working directory), otherwise displays a dialog and
-		returns the path to the directory selected by the user. Returns
-		null if the specified directory is not found or the user cancels the
-		dialog box. Also aborts the macro if the user cancels the
-		dialog box.*/
+	 * "plugins", "macros", "luts", "temp", "current", "default", "image" (directory
+	 * active image was loaded from), "file" (directory most recently used to open
+	 * or save a file) or "cwd" (current working directory), otherwise displays a
+	 * dialog and returns the path to the directory selected by the user. Returns
+	 * null if the specified directory is not found or the user cancels the dialog
+	 * box. Also aborts the macro if the user cancels the dialog box.
+	 */
 	public static String getDirectory(String title) {
 		String dir = null;
 		String title2 = title.toLowerCase(Locale.US);
