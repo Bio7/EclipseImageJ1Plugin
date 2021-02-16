@@ -56,7 +56,7 @@ public class ImagePlus implements ImageObserver, Measurements, Cloneable {
 	protected ImageWindow win;
 	protected Roi roi;
 	protected int currentSlice; // current stack index (one-based)
-	protected static final int OPENED=0, CLOSED=1, UPDATED=2, SAVED=3;
+	protected static final int OPENED = 0, CLOSED = 1, UPDATED = 2, SAVED = 3;
 	protected boolean compositeImage;
 	protected int width;
 	protected int height;
@@ -103,6 +103,7 @@ public class ImagePlus implements ImageObserver, Measurements, Cloneable {
 	public boolean setIJMenuBar = Prefs.setIJMenuBar;
 	private Plot plot;
 	private Properties imageProperties;
+	private Color backgroundColor;
 
 	/** Constructs an uninitialized ImagePlus. */
 	public ImagePlus() {
@@ -568,6 +569,8 @@ public class ImagePlus implements ImageObserver, Measurements, Cloneable {
 	/** Called by ImageWindow.windowActivated(). */
 	public void setActivated() {
 		activated = true;
+		if (backgroundColor != null && win != null)
+			win.setBackground(backgroundColor);
 	}
 
 	/** Returns this image as a AWT image. */
@@ -874,7 +877,7 @@ public class ImagePlus implements ImageObserver, Measurements, Cloneable {
 	 * getOriginalFileInfo().
 	 */
 	public void setFileInfo(FileInfo fi) {
-		if (fi!=null) {
+		if (fi != null) {
 			fi.pixels = null;
 			if (fi.imageSaved) {
 				notifyListeners(SAVED);
@@ -1766,7 +1769,7 @@ public class ImagePlus implements ImageObserver, Measurements, Cloneable {
 			pvalue[3] = index;
 			// fall through to get rgb values
 		case COLOR_RGB:
-			if (ip!=null && ip.getNChannels()==1) {
+			if (ip != null && ip.getNChannels() == 1) {
 				pvalue[0] = ip.getPixel(x, y);
 				return pvalue;
 			}
@@ -2287,23 +2290,23 @@ public class ImagePlus implements ImageObserver, Measurements, Cloneable {
 	 * recovered by Edit/Selection/Restore Selection.
 	 */
 	public void deleteRoi() {
-		if (roi != null) {
-			saveRoi();
-			if (!(IJ.altKeyDown() || IJ.shiftKeyDown())) {
-				RoiManager rm = RoiManager.getRawInstance();
-				if (rm != null)
-					rm.deselect(roi);
-			}
-			if (roi != null) {
-				roi.notifyListeners(RoiListener.DELETED);
-				if (roi instanceof PointRoi)
-					((PointRoi) roi).resetCounters();
-			}
-			roi = null;
-			if (ip != null)
-				ip.resetRoi();
-			draw();
+		if (roi == null)
+			return;
+		saveRoi();
+		if (!(IJ.altKeyDown() || IJ.shiftKeyDown())) {
+			RoiManager rm = RoiManager.getRawInstance();
+			if (rm != null)
+				rm.deselect(roi);
 		}
+		if (roi != null) {
+			roi.notifyListeners(RoiListener.DELETED);
+			//if (roi instanceof PointRoi)
+			//	((PointRoi)roi).resetCounters();
+		}
+		roi = null;
+		if (ip != null)
+			ip.resetRoi();
+		draw();
 	}
 
 	public boolean okToDeleteRoi() {
@@ -2671,9 +2674,11 @@ public class ImagePlus implements ImageObserver, Measurements, Cloneable {
 			return (new Duplicator()).run(this);
 		else if (options.contains("whole")) {
 			Roi saveRoi = getRoi();
-			deleteRoi();
+			if (saveRoi != null)
+				this.roi = null;
 			ImagePlus imp2 = crop();
-			setRoi(saveRoi);
+			if (saveRoi != null)
+				this.roi = saveRoi;
 			return imp2;
 		} else if (options.contains("slice") || stackSize == 1)
 			return crop();
@@ -3008,11 +3013,12 @@ public class ImagePlus implements ImageObserver, Measurements, Cloneable {
 			String s = (int) value == value ? IJ.d2s(value, 0) + ".0" : IJ.d2s(value, 4, 7);
 			return (", value=" + s);
 		case COLOR_RGB:
-			if (ip!=null && ip.getNChannels()==1)
- 				return(", value=" + v[0]);
- 			else {
-				String hex = Colors.colorToString(new Color(v[0],v[1],v[2]));
-				return(", value=" + IJ.pad(v[0],3) + "," + IJ.pad(v[1],3) + "," + IJ.pad(v[2],3) + " ("+hex + ")");
+			if (ip != null && ip.getNChannels() == 1)
+				return (", value=" + v[0]);
+			else {
+				String hex = Colors.colorToString(new Color(v[0], v[1], v[2]));
+				return (", value=" + IJ.pad(v[0], 3) + "," + IJ.pad(v[1], 3) + "," + IJ.pad(v[2], 3) + " (" + hex
+						+ ")");
 			}
 		default:
 			return ("");
@@ -3234,7 +3240,7 @@ public class ImagePlus implements ImageObserver, Measurements, Cloneable {
 	public static void removeImageListener(ImageListener listener) {
 		listeners.removeElement(listener);
 	}
-	
+
 	public static Vector getListeners() {
 		return listeners;
 	}
@@ -3342,7 +3348,6 @@ public class ImagePlus implements ImageObserver, Measurements, Cloneable {
 	}
 
 	public void updatePosition(int c, int z, int t) {
-		//IJ.log("updatePosition: "+c+", "+z+", "+t);
 		position[0] = c;
 		position[1] = z;
 		position[2] = t;
@@ -3364,7 +3369,7 @@ public class ImagePlus implements ImageObserver, Measurements, Cloneable {
 		imp2.flatteningCanvas = ic2;
 		imp2.setRoi(getRoi());
 		Overlay overlay2 = getOverlay();
-		if (overlay2 != null && imp2.getRoi() != null) {
+		if (overlay2 != null && imp2.getRoi() != null && !(imp2.getRoi() instanceof PointRoi)) {
 			imp2.deleteRoi();
 			if (getWindow() != null)
 				IJ.wait(100);
@@ -3679,8 +3684,12 @@ public class ImagePlus implements ImageObserver, Measurements, Cloneable {
 			imageProperties = new Properties();
 		return imageProperties;
 	}
-	
+
 	public boolean isRGB() {
-		return ip!=null && ip.getNChannels()==3;
-    }
+		return ip != null && ip.getNChannels() == 3;
+	}
+
+	public void setBackgroundColor(Color backgroundColor) {
+		this.backgroundColor = backgroundColor;
+	}
 }

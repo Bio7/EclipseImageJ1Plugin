@@ -511,10 +511,9 @@ public class IJ {
 	}
 
 	/**
-	 * Displays a message in the status bar and flashes it, or the active image, by
-	 * default for 1000ms. Example 'options' strings: "flash", "flash 50ms", "flash
-	 * image", "flash image 100ms", "flash red", "flash yellow 2000ms" and "flash
-	 * image orange 500ms".
+	 * Displays a message in the status bar and flashes either the status bar or the
+	 * active image.<br>
+	 * See: http://wsr.imagej.net/macros/FlashingStatusMessages.txt
 	 */
 	public static void showStatus(String message, String options) {
 		showStatus(message);
@@ -523,15 +522,26 @@ public class IJ {
 		options = options.replace("flash", "");
 		options = options.replace("ms", "");
 		Color optionalColor = null;
-		for (String c : Colors.colors) {
-			if (options.contains(c)) {
-				optionalColor = Colors.getColor(c, ImageJ.backgroundColor);
-				options = options.replace(c, "");
-				break;
+		int index1 = options.indexOf("#");
+		if (index1 >= 0) { // hex color?
+			int index2 = options.indexOf(" ", index1);
+			if (index2 == -1)
+				index2 = options.length();
+			String hexColor = options.substring(index1, index2);
+			optionalColor = Colors.decode(hexColor, null);
+			options = options.replace(hexColor, "");
+		}
+		if (optionalColor == null) { // "red", "green", etc.
+			for (String c : Colors.colors) {
+				if (options.contains(c)) {
+					optionalColor = Colors.getColor(c, ImageJ.backgroundColor);
+					options = options.replace(c, "");
+					break;
+				}
 			}
 		}
 		boolean flashImage = options.contains("image");
-		Color defaultColor = Color.white;
+		Color defaultColor = new Color(255, 255, 245);
 		int defaultDelay = 500;
 		ImagePlus imp = WindowManager.getCurrentImage();
 		if (flashImage) {
@@ -556,9 +566,12 @@ public class IJ {
 			JPanel current = CanvasView.getCanvas_view().getCurrent();
 			if (current != null) {
 				current.setBackground(color);
-				wait(delay);
-				imp.getWindow().setBackground(previousColor);
-				current.setBackground(previousColor);
+				if (delay > 0) {
+					wait(delay);
+					imp.getWindow().setBackground(previousColor);
+					current.setBackground(previousColor);
+				}
+
 			}
 		} else if (ij != null) {
 			ij.getStatusBar().setBackground(color);

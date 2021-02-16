@@ -440,11 +440,11 @@ public class ImageWindow extends JFrame implements FocusListener, WindowListener
 		String s = "";
 		if (imp == null)
 			return s;
-		int nSlices = imp.getStackSize();
-		if (nSlices > 1) {
+		int stackSize = imp.getStackSize();
+    	if (stackSize>1) {
 			ImageStack stack = imp.getStack();
 			int currentSlice = imp.getCurrentSlice();
-			s += currentSlice + "/" + nSlices;
+			s += currentSlice+"/"+stackSize;
 			String label = stack.getShortSliceLabel(currentSlice);
 			if (label != null && label.length() > 0) {
 				if (imp.isHyperStack())
@@ -457,6 +457,8 @@ public class ImageWindow extends JFrame implements FocusListener, WindowListener
 			s += "; ";
 		} else {
 			String label = (String) imp.getProperty("Label");
+			if (label==null && imp.isStack())
+				label = imp.getStack().getSliceLabel(1);
 			if (label != null && label.length() > 0) {
 				int newline = label.indexOf('\n');
 				if (newline > 0)
