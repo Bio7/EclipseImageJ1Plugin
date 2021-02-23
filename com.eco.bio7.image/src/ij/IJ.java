@@ -33,6 +33,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
+import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PlatformUI;
 
@@ -563,21 +564,37 @@ public class IJ {
 			/*Changed for Bio7!*/
 			Color previousColor = Util.getSWTBackgroundToAWT();
 			imp.getWindow().setBackground(color);
-			JPanel current = CanvasView.getCanvas_view().getCurrent();
-			if (current != null) {
-				current.setBackground(color);
-				if (delay > 0) {
-					wait(delay);
-					imp.getWindow().setBackground(previousColor);
-					current.setBackground(previousColor);
-				}
-
+			//g.setColor(c);
+			setTabItemColor(color);
+			if (delay > 0) {
+				wait(delay);
+				imp.getWindow().setBackground(previousColor);
+				setTabItemColor(previousColor);
+				//current.setBackground(previousColor);
 			}
+
 		} else if (ij != null) {
+			Color previousColor=ij.getStatusBar().getBackground();
 			ij.getStatusBar().setBackground(color);
 			wait(delay);
-			ij.getStatusBar().setBackground(ij.backgroundColor);
+			ij.getStatusBar().setBackground(previousColor);
 		}
+	}
+
+	public static void setTabItemColor(Color col) {
+		int red = col.getRed();
+		int green = col.getGreen();
+		int blue = col.getBlue();
+		Display display = Util.getDisplay();
+		display.asyncExec(new Runnable() {
+			public void run() {
+				CanvasView.tabFolder.setSelectionBackground(
+						new org.eclipse.swt.graphics.Color[] {
+								new org.eclipse.swt.graphics.Color(display, new RGB(red, green, blue)),
+								new org.eclipse.swt.graphics.Color(display, new RGB(red, green, blue)) },
+						new int[] { 100 }, true);
+			}
+		});
 	}
 
 	/**

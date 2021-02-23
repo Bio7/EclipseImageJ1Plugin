@@ -754,7 +754,7 @@ public class CanvasView extends ViewPart {
 						WindowManager.setCurrentWindow(win);
 					}
 				});
-
+				
 				/* import to set current Panel! */
 				current = (JPanel) ve.get(2);
 				// current.requestFocus();
@@ -812,6 +812,8 @@ public class CanvasView extends ViewPart {
 						// important to set current Panel!
 						current = (JPanel) ve.get(2); // current.requestFocus();
 						plu.getCanvas().repaint();
+						/*To show the status message!*/
+		                win.repaint();
 
 					}
 

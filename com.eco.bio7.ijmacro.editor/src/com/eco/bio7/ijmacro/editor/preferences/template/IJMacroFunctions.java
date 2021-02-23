@@ -381,6 +381,7 @@ public class IJMacroFunctions {
 			"Overlay.setStrokeColor(color)####Sets the stroke color all the selections in the current overlay."+linSeparator+
 			"Overlay.setStrokeWidth(width)####Sets the stroke width all the selections in the current overlay."+linSeparator+			
 			"Overlay.flatten####Creates a new RGB image that has the overlay rendered as pixel data."+linSeparator+		
+			"Overlay.update(index)####Updates the overlay with the given index."+linSeparator+		
 			"Overlay.useNamesAsLabels(boolean)####Sets the overlay names as labels."+linSeparator+
 			"Overlay.xor()####Creates a selection that is the result of XORing all the selections in the overlay that have an index in 'array'. Requires 1.53h."+linSeparator +
 			"parseFloat(string)####Converts the string argument to a number and returns it. Returns NaN (Not a Number) if the string cannot be converted into a number. Use the isNaN() function to test for NaN. For examples,see ParseFloatIntExamples."+linSeparator + 
