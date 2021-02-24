@@ -125,7 +125,7 @@ public class ImageJ extends Frame implements ActionListener, MouseListener, KeyL
 	public Toolbar toolbar;// Changed for Bio7 to public!
 	public JPanel statusBar;// Changed for Bio7 to public!
 	private ProgressBar progressBar;
-	private JLabel statusLine;
+	public JLabel statusLine;
 	private boolean firstTime = true;
 	private java.applet.Applet applet; // null if not running as an applet
 	private Vector classes = new Vector();

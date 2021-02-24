@@ -690,25 +690,24 @@ public class ImageWindow extends JFrame
 
 		display.asyncExec(new Runnable() {
 			public void run() {
-				if (CanvasView.getCanvas_view() != null) {
-					CanvasView.getCanvas_view().setstatusline(createSubtitle());
-				}
-				if (imp.isComposite()) {
-					CompositeImage ci = (CompositeImage) imp;
-					if (ci.getMode() == IJ.COMPOSITE) {
-						Color c = ci.getChannelColor();
-						if (Color.green.equals(c))
-							c = new Color(0, 180, 0);
-						//g.setColor(c);
-						int red = c.getRed();
-						int green = c.getGreen();
-						int blue = c.getBlue();
-						CanvasView.tabFolder.setSelectionBackground(
-								new org.eclipse.swt.graphics.Color[] {
-										new org.eclipse.swt.graphics.Color(display, new RGB(red, green, blue)),
-										new org.eclipse.swt.graphics.Color(display, new RGB(red, green, blue)) },
-										new int[] { 100 }, true);
+				if (imp != null) {
+					if (CanvasView.getCanvas_view() != null) {
+						CanvasView.getCanvas_view().setstatusline(createSubtitle());
+					}
+					if (imp.isComposite()) {
+						CompositeImage ci = (CompositeImage) imp;
+						if (ci.getMode() == IJ.COMPOSITE) {
+							Color c = ci.getChannelColor();
+							if (Color.green.equals(c))
+								c = new Color(0, 180, 0);
+							//g.setColor(c);
+							int red = c.getRed();
+							int green = c.getGreen();
+							int blue = c.getBlue();
+							CanvasView.tabFolder.setSelectionForeground(
+									new org.eclipse.swt.graphics.Color(display, new RGB(red, green, blue)));
 
+						}
 					}
 				}
 			}

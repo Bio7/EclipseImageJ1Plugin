@@ -94,6 +94,7 @@ public class IJ {
 	private static Interpreter macroInterpreter;
 	private static boolean protectStatusBar;
 	private static Thread statusBarThread;
+	private static org.eclipse.swt.graphics.Color previousTabForegColor = null;
 
 	static {
 		osname = System.getProperty("os.name");
@@ -563,22 +564,40 @@ public class IJ {
 			//Color previousColor = imp.getWindow().getBackground();
 			/*Changed for Bio7!*/
 			Color previousColor = Util.getSWTBackgroundToAWT();
+			
+			Display display = Util.getDisplay();
+			display.asyncExec(new Runnable() {
+				public void run() {
+					previousTabForegColor = CanvasView.tabFolder.getSelectionForeground();
+				}
+			});
 			imp.getWindow().setBackground(color);
 			//g.setColor(c);
 			setTabItemColor(color);
 			if (delay > 0) {
 				wait(delay);
 				imp.getWindow().setBackground(previousColor);
-				setTabItemColor(previousColor);
+				setTabItemColor(previousTabForegColor);
 				//current.setBackground(previousColor);
 			}
 
 		} else if (ij != null) {
-			Color previousColor=ij.getStatusBar().getBackground();
+			Color previousColor = ij.getStatusBar().getBackground();
 			ij.getStatusBar().setBackground(color);
 			wait(delay);
 			ij.getStatusBar().setBackground(previousColor);
 		}
+	}
+
+	public static void setTabItemColor(org.eclipse.swt.graphics.Color col) {
+		Display display = Util.getDisplay();
+		display.asyncExec(new Runnable() {
+			public void run() {
+				CanvasView.tabFolder.setSelectionForeground(col);
+				CanvasView.tabFolder.setForeground(col);
+
+			}
+		});
 	}
 
 	public static void setTabItemColor(Color col) {
@@ -588,11 +607,9 @@ public class IJ {
 		Display display = Util.getDisplay();
 		display.asyncExec(new Runnable() {
 			public void run() {
-				CanvasView.tabFolder.setSelectionBackground(
-						new org.eclipse.swt.graphics.Color[] {
-								new org.eclipse.swt.graphics.Color(display, new RGB(red, green, blue)),
-								new org.eclipse.swt.graphics.Color(display, new RGB(red, green, blue)) },
-						new int[] { 100 }, true);
+				CanvasView.tabFolder
+						.setSelectionForeground(new org.eclipse.swt.graphics.Color(display, new RGB(red, green, blue)));
+
 			}
 		});
 	}
