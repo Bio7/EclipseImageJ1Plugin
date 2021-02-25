@@ -558,13 +558,12 @@ public class IJ {
 		int delay = (int) Tools.parseDouble(options, defaultDelay);
 		if (delay > 8000)
 			delay = 8000;
-		String colorString = null;
 		ImageJ ij = IJ.getInstance();
 		if (flashImage) {
 			//Color previousColor = imp.getWindow().getBackground();
 			/*Changed for Bio7!*/
 			Color previousColor = Util.getSWTBackgroundToAWT();
-			
+
 			Display display = Util.getDisplay();
 			display.asyncExec(new Runnable() {
 				public void run() {
