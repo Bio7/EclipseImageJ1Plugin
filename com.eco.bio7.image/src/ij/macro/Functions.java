@@ -3277,7 +3277,7 @@ public class Functions implements MacroConstants, Measurements {
 			if (!others) {
 				//S c a n   N o n - i m a g e s
 				Window[] windows = WindowManager.getAllNonImageWindows();
-				String[] textExtension = ".txt .ijm .js .java .py .bs .csv".split(" ");
+				String[] textExtension = ".txt .ijm .js .java .py .bs .csv .tsv".split(" ");
 				boolean isTextPattern = false;
 				for (int jj = 0; jj < textExtension.length; jj++) {
 					isTextPattern |= pattern.endsWith(textExtension[jj]);
@@ -5198,10 +5198,14 @@ public class Functions implements MacroConstants, Measurements {
 		else if (name.equals("getOrthoViews"))
 			return getOrthoViews();
 		ImagePlus imp = getImage();
-		if (name.equals("setPosition"))
-			{setPosition(imp); return Double.NaN;}
-		if (name.equals("getPosition"))
-			{getPosition(imp); return Double.NaN;}
+		if (name.equals("setPosition")) {
+			setPosition(imp);
+			return Double.NaN;
+		}
+		if (name.equals("getPosition")) {
+			getPosition(imp);
+			return Double.NaN;
+		}
 		Calibration cal = imp.getCalibration();
 		if (name.equals("getFrameRate"))
 			{interp.getParens(); return cal.fps;}

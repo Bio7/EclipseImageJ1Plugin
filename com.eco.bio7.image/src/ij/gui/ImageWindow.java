@@ -450,6 +450,8 @@ public class ImageWindow extends JFrame
 			if (label != null && label.length() > 0) {
 				if (imp.isHyperStack())
 					label = label.replace(';', ' ');
+				if (label.length()>40)
+					label = label.substring(0, 40)+"...";
 				s += " (" + label + ")";
 			}
 			if ((this instanceof StackWindow) && running2) {
@@ -467,8 +469,8 @@ public class ImageWindow extends JFrame
 				int len = label.length();
 				if (len > 4 && label.charAt(len - 4) == '.' && !Character.isDigit(label.charAt(len - 1)))
 					label = label.substring(0, len - 4);
-				if (label.length() > 60)
-					label = label.substring(0, 60);
+				if (label.length()>40)
+					label = label.substring(0, 40)+"...";
 				s = "\"" + label + "\"; ";
 			}
 		}
