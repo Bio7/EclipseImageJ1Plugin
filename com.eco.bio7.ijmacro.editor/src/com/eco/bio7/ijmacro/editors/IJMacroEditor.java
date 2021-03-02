@@ -25,8 +25,10 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.jobs.IJobChangeEvent;
 import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.eclipse.core.runtime.preferences.InstanceScope;
+import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuManager;
+import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.PreferenceConverter;
@@ -52,11 +54,13 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
+import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.graphics.FontData;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -64,7 +68,9 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
+import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
+import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IEditorSite;
@@ -630,10 +636,10 @@ public class IJMacroEditor extends TextEditor implements IPropertyChangeListener
 			}
 		}
 
-		/*if (!DebugVariablesView.getDebugVariablesGrid().isVisible()) { // abort macro if user closes window
-																		// interp.abortMacro();
-			return 0;
-		}*/
+		/*
+		 * if (!DebugVariablesView.getDebugVariablesGrid().isVisible()) { // abort macro
+		 * if user closes window // interp.abortMacro(); return 0; }
+		 */
 
 		if (n == previousLine) {
 			previousLine = 0;
@@ -643,19 +649,15 @@ public class IJMacroEditor extends TextEditor implements IPropertyChangeListener
 		 * Window win = WindowManager.getActiveWindow(); if (win!=this) IJ.wait(50);
 		 * toFront();
 		 */
-		/*Display display = PlatformUI.getWorkbench().getDisplay();
-		display.syncExec(new Runnable() {
-			public void run() {
-				try {
-					IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-					page.showView("com.eco.bio7.image.view.debug");
-				} catch (PartInitException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-		
-			}
-		});*/
+		/*
+		 * Display display = PlatformUI.getWorkbench().getDisplay();
+		 * display.syncExec(new Runnable() { public void run() { try { IWorkbenchPage
+		 * page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+		 * page.showView("com.eco.bio7.image.view.debug"); } catch (PartInitException e)
+		 * { // TODO Auto-generated catch block e.printStackTrace(); }
+		 * 
+		 * } });
+		 */
 		previousLine = n;
 		String text = getText();
 		if (IJ.isWindows())
@@ -842,10 +844,11 @@ public class IJMacroEditor extends TextEditor implements IPropertyChangeListener
 			public void run() {
 
 				getSourceViewer().revealRange(debugStart, debugEnd - debugStart);
-				
+
 				IResource resource = (IResource) editor.getEditorInput().getAdapter(IResource.class);
 				try {
-					resource.deleteMarkers("com.eco.bio7.ijmacroeditor.debugrulermarkarrow", false, IResource.DEPTH_ZERO);
+					resource.deleteMarkers("com.eco.bio7.ijmacroeditor.debugrulermarkarrow", false,
+							IResource.DEPTH_ZERO);
 				} catch (CoreException e1) {
 
 					e1.printStackTrace();
@@ -862,7 +865,6 @@ public class IJMacroEditor extends TextEditor implements IPropertyChangeListener
 
 					e.printStackTrace();
 				}
-				
 
 			}
 
@@ -922,7 +924,7 @@ public class IJMacroEditor extends TextEditor implements IPropertyChangeListener
 		Interpreter interp = Interpreter.getInstance();
 		if (interp != null) {
 			if (interp.getDebugger() == null) {
-				//fixLineEndings();
+				// fixLineEndings();
 			}
 			interp.setDebugger(this);
 			interp.setDebugMode(mode);
@@ -945,15 +947,18 @@ public class IJMacroEditor extends TextEditor implements IPropertyChangeListener
 	 */
 	public void fixLineEndings() {
 
-		//IDocumentProvider dp = this.getDocumentProvider();
-		//IDocument doc = dp.getDocument(this.getEditorInput());
-		/*We use the document adapter here to preserve editor markers. Else they are deleted!*/
-		//replace(doc, "\r\n", "\n", true, false, true, false, false);
-		//replace(doc, "\r", "", true, false, true, false, false);
-		/*String text = getText();
-		text = text.replaceAll("\r\n", "\n");
-		text = text.replaceAll("\r", "\n");
-		setText(text);*/
+		// IDocumentProvider dp = this.getDocumentProvider();
+		// IDocument doc = dp.getDocument(this.getEditorInput());
+		/*
+		 * We use the document adapter here to preserve editor markers. Else they are
+		 * deleted!
+		 */
+		// replace(doc, "\r\n", "\n", true, false, true, false, false);
+		// replace(doc, "\r", "", true, false, true, false, false);
+		/*
+		 * String text = getText(); text = text.replaceAll("\r\n", "\n"); text =
+		 * text.replaceAll("\r", "\n"); setText(text);
+		 */
 	}
 
 	public int replace(IDocument doc, String word1, String word2, boolean forwardSearch, boolean caseSensitive,
@@ -975,11 +980,11 @@ public class IJMacroEditor extends TextEditor implements IPropertyChangeListener
 			};
 			while ((docRegion = fr.find(docRegion.getOffset() + 1, word1, true, caseSensitive, wholeWord,
 					regularExpressions)) != null) {
-				
+
 				try {
-					 fr.replace(word2, regularExpressions);
+					fr.replace(word2, regularExpressions);
 				} catch (Exception e) {
-					System.out.println("Line: "+(doc.getLineOfOffset(docRegion.getOffset() + 1)+1));
+					System.out.println("Line: " + (doc.getLineOfOffset(docRegion.getOffset() + 1) + 1));
 					e.printStackTrace();
 				}
 				x++;
@@ -1102,13 +1107,13 @@ public class IJMacroEditor extends TextEditor implements IPropertyChangeListener
 
 					}
 					if (region != null) {
-						//editor.selectAndReveal(region.getOffset(), region.getLength());
-						//getSourceViewer().getTextWidget().setSelection(0,0);					
+						// editor.selectAndReveal(region.getOffset(), region.getLength());
+						// getSourceViewer().getTextWidget().setSelection(0,0);
 						ISourceViewer sourceViewer = getSourceViewer();
 						int offset = region.getOffset();
 						sourceViewer.revealRange(offset, region.getLength());
 						StyledText textWidget = sourceViewer.getTextWidget();
-						textWidget.setSelection(offset, offset+region.getLength());
+						textWidget.setSelection(offset, offset + region.getLength());
 						editor.selectAndReveal(offset, 0);
 						textWidget.redraw();
 					}
@@ -1172,7 +1177,8 @@ public class IJMacroEditor extends TextEditor implements IPropertyChangeListener
 			expanded = contentOutlineViewer.getExpandedElements();
 
 			TreeViewer viewer = contentOutlineViewer;
-
+			// Sort tree alphabetically
+			// viewer.setComparator(new ViewerComparator());
 			if (viewer != null) {
 
 				Control control = viewer.getControl();
@@ -1244,11 +1250,65 @@ public class IJMacroEditor extends TextEditor implements IPropertyChangeListener
 	}
 
 	class MyContentOutlinePage extends ContentOutlinePage {
+		boolean sort = true;
 
 		public void createControl(Composite parent) {
 			super.createControl(parent);
 
 			contentOutlineViewer = getTreeViewer();
+
+			Action sortAlphabetAction = new Action("Sort", IAction.AS_PUSH_BUTTON) {
+
+				@Override
+				public void run() {
+
+					TreeViewer treeViewer2 = getTreeViewer();
+					Tree tree = treeViewer2.getTree();
+					tree.setRedraw(false);
+					try {
+
+						// getTreeViewer().collapseAll();
+						TreeViewer viewer = contentOutlineViewer;
+						// Sort tree alphabetically
+						if (sort) {
+
+							viewer.setComparator(new ViewerComparator());
+							sort = false;
+						} else {
+							viewer.setComparator(null);
+							sort = true;
+						}
+					} finally {
+						tree.setRedraw(true);
+					}
+				}
+
+			};
+			sortAlphabetAction.setImageDescriptor(IJMacroEditorPlugin.getImageDescriptor("icons/alphab_sort_co.png"));
+			Action collapseAllAction = new Action("Collapse", IAction.AS_PUSH_BUTTON) {
+
+				@Override
+				public void run() {
+
+					TreeViewer treeViewer2 = getTreeViewer();
+					Tree tree = treeViewer2.getTree();
+					tree.setRedraw(false);
+					try {
+
+						getTreeViewer().collapseAll();
+						
+					} finally {
+						tree.setRedraw(true);
+					}
+				}
+
+			};
+			collapseAllAction.setImageDescriptor(IJMacroEditorPlugin.getImageDescriptor("icons/collapseall.png"));
+			// Add actions to the toolbar
+			IActionBars actionBars = getSite().getActionBars();
+			IToolBarManager toolbarManager = actionBars.getToolBarManager();
+			toolbarManager.add(collapseAllAction);
+			toolbarManager.add(sortAlphabetAction);
 
 			contentOutlineViewer.addSelectionChangedListener(this);
 
