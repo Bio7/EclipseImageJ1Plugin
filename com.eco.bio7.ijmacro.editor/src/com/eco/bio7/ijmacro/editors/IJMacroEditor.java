@@ -1281,6 +1281,7 @@ public class IJMacroEditor extends TextEditor implements IPropertyChangeListener
 					} finally {
 						tree.setRedraw(true);
 					}
+					tree.redraw();
 				}
 
 			};
@@ -1300,6 +1301,7 @@ public class IJMacroEditor extends TextEditor implements IPropertyChangeListener
 					} finally {
 						tree.setRedraw(true);
 					}
+					tree.redraw();
 				}
 
 			};
