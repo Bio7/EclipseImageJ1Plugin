@@ -197,7 +197,8 @@ public class ImageJMacroBaseListen extends ImageJMacroBaseListener {
 		int lineMethod = calculateLine(lineStart);
 		int lineEnd = lastToken.getStopIndex() + 1 - lineStart;
 		startStop.add(lineStart + "," + lineEnd);
-
+		/*For the outline item title remove the parentheses to make them sortable!*/
+        name=name.replaceAll("\"", "");
 		/* Here we create the outline nodes in the Outline view! */
 		if (methods.size() == 0) {
 

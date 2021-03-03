@@ -1,14 +1,12 @@
 package com.eco.bio7.ijmacro.editor.hoover;
 
+import java.awt.Color;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Iterator;
-import org.eclipse.core.resources.IMarker;
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.jface.action.ToolBarManager;
-import org.eclipse.jface.internal.text.html.BrowserInformationControl;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
@@ -21,17 +19,8 @@ import org.eclipse.jface.text.ITextHoverExtension2;
 import org.eclipse.jface.text.ITextViewer;
 import org.eclipse.jface.text.Region;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
-import org.eclipse.jface.text.source.Annotation;
-import org.eclipse.jface.text.source.IAnnotationModel;
-import org.eclipse.jface.text.source.SourceViewer;
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.texteditor.MarkerAnnotation;
-
-import com.eco.bio7.ijmacro.editor.actions.OpenHelpBrowserAction;
 import com.eco.bio7.ijmacro.editors.IJMacroEditor;
 
 public class IJMacroEditorTextHover implements ITextHover, ITextHoverExtension, ITextHoverExtension2 {
@@ -43,8 +32,7 @@ public class IJMacroEditorTextHover implements ITextHover, ITextHoverExtension, 
 	String message = "";
 	private IPreferenceStore store;
 	private IJMacroEditor iJMacroEditor;
-
-	
+	private boolean isHex = false;
 
 	public IJMacroEditorTextHover(IJMacroEditor iJMacroEditor) {
 		this.iJMacroEditor = iJMacroEditor;
@@ -56,6 +44,7 @@ public class IJMacroEditorTextHover implements ITextHover, ITextHoverExtension, 
 	@Override
 	public Object getHoverInfo2(ITextViewer textViewer, IRegion hoverRegion) {
 		hoverMarker = false;
+		isHex = false;
 		int offset = hoverRegion.getOffset();
 		int length = 0;
 		int minusLength = 0;
@@ -106,7 +95,7 @@ public class IJMacroEditorTextHover implements ITextHover, ITextHoverExtension, 
 				}
 
 				if (Character.isLetter(c) == false && (c == '.') == false && Character.isDigit(c) == false
-						&& (c == '_') == false) {
+						&& (c == '_') == false && (c == '#') == false) {
 					break;
 				}
 
@@ -125,14 +114,18 @@ public class IJMacroEditorTextHover implements ITextHover, ITextHoverExtension, 
 
 			try {
 				htmlHelpText = textViewer.getDocument().get(wordOffset, resultedLength);
-				
+
 			} catch (BadLocationException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			/* If we have a hex color! */
+			if (isHexColor(htmlHelpText)) {
+				isHex = true;
+				return htmlHelpText + "," + wordOffset + "," + resultedLength;
+			}
 
 		}
-		
 
 		return htmlHelpText;
 
@@ -179,8 +172,6 @@ public class IJMacroEditorTextHover implements ITextHover, ITextHoverExtension, 
 		return new Region(offset, 0);
 	}
 
-	
-
 	/* Displays the hover popup with a toolbar! */
 	public IInformationControlCreator getHoverControlCreator() {
 		return new IInformationControlCreator() {
@@ -189,10 +180,25 @@ public class IJMacroEditorTextHover implements ITextHover, ITextHoverExtension, 
 			 * createInformationControl(org.eclipse.swt.widgets.Shell)
 			 */
 			public IInformationControl createInformationControl(Shell parent) {
-							
-				return new IJMacroDefaultInformationControl(parent);
+
+				if (isHex) {
+					return new IJMacroColorInformationControl(parent);
+				}
+
+				else {
+
+					return new IJMacroDefaultInformationControl(parent);
+				}
 			}
 		};
+	}
+
+	public boolean isHexColor(final String hexColorCode) {
+		String HEX_PATTERN = "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$";
+		Pattern pattern = Pattern.compile(HEX_PATTERN);
+		Matcher matcher = pattern.matcher(hexColorCode);
+		return matcher.matches();
+
 	}
 
 }
