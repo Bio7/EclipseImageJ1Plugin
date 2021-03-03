@@ -690,7 +690,7 @@ public class ImageWindow extends JFrame
 		 * images at once in the background!).
 		 */
 
-		display.syncExec(new Runnable() {
+		display.asyncExec(new Runnable() {
 			public void run() {
 				if (imp != null) {
 					if (CanvasView.getCanvas_view() != null) {
