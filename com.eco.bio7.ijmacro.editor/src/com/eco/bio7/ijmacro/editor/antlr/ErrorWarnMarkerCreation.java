@@ -42,6 +42,31 @@ public class ErrorWarnMarkerCreation extends WorkspaceJob {
 	@Override
 	public IStatus runInWorkspace(IProgressMonitor monitor) throws CoreException {
 		monitor.beginTask("Create Markers", IProgressMonitor.UNKNOWN);
+		if (editor != null) {
+
+			IResource resource = (IResource) editor.getEditorInput().getAdapter(IResource.class);
+			if (resource != null) {
+				try {
+					resource.deleteMarkers(IMarker.PROBLEM, true, IResource.DEPTH_INFINITE);
+				} catch (CoreException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				/* Delete all problem markers! */
+				/*
+				 * IMarker[] markers = findMyMarkers(resource); int lineNumb =
+				 * -1; for (int i = 0; i < markers.length; i++) {
+				 * 
+				 * try { lineNumb = (int)
+				 * markers[i].getAttribute(IMarker.LINE_NUMBER);
+				 * 
+				 * if (lineNumb == line) { markers[i].delete(); //
+				 * System.out.println(recognizer.getRuleNames()[i]); } } catch
+				 * (CoreException e1) { // TODO Auto-generated catch block
+				 * e1.printStackTrace(); } }
+				 */
+			}
+		}
 
 		for (int i = 0; i < errors.size(); i++) {
 			ErrorWarnStore errWarn = errors.get(i);

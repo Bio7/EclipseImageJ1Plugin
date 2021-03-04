@@ -76,19 +76,17 @@ public class Parse {
 		Vector<IJMacroEditorOutlineNode> editorOldNodes = editor.nodes;
 		/* Create the category base node for the outline! */
 		editor.createNodes();
-		ErrorWarnMarkerDeletion deleteMarkerJob = new ErrorWarnMarkerDeletion("Delete Markers", editor);
-
-		deleteMarkerJob.addJobChangeListener(new JobChangeAdapter() {
-			public void done(IJobChangeEvent event) {
-				if (event.getResult().isOK()) {
-
-				} else {
-
-				}
-			}
-		});
-		deleteMarkerJob.setUser(true);
-		deleteMarkerJob.schedule();
+		/*
+		 * ErrorWarnMarkerDeletion deleteMarkerJob = new
+		 * ErrorWarnMarkerDeletion("Delete Markers", editor);
+		 * 
+		 * deleteMarkerJob.addJobChangeListener(new JobChangeAdapter() { public void
+		 * done(IJobChangeEvent event) { if (event.getResult().isOK()) {
+		 * 
+		 * } else {
+		 * 
+		 * } } }); deleteMarkerJob.setUser(true); deleteMarkerJob.schedule();
+		 */
 
 		IDocumentProvider dp = editor.getDocumentProvider();
 		IDocument doc = dp.getDocument(editor.getEditorInput());
