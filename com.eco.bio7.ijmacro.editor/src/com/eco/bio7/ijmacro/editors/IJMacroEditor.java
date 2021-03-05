@@ -1197,6 +1197,7 @@ public class IJMacroEditor extends TextEditor implements IPropertyChangeListener
 					/* The default expand level! */
 					contentOutlineViewer.expandToLevel(2);
 					control.setRedraw(true);
+					control.redraw();
 				}
 			}
 		}
@@ -1295,8 +1296,10 @@ public class IJMacroEditor extends TextEditor implements IPropertyChangeListener
 					Tree tree = treeViewer2.getTree();
 					tree.setRedraw(false);
 					try {
-
+						//getTreeViewer().collapseToLevel(tree,2);
+						/* The default expand level! */
 						getTreeViewer().collapseAll();
+						contentOutlineViewer.expandToLevel(2);
 						
 					} finally {
 						tree.setRedraw(true);
