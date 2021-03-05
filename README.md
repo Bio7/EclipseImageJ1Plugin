@@ -7,7 +7,7 @@ A repository for an Eclipse ImageJ1 plugin contributed from the Bio7 project.
 2. Improved the editor speed. No more flickering editor markers
 3. Added a hoover to display editor hex colors and an action to set the hex color with a dialog.
 4. Added a sort an collapse action to the macro editor outline view.
-5. Added the image information (which is normally displayed in the image window to the Eclipse status line if tab is selected or stack/composite slider is moved.
+5. Added the image information (which is normally displayed in the image window) to the Eclipse status line if a tab is selected or stack/composite slider is moved.
 6. Added an action to change the tab title color according to the color of the selected composite image channel.
 7. Added a new color action for the new ImageJ message display method (tab title color and toolbar color)
 8. Improved the outline redraw action for MacOSX 
