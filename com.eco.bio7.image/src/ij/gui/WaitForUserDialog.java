@@ -48,6 +48,7 @@ public class WaitForUserDialog extends JDialog implements ActionListener, KeyLis
         add(button, c);
 		setResizable(false);
 		addKeyListener(this);
+		GUI.scale(this);
 		pack();
 		/*
 		 * Changed for Bio7! AWT must be colored per component. All JPanels will get the
