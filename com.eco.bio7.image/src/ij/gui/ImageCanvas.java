@@ -941,8 +941,6 @@ public class ImageCanvas extends JPanel implements MouseListener, MouseWheelList
 	 * screen coordinates.
 	 */
 	public void zoomIn(int sx, int sy) {
-		
-		System.out.println(sx+"  "+sy);
 
 		if (magnification >= 32)
 			return;
