@@ -69,6 +69,7 @@ public class Zoom implements PlugIn {
 			}
 		} else if (arg.equals("scale"))
 			scaleToFit(imp);
+    	
     	/* Changed for Bio7! */
 		CanvasView.getCurrent().doLayout();
 	}
