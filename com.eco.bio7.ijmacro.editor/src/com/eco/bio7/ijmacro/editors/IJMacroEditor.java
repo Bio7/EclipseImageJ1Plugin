@@ -187,7 +187,6 @@ public class IJMacroEditor extends TextEditor implements IPropertyChangeListener
 		// PlatformUI.getWorkbench().getHelpSystem().setHelp(parent,
 		// "com.eco.bio7.beanshell");
 		store = IJMacroEditorPlugin.getDefault().getPreferenceStore();
-		getSite().getWorkbenchWindow().getSelectionService().addSelectionListener(listener);
 		viewer = (ProjectionViewer) getSourceViewer();
 
 		projectionSupport = new ProjectionSupport(viewer, getAnnotationAccess(), getSharedColors());
@@ -1053,38 +1052,7 @@ public class IJMacroEditor extends TextEditor implements IPropertyChangeListener
 		tempShell = new Shell();
 	}
 
-	private ISelectionListener listener = new ISelectionListener() {
-		public void selectionChanged(IWorkbenchPart sourcepart, ISelection selection) {
-
-			// we ignore our own selections
-			if (sourcepart != IJMacroEditor.this) {
-				// showSelection(sourcepart, selection);
-
-				if (selection instanceof IStructuredSelection) {
-					IStructuredSelection strucSelection = (IStructuredSelection) selection;
-					Object selectedObj = strucSelection.getFirstElement();
-					if (selectedObj instanceof IJMacroEditorOutlineNode) {
-
-						IJMacroEditorOutlineNode cm = (IJMacroEditorOutlineNode) selectedObj;
-						if (cm != null) {
-
-							int lineNumber = cm.getLineNumber();
-							/*
-							 * If a line number exist - if a class member of type is available!
-							 */
-							if (lineNumber > 0) {
-								goToLine(IJMacroEditor.this, lineNumber);
-							}
-
-						}
-
-					}
-				}
-
-			}
-		}
-
-	};
+	
 
 	private String markerExpression;
 

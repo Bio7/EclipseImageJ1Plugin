@@ -32,8 +32,8 @@ public class Compiler implements PlugIn, FilenameFilter {
 			+"be located in either plugins/jars or plugins/lib.\n \n"
 			+"The javac command line will be displayed in\n"
 			+"the Log window if ImageJ is in debug mode.";
-	private static final int TARGET14 = 0, TARGET15 = 1, TARGET16 = 2, TARGET17 = 3, TARGET18 = 4, TARGET19 = 5, TARGET110 = 6, TARGET111 = 7, TARGET112 = 8, TARGET113 = 9, TARGET114 = 10;
-	private static final String[] targets = { "1.4", "1.5", "1.6", "1.7", "1.8", "1.9", "10", "11", "12", "13","14" };
+	private static final int TARGET14 = 0, TARGET15 = 1, TARGET16 = 2, TARGET17 = 3, TARGET18 = 4, TARGET19 = 5, TARGET110 = 6, TARGET111 = 7, TARGET112 = 8, TARGET113 = 9, TARGET114 = 10,TARGET115 = 11;
+	private static final String[] targets = { "1.4", "1.5", "1.6", "1.7", "1.8", "1.9", "10", "11", "12", "13","14","15" };
 	private static final String TARGET_KEY = "javac.target";
 	private static CompilerTool compilerTool;
 	private static String dir, name;
@@ -326,6 +326,8 @@ public class Compiler implements PlugIn, FilenameFilter {
 			target = TARGET113;
 		if (target >= TARGET114)
 			target = TARGET114;
+		if (target >= TARGET115)
+			target = TARGET115;
 		if (target < TARGET16)
 			target = TARGET16;
 		if (target > TARGET16 && IJ.javaVersion() < 7)
