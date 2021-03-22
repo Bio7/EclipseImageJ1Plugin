@@ -7,16 +7,21 @@ import java.util.Vector;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 import java.awt.event.*;
 
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.graphics.RGB;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IViewReference;
 import org.eclipse.ui.PlatformUI;
 
+import com.eco.bio7.image.Activator;
 import com.eco.bio7.image.CanvasView;
 import com.eco.bio7.image.CustomDetachedImageJView;
 import com.eco.bio7.image.IJTabs;
@@ -81,6 +86,7 @@ public class ImageWindow extends JFrame
 	 * escape key, or closes the window.
 	 */
 	public boolean running2;
+	protected Vector ve;
 
 	// private ImageWindow windowInstance;// Changed for Bio7!
 	public SwtAwtImageJ getSwtAwtMain() {
@@ -467,8 +473,8 @@ public class ImageWindow extends JFrame
 				int len = label.length();
 				if (len > 4 && label.charAt(len - 4) == '.' && !Character.isDigit(label.charAt(len - 1)))
 					label = label.substring(0, len - 4);
-				if (label.length()>60)
-					label = label.substring(0, 60)+"...";
+				if (label.length() > 60)
+					label = label.substring(0, 60) + "...";
 				s = "\"" + label + "\"; ";
 			}
 		}
@@ -593,6 +599,7 @@ public class ImageWindow extends JFrame
 				msg += "\nWARNING: This image is locked.\nProbably, processing is unfinished (slow or still previewing).";*/
 
 		/* Changed for Bio7! */
+
 		final CTabItem[] items = CanvasView.getCanvas_view().tabFolder.getItems();
 		Display dis = CanvasView.getParent2().getDisplay();
 		dis.syncExec(new Runnable() {
@@ -600,15 +607,22 @@ public class ImageWindow extends JFrame
 			public void run() {
 				for (int i = 0; i < items.length; i++) {
 
-					Vector ve = (Vector) items[i].getData();
+					ve = (Vector) items[i].getData();
 
 					final ImageWindow win2 = (ImageWindow) ve.get(1);
 
 					/* Search for the tab which embeds this instance! */
 					if (ImageWindow.this.equals(win2)) {
-						// calls bio7Tabclose!
-						IJTabs.deleteTab(i);
-						// System.out.println("closed");
+						final CTabItem[] items = CanvasView.getCanvas_view().tabFolder.getItems();
+						Composite com = (Composite) items[i].getControl();
+						Control compo[] = com.getChildren();
+						for (int u = 0; u < compo.length; u++) {
+							if (compo[u] != null && compo[u].isDisposed() == false) {
+								compo[u].dispose();
+							}
+						}
+						com.dispose();
+						items[i].dispose();
 						return;
 
 					}
@@ -617,6 +631,9 @@ public class ImageWindow extends JFrame
 
 			}
 		});
+		/*Get the specific embedded window instance and close it!*/
+		ImageWindow win = (ImageWindow) ve.get(1);
+		win.bio7TabClose();
 
 		return true;
 
