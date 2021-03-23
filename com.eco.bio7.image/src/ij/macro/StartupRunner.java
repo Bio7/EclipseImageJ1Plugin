@@ -20,10 +20,12 @@ public class StartupRunner implements Runnable {
 
 	public void run() {
  		String macro = (new Startup()).getStartupMacro();
- 		if (macro!=null && macro.length()>4)
+ 		if (macro!=null && macro.length()>4) {
+ 			if (macro.contains("setForegroundColor"))
+ 				IJ.wait(100);
  			IJ.runMacro(macro);
+ 		}
 		MacroInstaller.autoRun();
  	}
  	
 }
-

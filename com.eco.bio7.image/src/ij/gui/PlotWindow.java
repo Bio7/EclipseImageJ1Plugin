@@ -3,6 +3,7 @@ package ij.gui;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
+import java.lang.reflect.InvocationTargetException;
 import java.awt.datatransfer.*;
 import java.util.*;
 
@@ -355,23 +356,33 @@ public class PlotWindow extends ImageWindow
 		maximizeCoordinatesLabelWidth();
 		/* Changed for Bio7. Pack causes deadlock on MacOSX with detached view! */
 		// pack();
-
-		ImageProcessor ip = plot.getProcessor();
-		boolean ipIsColor = ip instanceof ColorProcessor;
-		boolean impIsColor = imp.getProcessor() instanceof ColorProcessor;
-		if (ipIsColor != impIsColor)
-			imp.setProcessor(null, ip);
-		else
-			imp.updateAndDraw();
-		if (listValues)
-			showList(/*useLabels=*/false);
-		else
-			ic.requestFocus(); // have focus on the canvas, not the button, so that pressing the space bar
-		// allows panning
-		/*
-		 * Changed for Bio7!
-		 */
-
+		/* Changed for Bio7. Introduced a pause for the plot display!*/
+		//IJ.wait(150);
+		/* Changed for Bio7. Invoke and wait!*/
+		try {
+			java.awt.EventQueue.invokeAndWait(new Runnable() {
+				public void run() {
+					ImageProcessor ip = plot.getProcessor();
+					boolean ipIsColor = ip instanceof ColorProcessor;
+					boolean impIsColor = imp.getProcessor() instanceof ColorProcessor;
+					if (ipIsColor != impIsColor)
+						imp.setProcessor(null, ip);
+					else
+						imp.updateAndDraw();
+					if (listValues)
+						showList(/*useLabels=*/false);
+					else
+						ic.requestFocus(); // have focus on the canvas, not the button, so that pressing the space bar
+					// allows panning
+					/*
+					 * Changed for Bio7!
+					 */
+				}
+			});
+		} catch (InvocationTargetException | InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		Display display = Util.getDisplay();
 		display.syncExec(new Runnable() {
 			public void run() {

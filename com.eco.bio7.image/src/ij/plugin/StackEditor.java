@@ -299,7 +299,7 @@ public class StackEditor implements PlugIn {
 				return;
 			}
 		}
-		IJTabs.deleteActiveTab();
+		//IJTabs.deleteActiveTab();
 		Calibration cal = imp.getCalibration();
 		CompositeImage cimg = imp.isComposite() ? (CompositeImage) imp : null;
 		if (imp.getNChannels() != imp.getStackSize())
@@ -377,43 +377,23 @@ public class StackEditor implements PlugIn {
 				}
 
 			} else {
-				try {
-					if (Util.getOS().equals("Mac")) {
-						SwingUtilities.invokeAndWait(new Runnable() {
 
-							public void run() {
-								Platform.runLater(new Runnable() {
-									public void run() {
-										if (count == size)
-											lastImageID = imp2.getID();
-										imp2.show();
+				if (Util.getOS().equals("Mac")) {
 
-									}
-								});
+					if (count == size)
+						lastImageID = imp2.getID();
+					imp2.show();
 
-							}
-						});
+				} else {
 
-					} else {
-						SwingUtilities.invokeAndWait(new Runnable() {
+					if (count == size)
+						lastImageID = imp2.getID();
+					imp2.show();
 
-							public void run() {
-								if (count == size)
-									lastImageID = imp2.getID();
-								imp2.show();
-
-							}
-						});
-						CanvasView canvasView = CanvasView.getCanvas_view();
-						canvasView.recalculateLayout();
-					}
-				} catch (InvocationTargetException e) {
-
-					e.printStackTrace();
-				} catch (InterruptedException e) {
-
-					e.printStackTrace();
+					CanvasView canvasView = CanvasView.getCanvas_view();
+					canvasView.recalculateLayout();
 				}
+
 			}
 		}
 		imp.changes = false;

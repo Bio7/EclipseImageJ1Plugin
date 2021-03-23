@@ -68,9 +68,6 @@ public class ChannelArranger implements PlugIn, TextListener {
 		for (int i=0; i<nChannels2; i++)
 			newOrder2[i] = newOrder.charAt(i)-48;
 		ImagePlus imp2 = run(imp, newOrder2);
-		/*Changed for Bio7! It seems necessary for MacOSX only!*/
-		imp.hide();
-		
 		imp2.copyAttributes(imp);
 		if (location!=null)
 			ImageWindow.setNextLocation(location);
