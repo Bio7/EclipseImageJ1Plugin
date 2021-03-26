@@ -199,6 +199,10 @@ public class ImageJMacroBaseListen extends ImageJMacroBaseListener {
 		startStop.add(lineStart + "," + lineEnd);
 		/*For the outline item title remove the parentheses to make them sortable!*/
         name=name.replaceAll("\"", "");
+        
+        if(name != null && name.length() > 40) {
+            name= name.substring(0, 40) + "...";
+        } 
 		/* Here we create the outline nodes in the Outline view! */
 		if (methods.size() == 0) {
 
