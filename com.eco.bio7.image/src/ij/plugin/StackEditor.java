@@ -18,6 +18,7 @@ import java.util.concurrent.FutureTask;
 import javax.swing.SwingUtilities;
 
 import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.swt.widgets.Display;
 
 import com.eco.bio7.image.Activator;
 import com.eco.bio7.image.CanvasView;
@@ -382,9 +383,16 @@ public class StackEditor implements PlugIn {
 
 					if (count == size)
 						lastImageID = imp2.getID();
-					/*Introduce a pause for MacOSX to avoid a deadlock!*/
-					IJ.wait(50);
-					imp2.show();
+					/*
+					 * Wrap in sync method for MacOSX only!
+					 */
+
+					Display display = Util.getDisplay();
+					display.syncExec(new Runnable() {
+						public void run() {
+							imp2.show();
+						}
+					});
 
 				} else {
 
