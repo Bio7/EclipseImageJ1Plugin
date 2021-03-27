@@ -382,6 +382,8 @@ public class StackEditor implements PlugIn {
 
 					if (count == size)
 						lastImageID = imp2.getID();
+					/*Introduce a pause for MacOSX to avoid a deadlock!*/
+					IJ.wait(50);
 					imp2.show();
 
 				} else {

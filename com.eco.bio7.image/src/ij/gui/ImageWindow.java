@@ -708,9 +708,6 @@ public class ImageWindow extends JFrame
 		display.asyncExec(new Runnable() {
 			public void run() {
 				if (imp != null) {
-					if (CanvasView.getCanvas_view() != null) {
-						CanvasView.getCanvas_view().setstatusline(createSubtitle());
-					}
 					if (imp.isComposite()) {
 						CompositeImage ci = (CompositeImage) imp;
 						if (ci.getMode() == IJ.COMPOSITE) {
@@ -725,6 +722,11 @@ public class ImageWindow extends JFrame
 									new org.eclipse.swt.graphics.Color(display, new RGB(red, green, blue)));
 
 						}
+					}
+					/*On MacOSX we get NullPointerException when we call the status line first. 
+					 * So we place the call to the status line here!*/
+					if (CanvasView.getCanvas_view() != null) {
+						CanvasView.getCanvas_view().setstatusline(createSubtitle());
 					}
 				}
 			}
