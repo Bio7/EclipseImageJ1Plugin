@@ -17,6 +17,12 @@ import java.util.concurrent.FutureTask;
 
 import javax.swing.SwingUtilities;
 
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.IJobChangeEvent;
+import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.swt.widgets.Display;
 
@@ -24,6 +30,7 @@ import com.eco.bio7.image.Activator;
 import com.eco.bio7.image.CanvasView;
 import com.eco.bio7.image.IJTabs;
 import com.eco.bio7.image.Util;
+
 
 /** Implements the AddSlice, DeleteSlice and "Stack to Images" commands. */
 public class StackEditor implements PlugIn {
@@ -41,8 +48,35 @@ public class StackEditor implements PlugIn {
 			addSlice();
 		else if (arg.equals("delete"))
 			deleteSlice();
-		else if (arg.equals("toimages"))
+		else if (arg.equals("toimages")) {
+			
+			if (Util.getOS().equals("Mac")) {
+			Job job = new Job("Convert Stack to Images") {
+				@Override
+				protected IStatus run(IProgressMonitor monitor) {
+					monitor.beginTask("Convert Stack to Images ...", IProgressMonitor.UNKNOWN);
+					convertStackToImages(imp);
+
+					monitor.done();
+					return Status.OK_STATUS;
+				}
+
+			};
+			
+			// job.setSystem(true);
+			job.schedule();
+			try {
+				job.join();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		}
+		}
+		else {
 			convertStackToImages(imp);
+		}
 	}
 
 	void addSlice() {
@@ -387,13 +421,9 @@ public class StackEditor implements PlugIn {
 					 * Wrap in sync method for MacOSX only!
 					 */
 
-					Display display = Util.getDisplay();
-					display.syncExec(new Runnable() {
-						public void run() {
+					
 							imp2.show();
-						}
-					});
-
+						
 				} else {
 
 					if (count == size)
