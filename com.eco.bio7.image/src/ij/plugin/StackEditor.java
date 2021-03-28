@@ -45,14 +45,12 @@ public class StackEditor implements PlugIn {
 		else if (arg.equals("delete"))
 			deleteSlice();
 		else if (arg.equals("toimages")) {
-			
-			if (Util.getOS().equals("Mac")) {
+				
 			Job job = new Job("Convert Stack to Images") {
 				@Override
 				protected IStatus run(IProgressMonitor monitor) {
 					monitor.beginTask("Convert Stack to Images ...", IProgressMonitor.UNKNOWN);
 					convertStackToImages(imp);
-
 					monitor.done();
 					return Status.OK_STATUS;
 				}
@@ -69,10 +67,8 @@ public class StackEditor implements PlugIn {
 			}
 			
 		}
-		}
-		else {
-			convertStackToImages(imp);
-		}
+		
+		
 	}
 
 	void addSlice() {
