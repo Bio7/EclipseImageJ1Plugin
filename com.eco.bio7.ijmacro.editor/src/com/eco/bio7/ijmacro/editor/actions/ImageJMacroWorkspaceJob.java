@@ -115,7 +115,7 @@ public class ImageJMacroWorkspaceJob extends Job implements IJobChangeListener {
 
 	@Override
 	protected IStatus run(IProgressMonitor monitor) {
-		monitor.beginTask("ImageJ macro is running.....", IProgressMonitor.UNKNOWN);
+		monitor.beginTask("ImageJ macro is running. Press Escape on panel to abort!.....", IProgressMonitor.UNKNOWN);
 
 		IJ.runMacro(content);
 		if (monitor.isCanceled()) {
