@@ -1,35 +1,31 @@
 package ij.plugin;
 
-import ij.*;
-import ij.gui.*;
-import ij.process.*;
-import javafx.application.Platform;
-import ij.measure.Calibration;
-import ij.macro.Interpreter;
-import ij.io.FileInfo;
-
-import java.awt.*;
+import java.awt.Color;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.FutureTask;
-
 import javax.swing.SwingUtilities;
-
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.jobs.IJobChangeEvent;
 import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.eclipse.jface.preference.IPreferenceStore;
-import org.eclipse.swt.widgets.Display;
-
 import com.eco.bio7.image.Activator;
 import com.eco.bio7.image.CanvasView;
-import com.eco.bio7.image.IJTabs;
 import com.eco.bio7.image.Util;
+import ij.CompositeImage;
+import ij.IJ;
+import ij.ImagePlus;
+import ij.ImageStack;
+import ij.Macro;
+import ij.gui.GenericDialog;
+import ij.gui.ImageWindow;
+import ij.gui.Overlay;
+import ij.gui.Roi;
+import ij.macro.Interpreter;
+import ij.measure.Calibration;
+import ij.process.ImageProcessor;
+import ij.process.LUT;
 
 
 /** Implements the AddSlice, DeleteSlice and "Stack to Images" commands. */
