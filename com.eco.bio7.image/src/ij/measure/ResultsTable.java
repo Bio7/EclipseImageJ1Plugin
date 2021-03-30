@@ -907,6 +907,10 @@ public class ResultsTable implements Cloneable {
 		baseRowNumber = 1;
 		showRowNumbersSet = true;
 	}
+	
+	public boolean showRowNumbers() {
+		return showRowNumbers;
+	}
 
 	public void showRowIndexes(boolean showIndexes) {
 		showRowNumbers = showIndexes;

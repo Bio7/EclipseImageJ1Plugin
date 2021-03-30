@@ -76,23 +76,30 @@ public class Zoom implements PlugIn {
 		
 	void zoomToSelection(ImagePlus imp, ImageCanvas ic) {
 		Roi roi = imp.getRoi();
-		ic.unzoom();
+		//ic.unzoom();
 		if (roi==null) return;
-		Rectangle w = imp.getWindow().getBounds();
+		//Rectangle w = CanvasView.getCurrent().getBounds();
 		Rectangle r = roi.getBounds();
 		double mag = ic.getMagnification();
-		int marginw = (int)((w.width - mag * imp.getWidth()));
-		int marginh = (int)((w.height - mag * imp.getHeight()));
+		//int marginw = (int)((w.width - mag * imp.getWidth()));
+		//int marginh = (int)((w.height - mag * imp.getHeight()));
 		int x = r.x+r.width/2;
 		int y = r.y+r.height/2;
-		mag = ic.getHigherZoomLevel(mag);
+		/*mag = ic.getHigherZoomLevel(mag);
 		while(r.width*mag<w.width - marginw && r.height*mag<w.height - marginh) {
-			ic.zoomIn(ic.screenX(x), ic.screenY(y));
+			//ic.zoomIn(ic.screenX(x), ic.screenY(y));
+			System.out.println(mag+" "+x+" "+y);
 			double cmag = ic.getMagnification();
 			if (cmag==32.0) break;
 			mag = ic.getHigherZoomLevel(cmag);
-			w = imp.getWindow().getBounds();
-		}
+			
+			w = CanvasView.getCurrent().getBounds();
+		}*/
+		
+		imp.resetRoi();
+		setZoom(imp,-1,x,y);
+		imp.restoreRoi();
+		System.out.println(ic.getVisibleRect());
 	}
 	
 	/** Based on Albert Cardona's ZoomExact plugin:
@@ -157,11 +164,11 @@ public class Zoom implements PlugIn {
 			if (areaSelection && roi.getType()==Roi.RECTANGLE)
 				imp.deleteRoi();
 			Insets insets = win.getInsets();
-			int canvasWidth = (int)(srcWidth*mag+insets.right+insets.left+ImageWindow.HGAP*2);
-			int canvasHeight = (int)(srcHeight*mag+insets.top+insets.bottom+ImageWindow.VGAP*2+win.getSliderHeight());
+			//int canvasWidth = (int)(srcWidth*mag+insets.right+insets.left+ImageWindow.HGAP*2);
+			//int canvasHeight = (int)(srcHeight*mag+insets.top+insets.bottom+ImageWindow.VGAP*2+win.getSliderHeight());
 			ic.setSourceRect(new Rectangle(x-srcWidth/2,y-srcHeight/2,srcWidth,srcHeight));
 			ic.setMagnification(mag);
-			win.setSize(canvasWidth, canvasHeight);
+			//win.setSize(canvasWidth, canvasHeight);
 			return;
 		}
 		if (x>=width) x=width-1;
@@ -192,7 +199,7 @@ public class Zoom implements PlugIn {
 			srcHeight = height;
 			ic.setSize((int)newWidth, (int)newHeight);
 			ic.setSourceRect(new Rectangle(0, 0, srcWidth, srcHeight));
-			win.pack();
+			//win.pack();
 		}
 		ic.repaint();
 		IJ.wait(100);
