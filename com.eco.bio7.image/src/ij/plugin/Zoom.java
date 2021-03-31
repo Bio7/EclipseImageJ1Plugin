@@ -73,33 +73,31 @@ public class Zoom implements PlugIn {
     	/* Changed for Bio7! */
 		CanvasView.getCurrent().doLayout();
 	}
-		
+	/* Changed for Bio7! */
 	void zoomToSelection(ImagePlus imp, ImageCanvas ic) {
 		Roi roi = imp.getRoi();
-		//ic.unzoom();
+		ic.unzoom();
 		if (roi==null) return;
-		//Rectangle w = CanvasView.getCurrent().getBounds();
+		Rectangle w = CanvasView.getCurrent().getBounds();
 		Rectangle r = roi.getBounds();
 		double mag = ic.getMagnification();
 		//int marginw = (int)((w.width - mag * imp.getWidth()));
 		//int marginh = (int)((w.height - mag * imp.getHeight()));
 		int x = r.x+r.width/2;
 		int y = r.y+r.height/2;
-		/*mag = ic.getHigherZoomLevel(mag);
-		while(r.width*mag<w.width - marginw && r.height*mag<w.height - marginh) {
+		mag = ic.getHigherZoomLevel(mag);
+		while(r.width*mag<w.width  && r.height*mag<w.height) {
 			//ic.zoomIn(ic.screenX(x), ic.screenY(y));
-			System.out.println(mag+" "+x+" "+y);
 			double cmag = ic.getMagnification();
-			if (cmag==32.0) break;
-			mag = ic.getHigherZoomLevel(cmag);
+			if (mag==32.0) break;
+			mag = ic.getHigherZoomLevel(mag);
 			
-			w = CanvasView.getCurrent().getBounds();
-		}*/
-		
+			//w = CanvasView.getCurrent().getBounds();
+		}
+		mag=ic.getLowerZoomLevel(mag);
 		imp.resetRoi();
-		setZoom(imp,-1,x,y);
+		setZoom(imp,mag,x,y);
 		imp.restoreRoi();
-		System.out.println(ic.getVisibleRect());
 	}
 	
 	/** Based on Albert Cardona's ZoomExact plugin:
@@ -161,8 +159,8 @@ public class Zoom implements PlugIn {
 		Rectangle bounds = GUI.getMaxWindowBounds(win);
 		boolean smallImage = mag>1.0 && width*mag<bounds.width && height*mag<bounds.height;
 		if ((areaSelection||smallImage||srcWidth!=srcRect.width||srcHeight!=srcRect.height) && !legacyMacro) {
-			if (areaSelection && roi.getType()==Roi.RECTANGLE)
-				imp.deleteRoi();
+			//if (areaSelection && roi.getType()==Roi.RECTANGLE)
+				//imp.deleteRoi();
 			Insets insets = win.getInsets();
 			//int canvasWidth = (int)(srcWidth*mag+insets.right+insets.left+ImageWindow.HGAP*2);
 			//int canvasHeight = (int)(srcHeight*mag+insets.top+insets.bottom+ImageWindow.VGAP*2+win.getSliderHeight());
