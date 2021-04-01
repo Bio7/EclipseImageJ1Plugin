@@ -159,8 +159,8 @@ public class Zoom implements PlugIn {
 		Rectangle bounds = GUI.getMaxWindowBounds(win);
 		boolean smallImage = mag>1.0 && width*mag<bounds.width && height*mag<bounds.height;
 		if ((areaSelection||smallImage||srcWidth!=srcRect.width||srcHeight!=srcRect.height) && !legacyMacro) {
-			//if (areaSelection && roi.getType()==Roi.RECTANGLE)
-				//imp.deleteRoi();
+			if (areaSelection && roi.getType()==Roi.RECTANGLE)
+				imp.deleteRoi();
 			Insets insets = win.getInsets();
 			//int canvasWidth = (int)(srcWidth*mag+insets.right+insets.left+ImageWindow.HGAP*2);
 			//int canvasHeight = (int)(srcHeight*mag+insets.top+insets.bottom+ImageWindow.VGAP*2+win.getSliderHeight());
