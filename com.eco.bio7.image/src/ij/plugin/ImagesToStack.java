@@ -1,14 +1,5 @@
 package ij.plugin;
-
 import ij.plugin.frame.Recorder;
-
-import java.lang.reflect.InvocationTargetException;
-
-import org.eclipse.swt.custom.CTabItem;
-import org.eclipse.swt.widgets.Display;
-
-import com.eco.bio7.image.CanvasView;
-
 import ij.*;
 import ij.gui.*;
 import ij.process.*;
@@ -16,11 +7,12 @@ import ij.measure.Calibration;
 import ij.macro.Interpreter;
 import ij.io.FileInfo;
 
+
 /** Implements the Image/Stacks/Images to Stack" command. */
 public class ImagesToStack implements PlugIn {
 	private static final int rgb = 33;
-	private static final int COPY_CENTER = 0, COPY_TOP_LEFT = 1, SCALE_SMALL = 2, SCALE_LARGE = 3;
-	private static final String[] methods = { "Copy (center)", "Copy (top-left)", "Scale (smallest)", "Scale (largest)" };
+	private static final int COPY_CENTER=0, COPY_TOP_LEFT=1, SCALE_SMALL=2, SCALE_LARGE=3;
+	private static final String[] methods = {"Copy (center)", "Copy (top-left)", "Scale (smallest)", "Scale (largest)"};
 	private static int staticMethod = COPY_CENTER;
 	private static boolean staticBicubic;
 	private static boolean staticKeep;
@@ -39,18 +31,13 @@ public class ImagesToStack implements PlugIn {
 	private int stackType;
 	private ImagePlus[] images;
 	private String name = "Stack";
-	private int counttab;// Changed for Bio7!
-
-	/**
-	 * Converts the images in 'images' to a stack, using the default settings ("copy
-	 * center" and "titles as labels").
-	 */
+	
+	/** Converts the images in 'images' to a stack, using the 
+		default settings ("copy center" and "titles as labels"). */
 	public static ImagePlus run(ImagePlus[] images) {
 		ImagesToStack itos = new ImagesToStack();
 		int count = itos.findMinMaxSize(images, images.length);
-		/* Changed for Bio7! */
-		final CTabItem[] items = CanvasView.getCanvas_view().tabFolder.getItems();
-		return itos.convert(images, count, items);
+		return itos.convert(images, count);
 	}
 
 	public void run(String arg) {
@@ -60,10 +47,7 @@ public class ImagesToStack implements PlugIn {
 	public void convertImagesToStack() {
 		boolean scale = false;
 		int[] wList = WindowManager.getIDList();
-		/* Changed for Bio7! */
-		final CTabItem[] items = CanvasView.getCanvas_view().tabFolder.getItems();
-		Display dis = CanvasView.getParent2().getDisplay();
-		if (wList == null) {
+		if (wList==null) {
 			IJ.error("No images are open.");
 			return;
 		}
@@ -71,38 +55,39 @@ public class ImagesToStack implements PlugIn {
 		int count = 0;
 		int stackCount = 0;
 		images = new ImagePlus[wList.length];
-		for (int i = 0; i < wList.length; i++) {
+		for (int i=0; i<wList.length; i++) {
 			ImagePlus imp = WindowManager.getImage(wList[i]);
-			if (imp.getStackSize() == 1)
+			if (imp.getStackSize()==1)
 				images[count++] = imp;
 			else
 				stackCount++;
-		}
-		if (count < 2) {
+		}		
+		if (count<2) {
 			String msg = "";
-			if (stackCount > 1)
+			if (stackCount>1)
 				msg = "\n \nUse the Image>Stacks>Tools>Concatenate\ncommand to combine stacks.";
-			IJ.error("Images to Stack", "There must be at least two open 2D images." + msg);
+			IJ.error("Images to Stack", "There must be at least two open 2D images."+msg);
 			return;
 		}
 
 		filter = null;
 		count = findMinMaxSize(images, count);
-		boolean sizesDiffer = width != minWidth || height != minHeight;
+		boolean sizesDiffer = width!=minWidth||height!=minHeight;
 		boolean showDialog = true;
 		String macroOptions = Macro.getOptions();
-		if (IJ.macroRunning() && macroOptions == null) {
+		if (IJ.macroRunning() && macroOptions==null) {
 			if (sizesDiffer) {
 				IJ.error("Images are not all the same size");
 				return;
-			}
+			} 
 			showDialog = false;
 		}
 		if (showDialog) {
 			GenericDialog gd = new GenericDialog("Images to Stack");
 			if (sizesDiffer) {
-				String msg = "The " + count + " images differ in size (smallest=" + minWidth + "x" + minHeight + ",\nlargest=" + maxWidth + "x" + maxHeight + "). They will be converted\nto a stack using the specified method.";
-				gd.setInsets(0, 0, 5);
+				String msg = "The "+count+" images differ in size (smallest="+minWidth+"x"+minHeight
+				+",\nlargest="+maxWidth+"x"+maxHeight+"). They will be converted\nto a stack using the specified method.";
+				gd.setInsets(0,0,5);
 				gd.addMessage(msg);
 				gd.addChoice("Method:", methods, methods[staticMethod]);
 			}
@@ -113,8 +98,7 @@ public class ImagesToStack implements PlugIn {
 			gd.addCheckbox("Use Titles as Labels", staticTitlesAsLabels);
 			gd.addCheckbox("Keep Source Images", staticKeep);
 			gd.showDialog();
-			if (gd.wasCanceled())
-				return;
+			if (gd.wasCanceled()) return;
 			if (sizesDiffer)
 				method = gd.getNextChoiceIndex();
 			name = gd.getNextString();
@@ -123,12 +107,12 @@ public class ImagesToStack implements PlugIn {
 				bicubic = gd.getNextBoolean();
 			titlesAsLabels = gd.getNextBoolean();
 			keep = gd.getNextBoolean();
-			if (filter != null && (filter.equals("") || filter.equals("*")))
+			if (filter!=null && (filter.equals("") || filter.equals("*")))
 				filter = null;
-			if (filter != null) {
+			if (filter!=null) {
 				count = findMinMaxSize(images, count);
-				if (count == 0) {
-					IJ.error("Images to Stack", "None of the images have a title containing \"" + filter + "\"");
+				if (count==0) {
+					IJ.error("Images to Stack", "None of the images have a title containing \""+filter+"\"");
 				}
 			}
 			if (!IJ.isMacro()) {
@@ -138,150 +122,115 @@ public class ImagesToStack implements PlugIn {
 				staticTitlesAsLabels = titlesAsLabels;
 			}
 			if (Recorder.record)
-				Recorder.recordCall("imp = ImagesToStack.run(arrayOfImages);");
+   				Recorder.recordCall("imp = ImagesToStack.run(arrayOfImages);");
 		} else
 			keep = false;
-		if (method == SCALE_SMALL) {
+		if (method==SCALE_SMALL) {
 			width = minWidth;
 			height = minHeight;
-		} else if (method == SCALE_LARGE) {
+		} else if (method==SCALE_LARGE) {
 			width = maxWidth;
 			height = maxHeight;
 		}
-		ImagePlus stack = convert(images, count, items);
-		if (stack != null)
+		ImagePlus stack = convert(images, count);
+		if (stack!=null)
 			stack.show();
 	}
-
-	private ImagePlus convert(ImagePlus[] images, int count, CTabItem[] items) {
+	
+	private ImagePlus convert(ImagePlus[] images, int count) {		
 		double min = Double.MAX_VALUE;
 		double max = -Double.MAX_VALUE;
 		ImageStack stack = new ImageStack(width, height);
 		FileInfo fi = images[0].getOriginalFileInfo();
-		if (fi != null && fi.directory == null)
-			fi = null;
+		if (fi!=null && fi.directory==null) fi = null;
 		Overlay overlay = new Overlay();
-		/* Changed for Bio7! - using the amount of open Tabs! */
-		for (int i = 0; i < items.length; i++) {
-
-			counttab = i;
+		for (int i=0; i<count; i++) {
 			ImageProcessor ip = images[i].getProcessor();
 			boolean invertedLut = ip.isInvertedLut();
-			if (ip.getMin() < min)
-				min = ip.getMin();
-			if (ip.getMax() > max)
-				max = ip.getMax();
-			String label = titlesAsLabels ? images[i].getTitle() : null;
-			if (label != null) {
-				String info = (String) images[i].getProperty("Info");
-				if (info != null)
-					label += "\n" + info;
+			if (ip.getMin()<min) min = ip.getMin();
+			if (ip.getMax()>max) max = ip.getMax();
+			String label = titlesAsLabels?images[i].getTitle():null;
+			if (label!=null) {
+				String info = (String)images[i].getProperty("Info");
+				if (info!=null) label += "\n" + info;
 			}
-			if (fi != null) {
+			if (fi!=null) {
 				FileInfo fi2 = images[i].getOriginalFileInfo();
-				if (fi2 != null && !fi.directory.equals(fi2.directory))
+				if (fi2!=null && !fi.directory.equals(fi2.directory))
 					fi = null;
 			}
 			switch (stackType) {
-			case 16:
-				ip = ip.convertToShort(false);
-				break;
-			case 32:
-				ip = ip.convertToFloat();
-				break;
-			case rgb:
-				ip = ip.convertToRGB();
-				break;
-			default:
-				break;
+				case 16: ip = ip.convertToShort(false); break;
+				case 32: ip = ip.convertToFloat(); break;
+				case rgb: ip = ip.convertToRGB(); break;
+				default: break;
 			}
 			if (invertedLut && !allInvertedLuts) {
 				if (keep)
 					ip = ip.duplicate();
 				ip.invert();
 			}
-			if (ip.getWidth() != width || ip.getHeight() != height) {
+			if (ip.getWidth()!=width||ip.getHeight()!=height) {
 				switch (method) {
-				case COPY_TOP_LEFT:
-				case COPY_CENTER:
-					ImageProcessor ip2 = null;
-					switch (stackType) {
-					case 8:
-						ip2 = new ByteProcessor(width, height);
+					case COPY_TOP_LEFT: case COPY_CENTER:
+						ImageProcessor ip2 = null;
+						switch (stackType) {
+							case 8: ip2 = new ByteProcessor(width, height); break;
+							case 16: ip2 = new ShortProcessor(width, height); break;
+							case 32: ip2 = new FloatProcessor(width, height); break;
+							case rgb: ip2 = new ColorProcessor(width, height); break;
+						}
+						int xoff=0, yoff=0;
+						if (method==COPY_CENTER) {
+							xoff = (width-ip.getWidth())/2;
+							yoff = (height-ip.getHeight())/2;
+						}
+						ip2.insert(ip, xoff, yoff);
+						ip = ip2;
 						break;
-					case 16:
-						ip2 = new ShortProcessor(width, height);
+					case SCALE_SMALL: case SCALE_LARGE:
+						ip.setInterpolationMethod((bicubic?ImageProcessor.BICUBIC:ImageProcessor.BILINEAR));
+						ip.resetRoi();
+						ip = ip.resize(width, height);
 						break;
-					case 32:
-						ip2 = new FloatProcessor(width, height);
-						break;
-					case rgb:
-						ip2 = new ColorProcessor(width, height);
-						break;
-					}
-					int xoff = 0, yoff = 0;
-					if (method == COPY_CENTER) {
-						xoff = (width - ip.getWidth()) / 2;
-						yoff = (height - ip.getHeight()) / 2;
-					}
-					ip2.insert(ip, xoff, yoff);
-					ip = ip2;
-					break;
-				case SCALE_SMALL:
-				case SCALE_LARGE:
-					ip.setInterpolationMethod((bicubic ? ImageProcessor.BICUBIC : ImageProcessor.BILINEAR));
-					ip.resetRoi();
-					ip = ip.resize(width, height);
-					break;
 				}
 			} else {
 				if (keep)
 					ip = ip.duplicate();
 				Overlay overlay2 = images[i].getOverlay();
-				if (overlay2 != null) {
-					for (int j = 0; j < overlay2.size(); j++) {
+				if (overlay2!=null) {
+					for (int j=0; j<overlay2.size(); j++) {
 						Roi roi = overlay2.get(j);
-						roi.setPosition(i + 1);
-						overlay.add((Roi) roi.clone());
+						roi.setPosition(i+1);
+						overlay.add((Roi)roi.clone());
 					}
 				}
 			}
 			stack.addSlice(label, ip);
-			if (i == 0 && invertedLut && !allInvertedLuts)
+			if (i==0 && invertedLut && !allInvertedLuts)
 				stack.setColorModel(null);
 			if (!keep) {
-				/* Changed for Bio7! */
-
 				images[i].changes = false;
-				try {
-					java.awt.EventQueue.invokeAndWait(new Runnable() {
-						public void run() {
-							images[counttab].close();
-						}
-					});
-				} catch (InvocationTargetException | InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				images[i].close();
 			}
 		}
 		if (stack.size()==0)
 			return null;
 		ImagePlus imp = new ImagePlus(name, stack);
-		if (stackType == 16 || stackType == 32)
+		if (stackType==16 || stackType==32)
 			imp.getProcessor().setMinAndMax(min, max);
-		if (cal2 != null)
+		if (cal2!=null)
 			imp.setCalibration(cal2);
-		if (fi != null) {
+		if (fi!=null) {
 			fi.fileName = "";
 			fi.nImages = imp.getStackSize();
 			imp.setFileInfo(fi);
 		}
-		if (overlay.size() > 0)
+		if (overlay.size()>0)
 			imp.setOverlay(overlay);
 		return imp;
 	}
-
+	
 	private int findMinMaxSize(ImagePlus[] images, int count) {
 		int index = 0;
 		stackType = 8;
@@ -295,30 +244,25 @@ public class ImagesToStack implements PlugIn {
 		minSize = Integer.MAX_VALUE;
 		allInvertedLuts = true;
 		maxSize = 0;
-		for (int i = 0; i < count; i++) {
-			if (exclude(images[i].getTitle()))
-				continue;
-			if (images[i].getType() == ImagePlus.COLOR_256)
+		for (int i=0; i<count; i++) {
+			if (exclude(images[i].getTitle())) continue;
+			if (images[i].getType()==ImagePlus.COLOR_256)
 				stackType = rgb;
 			if (!images[i].getProcessor().isInvertedLut())
 				allInvertedLuts = false;
 			int type = images[i].getBitDepth();
-			if (type == 24)
-				type = rgb;
-			if (type > stackType)
-				stackType = type;
-			int w = images[i].getWidth(), h = images[i].getHeight();
-			if (w > width)
-				width = w;
-			if (h > height)
-				height = h;
-			int size = w * h;
-			if (size < minSize) {
+			if (type==24) type = rgb;
+			if (type>stackType) stackType = type;
+			int w=images[i].getWidth(), h=images[i].getHeight();
+			if (w>width) width = w;
+			if (h>height) height = h;
+			int size = w*h;
+			if (size<minSize) {
 				minSize = size;
 				minWidth = w;
 				minHeight = h;
 			}
-			if (size > maxSize) {
+			if (size>maxSize) {
 				maxSize = size;
 				maxWidth = w;
 				maxHeight = h;
@@ -332,7 +276,8 @@ public class ImagesToStack implements PlugIn {
 	}
 
 	final boolean exclude(String title) {
-		return filter != null && title != null && title.indexOf(filter) == -1;
+		return filter!=null && title!=null && title.indexOf(filter)==-1;
 	}
-
+	
 }
+
