@@ -31,7 +31,7 @@ public class ImagesToStack implements PlugIn {
 	private int stackType;
 	private ImagePlus[] images;
 	private String name = "Stack";
-	
+	 
 	/** Converts the images in 'images' to a stack, using the 
 		default settings ("copy center" and "titles as labels"). */
 	public static ImagePlus run(ImagePlus[] images) {
