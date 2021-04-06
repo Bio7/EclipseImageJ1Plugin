@@ -47,7 +47,9 @@ public class IJMacroFunctions {
 			"Color.background####Returns the background color."+linSeparator +
 			"Color.foreground####Returns the foreground color."+linSeparator +
 			"Color.setForeground(r,g,b)####Sets the foreground color from the given r,g,b arguments."+linSeparator + 
+			"Color.setBackgroundValue()####Sets the background value."+linSeparator +
 			"Color.setBackground(r,b,g)####Sets the background color from the given r,g,b arguments."+linSeparator +  
+			"Color.setForegroundValue()####Sets the foreground value."+linSeparator +
 			"Color.setForeground(string)####Sets the foreground color from the given string."+linSeparator +
 			"Color.setBackground(string)####Sets the background color from the given string."+linSeparator +
 			"Color.setLut(reds, greens, blues)####Sets the LUT color from the given reds, greens, blues arguments."+linSeparator +
@@ -238,6 +240,7 @@ public class IJMacroFunctions {
 			"getWidth()####Returns the width in pixels of the current image."+linSeparator + 
 			"getZoom()####Returns the magnification of the active image,a number in the range 0.03125 to 32.0 (3.1% to 3200%)."+linSeparator +
 			"GenericDialog.addFileField()####Adds a file field to the Generic Dialog."+linSeparator + 
+			"IJ.checksum(\"md5 file\",path)####Returns the MD5 (or SHA-256 - \"SHA-256 file\") checksum from a string or file."+linSeparator + 
 			"IJ.deleteRows(index1,index2)####Deletes rows index1 through index2 in the results table."+linSeparator + 
 			"IJ.getToolName()####Returns the name of the currently selected tool. See also: setTool."+linSeparator + 
 			"IJ.freeMemory()####Returns the memory status string (e.g.,\"2971K of 658MB (<1%)\") that is displayed when the users clicks in the ImageJ status bar."+linSeparator + 

@@ -140,6 +140,8 @@ public class Toolbar extends JPanel implements MouseListener, MouseMotionListene
 	private static Color foregroundColor = Prefs.getColor(Prefs.FCOLOR, Color.white);
 
 	private static Color backgroundColor = Prefs.getColor(Prefs.BCOLOR, Color.black);
+	private static double foregroundValue = Double.NaN;
+	private static double backgroundValue = Double.NaN;
 	private static int ovalType = OVAL_ROI;
 	private static int rectType = RECT_ROI;
 	private static boolean multiPointMode = Prefs.multiPointMode;
@@ -1181,6 +1183,7 @@ public class Toolbar extends JPanel implements MouseListener, MouseMotionListene
 		if (c == null)
 			return;
 		foregroundColor = c;
+		foregroundValue = Double.NaN;
 		IJ.notifyEventListeners(IJEventListener.FOREGROUND_COLOR_CHANGED);
 		if (instance == null)
 			return;
@@ -1201,9 +1204,36 @@ public class Toolbar extends JPanel implements MouseListener, MouseMotionListene
 	public static void setBackgroundColor(Color c) {
 		if (c != null) {
 			backgroundColor = c;
+			backgroundValue = Double.NaN;
 			repaintTool(DROPPER);
 			IJ.notifyEventListeners(IJEventListener.BACKGROUND_COLOR_CHANGED);
 		}
+	}
+	
+	public static double getForegroundValue() {
+		return foregroundValue;
+	}
+
+	public static void setForegroundValue(double value) {
+		if (value>=0) {
+			int v = (int)value;
+			if (v>255) v=255;
+			setForegroundColor(new Color(v,v,v));
+		}
+		foregroundValue = value;
+	}
+
+	public static double getBackgroundValue() {
+		return backgroundValue;
+	}
+
+	public static void setBackgroundValue(double value) {
+		if (value>=0) {
+			int v = (int)value;
+			if (v>255) v=255;
+			setBackgroundColor(new Color(v,v,v));
+		}
+		backgroundValue = value;
 	}
 
 	private static void setRoiColor(Color c) {

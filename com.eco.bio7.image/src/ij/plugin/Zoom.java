@@ -27,11 +27,46 @@ public class Zoom implements PlugIn {
 		Zoom zoom = new Zoom();
 		zoom.setZoom(imp, magnification, x, y);
 	}
+	
+	public static void in(ImagePlus imp) {
+		ImageCanvas ic = imp.getCanvas();
+		if (ic==null)
+			return;
+		waitUntilActivated(imp);
+		int x = ic.screenX(imp.getWidth()/2);
+		int y = ic.screenY(imp.getHeight()/2);
+		ic.zoomIn(x, y);
+		if (ic.getMagnification()<=1.0)
+			imp.repaintWindow();
+	}
+
+	public static void out(ImagePlus imp) {
+		ImageCanvas ic = imp.getCanvas();
+		if (ic==null)
+			return;
+		waitUntilActivated(imp);
+		int x = ic.screenX(imp.getWidth()/2);
+		int y = ic.screenY(imp.getHeight()/2);
+		ic.zoomOut(x, y);
+		if (ic.getMagnification()<=1.0)
+			imp.repaintWindow();
+	}
+
+	private static void waitUntilActivated(ImagePlus imp) {
+		if (imp.getCanvas()!=null) {
+			long t0 = System.currentTimeMillis();
+			while (!imp.activated() && (System.currentTimeMillis()-t0)<=1000)
+				IJ.wait(10);
+			IJ.wait(20);
+		}
+    }
 
 	public void run(String arg) {
 		ImagePlus imp = WindowManager.getCurrentImage();
-		if (imp==null)
-			{IJ.noImage(); return;}
+		if (imp==null) {
+			IJ.noImage();
+			return;
+		}
 		ImageCanvas ic = imp.getCanvas();
 		if (ic==null) return;
 		if (ic instanceof PlotCanvas && !((PlotCanvas)ic).isFrozen()) {
@@ -47,11 +82,17 @@ public class Zoom implements PlugIn {
 		int x = ic.screenX(loc.x);
 		int y = ic.screenY(loc.y);
     	if (arg.equals("in")) {
- 			ic.zoomIn(x, y);
-			if (ic.getMagnification()<=1.0) imp.repaintWindow();
+    		waitUntilActivated(imp);
+			ic.zoomIn(x, y);
+			if (ic.getMagnification()<=1.0)
+				imp.repaintWindow();
+			Recorder.recordCall("Zoom.in(imp);");
     	} else if (arg.equals("out")) {
+    		waitUntilActivated(imp);
 			ic.zoomOut(x, y);
-			if (ic.getMagnification()<1.0) imp.repaintWindow();
+			if (ic.getMagnification()<1.0)
+				imp.repaintWindow();
+			Recorder.recordCall("Zoom.out(imp);");
     	} else if (arg.equals("orig"))
 			ic.unzoom();
     	else if (arg.equals("100%"))
@@ -75,6 +116,7 @@ public class Zoom implements PlugIn {
 	}
 	/* Changed for Bio7! */
 	void zoomToSelection(ImagePlus imp, ImageCanvas ic) {
+		waitUntilActivated(imp);
 		Roi roi = imp.getRoi();
 		ic.unzoom();
 		if (roi==null) return;
@@ -103,6 +145,7 @@ public class Zoom implements PlugIn {
 	/** Based on Albert Cardona's ZoomExact plugin:
 		http://albert.rierol.net/software.html */
 	void setZoom(ImagePlus imp, double mag, int x, int y) {
+		waitUntilActivated(imp);
 		ImageCanvas ic = imp.getCanvas();
 		if (ic==null)
 			return;
@@ -204,6 +247,7 @@ public class Zoom implements PlugIn {
 	}
 	
 	private void scaleToFit(ImagePlus imp) {
+		waitUntilActivated(imp);
 		ImageCanvas ic = imp.getCanvas();
 		if (ic==null)
 			return;
