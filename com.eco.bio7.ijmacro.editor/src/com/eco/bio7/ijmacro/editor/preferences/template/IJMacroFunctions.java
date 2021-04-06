@@ -47,9 +47,9 @@ public class IJMacroFunctions {
 			"Color.background####Returns the background color."+linSeparator +
 			"Color.foreground####Returns the foreground color."+linSeparator +
 			"Color.setForeground(r,g,b)####Sets the foreground color from the given r,g,b arguments."+linSeparator + 
-			"Color.setBackgroundValue()####Sets the background value."+linSeparator +
+			"Color.setBackgroundValue(value)####Sets the background from the given numeric value."+linSeparator +
 			"Color.setBackground(r,b,g)####Sets the background color from the given r,g,b arguments."+linSeparator +  
-			"Color.setForegroundValue()####Sets the foreground value."+linSeparator +
+			"Color.setForegroundValue(value)####Sets the foreground from the given numeric value."+linSeparator +
 			"Color.setForeground(string)####Sets the foreground color from the given string."+linSeparator +
 			"Color.setBackground(string)####Sets the background color from the given string."+linSeparator +
 			"Color.setLut(reds, greens, blues)####Sets the LUT color from the given reds, greens, blues arguments."+linSeparator +

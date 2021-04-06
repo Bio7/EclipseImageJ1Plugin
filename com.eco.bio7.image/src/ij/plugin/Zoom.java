@@ -116,7 +116,7 @@ public class Zoom implements PlugIn {
 	}
 	/* Changed for Bio7! */
 	void zoomToSelection(ImagePlus imp, ImageCanvas ic) {
-		waitUntilActivated(imp);
+		//waitUntilActivated(imp);
 		Roi roi = imp.getRoi();
 		ic.unzoom();
 		if (roi==null) return;
@@ -136,7 +136,7 @@ public class Zoom implements PlugIn {
 			
 			//w = CanvasView.getCurrent().getBounds();
 		}
-		mag=ic.getLowerZoomLevel(mag);
+		//mag=ic.getLowerZoomLevel(mag);
 		imp.resetRoi();
 		setZoom(imp,mag,x,y);
 		imp.restoreRoi();
@@ -203,8 +203,8 @@ public class Zoom implements PlugIn {
 		boolean smallImage = mag>1.0 && width*mag<bounds.width && height*mag<bounds.height;
 		if ((areaSelection||smallImage||srcWidth!=srcRect.width||srcHeight!=srcRect.height) && !legacyMacro) {
 			if (areaSelection && roi.getType()==Roi.RECTANGLE)
-				imp.deleteRoi();
-			Insets insets = win.getInsets();
+				//imp.deleteRoi();
+			//Insets insets = win.getInsets();
 			//int canvasWidth = (int)(srcWidth*mag+insets.right+insets.left+ImageWindow.HGAP*2);
 			//int canvasHeight = (int)(srcHeight*mag+insets.top+insets.bottom+ImageWindow.VGAP*2+win.getSliderHeight());
 			ic.setSourceRect(new Rectangle(x-srcWidth/2,y-srcHeight/2,srcWidth,srcHeight));
