@@ -1,6 +1,16 @@
 # EclipseImageJ1Plugin
 A repository for an Eclipse ImageJ1 plugin contributed from the Bio7 project.
 
+### New in 1.53j (1.53.j7):
+
+1. Updated ImageJ plugin to version 1.53j7
+2. Improved the "Zoom to Selection" and Zoom "To" action for the embedded canvas in a tab
+3. Improved the image close method (for the "Arrange Channels" action and some other plugins)
+4. Improved the "Stack to Images" action now running in a job to avoid blocking UI threads
+5. Simplified the "Images to Stack" action to run correctly in macros
+6. Added a timelag for plot windows to avoid blocking threads on MacOSX
+7. Added the latest  macro templates
+ 
 ### New in 1.53i (1.53.i25):
 
 1. Updated ImageJ plugin to version 1.53i25
