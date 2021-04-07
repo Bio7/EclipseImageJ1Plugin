@@ -733,6 +733,17 @@ public class ImageWindow extends JFrame
 		});
 		super.repaint();
 	}
+	
+	public void show() {
+		/*Changed for Bio7!
+		 * Empty function.
+		 * The overwrite implementation avoids the opening
+		 * of a JFrame ImageWindow and a reference to the image from the
+		 * Functions class method: displayBatchModeImage in a macro when calling
+		 * setBatchMode(false)
+		 * */
+		//System.out.println("Show");
+	}
 
 	public void updateImage(ImagePlus imp) {
 		if (imp != this.imp)
