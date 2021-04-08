@@ -21,6 +21,9 @@ import java.util.Vector;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.swt.events.ControlAdapter;
@@ -260,7 +263,27 @@ public class CustomDetachedImageJView extends ViewPart {//implements ISaveablePa
 				page.getActivePart();
 
 				if (ref.equals(ref2)) {
-					SwingUtilities.invokeLater(new Runnable() {
+					Job job = new Job("Close Detached Images") {
+						@Override
+						protected IStatus run(IProgressMonitor monitor) {
+							monitor.beginTask("Close Detached Images ...", IProgressMonitor.UNKNOWN);
+							if (WindowManager.getImageCount() > 0) {
+								if (win != null) {
+									if (win.getImagePlus() != null) {
+										win.bio7TabClose();
+									}
+								}
+							}
+							monitor.done();
+							return Status.OK_STATUS;
+						}
+
+					};
+					
+					// job.setSystem(true);
+					job.schedule();
+					
+					/*SwingUtilities.invokeLater(new Runnable() {
 						// !!
 						public void run() {
 							if (WindowManager.getImageCount() > 0) {
@@ -271,7 +294,7 @@ public class CustomDetachedImageJView extends ViewPart {//implements ISaveablePa
 								}
 							}
 						}
-					});
+					});*/
 					/*Remove the part listener?*/
 					page.removePartListener(palist);
 
