@@ -599,9 +599,37 @@ public class ImageWindow extends JFrame
 				msg += "\nWARNING: This image is locked.\nProbably, processing is unfinished (slow or still previewing).";*/
 
 		/* Changed for Bio7! */
+		Display dis = CanvasView.getParent2().getDisplay();
+		dis.syncExec(new Runnable() {
+
+			public void run() {
+				/*Check for detached views!*/
+				IViewReference[] viewRefs = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+						.getViewReferences();
+				for (int i = 0; i < viewRefs.length; i++) {
+					String id = viewRefs[i].getId();
+					if (id.equals("com.eco.bio7.image.detachedImage")) {
+						//IViewPart view = viewRefs[i].getView(false);
+						String secId = viewRefs[i].getSecondaryId();
+						//CustomDetachedImageJView cdview = (CustomDetachedImageJView) view;
+						/* Get the image from the detached secondary view id (same id)! */
+						ImagePlus plu = WindowManager.getImage(Integer.valueOf(secId));
+						if (plu != null) {
+							ImagePlus ip = WindowManager.getImage(Integer.valueOf(secId));
+							//ImageWindow currentWindow = WindowManager.getCurrentWindow();
+							ImageWindow window = ip.getWindow();
+							if (ImageWindow.this.equals(window)) {
+								viewRefs[i].getPage().hideView(viewRefs[i]);
+							}
+						}
+
+					}
+				}
+			}
+		});
 
 		final CTabItem[] items = CanvasView.getCanvas_view().tabFolder.getItems();
-		Display dis = CanvasView.getParent2().getDisplay();
+
 		dis.syncExec(new Runnable() {
 
 			public void run() {
@@ -631,9 +659,12 @@ public class ImageWindow extends JFrame
 
 			}
 		});
+
 		/*Get the specific embedded window instance and close it!*/
-		ImageWindow win = (ImageWindow) ve.get(1);
-		win.bio7TabClose();
+		if (ve != null) {
+			ImageWindow win = (ImageWindow) ve.get(1);
+			win.bio7TabClose();
+		}
 
 		return true;
 
@@ -733,7 +764,7 @@ public class ImageWindow extends JFrame
 		});
 		super.repaint();
 	}
-	
+
 	public void show() {
 		/*Changed for Bio7!
 		 * Empty function.
