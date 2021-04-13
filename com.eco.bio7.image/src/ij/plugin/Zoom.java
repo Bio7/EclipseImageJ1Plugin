@@ -1,4 +1,5 @@
 package ij.plugin;
+
 import ij.*;
 import ij.gui.*;
 import ij.process.*;
@@ -14,7 +15,7 @@ public class Zoom implements PlugIn {
 	public static void toSelection(ImagePlus imp) {
 		Zoom zoom = new Zoom();
 		ImageCanvas ic = imp.getCanvas();
-		if (ic!=null)
+		if (ic != null)
 			zoom.zoomToSelection(imp, ic);
 	}
 
@@ -27,141 +28,169 @@ public class Zoom implements PlugIn {
 		Zoom zoom = new Zoom();
 		zoom.setZoom(imp, magnification, x, y);
 	}
-	
+
 	public static void in(ImagePlus imp) {
 		ImageCanvas ic = imp.getCanvas();
-		if (ic==null)
+		if (ic == null)
 			return;
 		waitUntilActivated(imp);
-		int x = ic.screenX(imp.getWidth()/2);
-		int y = ic.screenY(imp.getHeight()/2);
+		int x = ic.screenX(imp.getWidth() / 2);
+		int y = ic.screenY(imp.getHeight() / 2);
 		ic.zoomIn(x, y);
-		if (ic.getMagnification()<=1.0)
+		if (ic.getMagnification() <= 1.0)
 			imp.repaintWindow();
 	}
 
 	public static void out(ImagePlus imp) {
 		ImageCanvas ic = imp.getCanvas();
-		if (ic==null)
+		if (ic == null)
 			return;
 		waitUntilActivated(imp);
-		int x = ic.screenX(imp.getWidth()/2);
-		int y = ic.screenY(imp.getHeight()/2);
+		int x = ic.screenX(imp.getWidth() / 2);
+		int y = ic.screenY(imp.getHeight() / 2);
 		ic.zoomOut(x, y);
-		if (ic.getMagnification()<=1.0)
+		if (ic.getMagnification() <= 1.0)
 			imp.repaintWindow();
 	}
 
-	private static void waitUntilActivated(ImagePlus imp) {
-		if (imp.getCanvas()!=null) {
-			long t0 = System.currentTimeMillis();
-			while (!imp.activated() && (System.currentTimeMillis()-t0)<=1000)
-				IJ.wait(10);
-			IJ.wait(20);
+	public static void unzoom(ImagePlus imp) {
+		ImageCanvas ic = imp.getCanvas();
+		if (ic != null) {
+			waitUntilActivated(imp);
+			ic.unzoom();
 		}
-    }
+	}
+
+	public static void maximize(ImagePlus imp) {
+		ImageWindow win = imp.getWindow();
+		if (win != null) {
+			waitUntilActivated(imp);
+			win.maximize();
+			IJ.wait(100);
+		}
+	}
+
+	private static void waitUntilActivated(ImagePlus imp) {
+		int count = 0;
+		boolean isCanvas = imp.getCanvas() != null;
+		if (isCanvas) {
+			long t0 = System.currentTimeMillis();
+			while (!imp.windowActivated() && (System.currentTimeMillis() - t0) <= 1000) {
+				IJ.wait(10);
+				count++;
+			}
+		}
+		if (IJ.debugMode)
+			IJ.log("Zoom: " + count + " " + imp.windowActivated() + " " + isCanvas + " " + imp);
+
+	}
 
 	public void run(String arg) {
 		ImagePlus imp = WindowManager.getCurrentImage();
-		if (imp==null) {
+		if (imp == null) {
 			IJ.noImage();
 			return;
 		}
 		ImageCanvas ic = imp.getCanvas();
-		if (ic==null) return;
-		if (ic instanceof PlotCanvas && !((PlotCanvas)ic).isFrozen()) {
-			((PlotCanvas)ic).zoom(arg);
+		if (ic == null)
+			return;
+		if (ic instanceof PlotCanvas && !((PlotCanvas) ic).isFrozen()) {
+			((PlotCanvas) ic).zoom(arg);
 			return;
 		}
 		Point loc = ic.getCursorLoc();
 		if (!ic.cursorOverImage()) {
 			Rectangle srcRect = ic.getSrcRect();
-			loc.x = srcRect.x + srcRect.width/2;
-			loc.y = srcRect.y + srcRect.height/2;
+			loc.x = srcRect.x + srcRect.width / 2;
+			loc.y = srcRect.y + srcRect.height / 2;
 		}
 		int x = ic.screenX(loc.x);
 		int y = ic.screenY(loc.y);
-    	if (arg.equals("in")) {
-    		waitUntilActivated(imp);
+		if (arg.equals("in")) {
+			waitUntilActivated(imp);
 			ic.zoomIn(x, y);
-			if (ic.getMagnification()<=1.0)
+			if (ic.getMagnification() <= 1.0)
 				imp.repaintWindow();
 			Recorder.recordCall("Zoom.in(imp);");
-    	} else if (arg.equals("out")) {
-    		waitUntilActivated(imp);
+		} else if (arg.equals("out")) {
+			waitUntilActivated(imp);
 			ic.zoomOut(x, y);
-			if (ic.getMagnification()<1.0)
+			if (ic.getMagnification() < 1.0)
 				imp.repaintWindow();
 			Recorder.recordCall("Zoom.out(imp);");
-    	} else if (arg.equals("orig"))
-			ic.unzoom();
-    	else if (arg.equals("100%"))
-    		ic.zoom100Percent();
-		else if (arg.equals("to")) {
+		} else if (arg.equals("orig")) {
+			unzoom(imp);
+			Recorder.recordCall("Zoom.unzoom(imp);");
+    	} else if (arg.equals("100%")) {
+    	    waitUntilActivated(imp);
+			ic.zoom100Percent();
+    	} else if (arg.equals("to")) {
 			zoomToSelection(imp, ic);
 			Recorder.recordCall("Zoom.toSelection(imp);");
-		} else if (arg.equals("set"))
+    	} else if (arg.equals("set")) {
 			setZoom(imp, -1, -1, -1);
-		else if (arg.equals("max")) {
-			ImageWindow win = imp.getWindow();
-			if (win!=null) {
-				win.maximize();
-				IJ.wait(100);
-			}
+    	} else if (arg.equals("max")) {
+			maximize(imp);
+			Recorder.recordCall("Zoom.maximize(imp);");
 		} else if (arg.equals("scale"))
 			scaleToFit(imp);
-    	
-    	/* Changed for Bio7! */
+
+		/* Changed for Bio7! */
 		CanvasView.getCurrent().doLayout();
 	}
+
 	/* Changed for Bio7! */
 	void zoomToSelection(ImagePlus imp, ImageCanvas ic) {
 		//waitUntilActivated(imp);
 		Roi roi = imp.getRoi();
 		ic.unzoom();
-		if (roi==null) return;
+		if (roi == null)
+			return;
 		Rectangle w = CanvasView.getCurrent().getBounds();
 		Rectangle r = roi.getBounds();
 		double mag = ic.getMagnification();
 		//int marginw = (int)((w.width - mag * imp.getWidth()));
 		//int marginh = (int)((w.height - mag * imp.getHeight()));
-		int x = r.x+r.width/2;
-		int y = r.y+r.height/2;
+		int x = r.x + r.width / 2;
+		int y = r.y + r.height / 2;
 		mag = ic.getHigherZoomLevel(mag);
-		while(r.width*mag<w.width  && r.height*mag<w.height) {
+		while (r.width * mag < w.width && r.height * mag < w.height) {
 			//ic.zoomIn(ic.screenX(x), ic.screenY(y));
 			double cmag = ic.getMagnification();
-			if (mag==32.0) break;
+			if (mag == 32.0)
+				break;
 			mag = ic.getHigherZoomLevel(mag);
-			
+
 			//w = CanvasView.getCurrent().getBounds();
 		}
 		//mag=ic.getLowerZoomLevel(mag);
 		imp.resetRoi();
-		setZoom(imp,mag,x,y);
+		setZoom(imp, mag, x, y);
 		imp.restoreRoi();
 	}
-	
-	/** Based on Albert Cardona's ZoomExact plugin:
-		http://albert.rierol.net/software.html */
+
+	/**
+	 * Based on Albert Cardona's ZoomExact plugin:
+	 * http://albert.rierol.net/software.html
+	 */
 	void setZoom(ImagePlus imp, double mag, int x, int y) {
 		waitUntilActivated(imp);
 		ImageCanvas ic = imp.getCanvas();
-		if (ic==null)
+		if (ic == null)
 			return;
 		int width = imp.getWidth();
 		int height = imp.getHeight();
-		if (x==-1) {
-			x = width/2;
-			y = height/2;
+		if (x == -1) {
+			x = width / 2;
+			y = height / 2;
 		}
 		Rectangle srcRect = ic.getSrcRect();
 		Roi roi = imp.getRoi();
 		boolean areaSelection = false;
-		if (roi!=null) {
+		if (roi != null) {
 			Rectangle bounds = roi.getBounds();
-			x = bounds.x + bounds.width/2;
-			y = bounds.y + bounds.height/2;
+			x = bounds.x + bounds.width / 2;
+			y = bounds.y + bounds.height / 2;
 			areaSelection = roi.isArea();
 			if (areaSelection)
 				srcRect = bounds;
@@ -169,7 +198,7 @@ public class Zoom implements PlugIn {
 		ImageWindow win = imp.getWindow();
 		int srcWidth = srcRect.width;
 		int srcHeight = srcRect.height;
-		if (mag==-1) {
+		if (mag == -1) {
 			GenericDialog gd = new GenericDialog("Set Zoom");
 			gd.addNumericField("Zoom:", ic.getMagnification() * 200, 0, 4, "%");
 			gd.addNumericField("X center:", x, 0, 5, "");
@@ -179,77 +208,86 @@ public class Zoom implements PlugIn {
 				gd.addNumericField("Height:", srcRect.height, 0, 5, "");
 			}
 			gd.showDialog();
-			if (gd.wasCanceled()) return;
-			mag = gd.getNextNumber()/100.0;
-			int x2 = (int)gd.getNextNumber();
-			int y2 = (int)gd.getNextNumber();
-			boolean defaultLocation = x==x2 && y==y2;
+			if (gd.wasCanceled())
+				return;
+			mag = gd.getNextNumber() / 100.0;
+			int x2 = (int) gd.getNextNumber();
+			int y2 = (int) gd.getNextNumber();
+			boolean defaultLocation = x == x2 && y == y2;
 			x = x2;
 			y = y2;
 			if (areaSelection) {
-				srcWidth = (int)gd.getNextNumber();
-				srcHeight = (int)gd.getNextNumber();
+				srcWidth = (int) gd.getNextNumber();
+				srcHeight = (int) gd.getNextNumber();
 			}
 			if (defaultLocation)
-				Recorder.recordCall("Zoom.set(imp, "+mag+");");
+				Recorder.recordCall("Zoom.set(imp, " + mag + ");");
 			else
-				Recorder.recordCall("Zoom.set(imp, "+mag+", "+x+", "+y+");");
+				Recorder.recordCall("Zoom.set(imp, " + mag + ", " + x + ", " + y + ");");
 		}
-		if (x<0) x=0;
-		if (y<0) y=0;
-		String options = IJ.macroRunning()?Macro.getOptions():null;
-		boolean legacyMacro = areaSelection && options!=null && options.contains("x=") && !options.contains("width=");
+		if (x < 0)
+			x = 0;
+		if (y < 0)
+			y = 0;
+		String options = IJ.macroRunning() ? Macro.getOptions() : null;
+		boolean legacyMacro = areaSelection && options != null && options.contains("x=") && !options.contains("width=");
 		Rectangle bounds = GUI.getMaxWindowBounds(win);
-		boolean smallImage = mag>1.0 && width*mag<bounds.width && height*mag<bounds.height;
-		if ((areaSelection||smallImage||srcWidth!=srcRect.width||srcHeight!=srcRect.height) && !legacyMacro) {
-			if (areaSelection && roi.getType()==Roi.RECTANGLE)
+		boolean smallImage = mag > 1.0 && width * mag < bounds.width && height * mag < bounds.height;
+		if ((areaSelection || smallImage || srcWidth != srcRect.width || srcHeight != srcRect.height) && !legacyMacro) {
+			if (areaSelection && roi.getType() == Roi.RECTANGLE)
 				//imp.deleteRoi();
-			//Insets insets = win.getInsets();
-			//int canvasWidth = (int)(srcWidth*mag+insets.right+insets.left+ImageWindow.HGAP*2);
-			//int canvasHeight = (int)(srcHeight*mag+insets.top+insets.bottom+ImageWindow.VGAP*2+win.getSliderHeight());
-			ic.setSourceRect(new Rectangle(x-srcWidth/2,y-srcHeight/2,srcWidth,srcHeight));
+				//Insets insets = win.getInsets();
+				//int canvasWidth = (int)(srcWidth*mag+insets.right+insets.left+ImageWindow.HGAP*2);
+				//int canvasHeight = (int)(srcHeight*mag+insets.top+insets.bottom+ImageWindow.VGAP*2+win.getSliderHeight());
+				ic.setSourceRect(new Rectangle(x - srcWidth / 2, y - srcHeight / 2, srcWidth, srcHeight));
 			ic.setMagnification(mag);
+			ic.setSize(new Dimension((int)(srcWidth*mag), (int)(srcHeight*mag)));
 			//win.setSize(canvasWidth, canvasHeight);
 			return;
 		}
-		if (x>=width) x=width-1;
-		if (y>=height) y=height-1;
-		if (mag<=0.0) mag = 1.0;
+		if (x >= width)
+			x = width - 1;
+		if (y >= height)
+			y = height - 1;
+		if (mag <= 0.0)
+			mag = 1.0;
 		ic.setMagnification(mag);
-		double newWidth = width*mag;
-		double newHeight = height*mag;
+		double newWidth = width * mag;
+		double newHeight = height * mag;
 		Dimension size = ic.getSize();
-		if (newWidth>=size.width && newHeight>=size.height) {
-			srcWidth = (int)Math.round(size.width/mag);
-			srcHeight = (int)Math.round(size.height/mag);
-			if ((int)(srcWidth*mag)<size.width)
+		if (newWidth >= size.width && newHeight >= size.height) {
+			srcWidth = (int) Math.round(size.width / mag);
+			srcHeight = (int) Math.round(size.height / mag);
+			if ((int) (srcWidth * mag) < size.width)
 				srcWidth++;
-			if ((int)(srcHeight*mag)<size.height)
+			if ((int) (srcHeight * mag) < size.height)
 				srcHeight++;
-			x = x-srcWidth/2;
-			y = y-srcHeight/2;
-			if (x+srcWidth>width)
+			x = x - srcWidth / 2;
+			y = y - srcHeight / 2;
+			if (x + srcWidth > width)
 				x = width - srcWidth;
-			if (y+srcHeight>height)
+			if (y + srcHeight > height)
 				y = height - srcHeight;
-			if (x<0) x=0;
-			if (y<0) y=0;
+			if (x < 0)
+				x = 0;
+			if (y < 0)
+				y = 0;
 			ic.setSourceRect(new Rectangle(x, y, srcWidth, srcHeight));
 		} else {
 			srcWidth = width;
 			srcHeight = height;
-			ic.setSize((int)newWidth, (int)newHeight);
+			ic.setSize((int) newWidth, (int) newHeight);
 			ic.setSourceRect(new Rectangle(0, 0, srcWidth, srcHeight));
 			//win.pack();
 		}
 		ic.repaint();
 		IJ.wait(100);
 	}
-	
+
 	private void scaleToFit(ImagePlus imp) {
 		waitUntilActivated(imp);
 		ImageCanvas ic = imp.getCanvas();
-		if (ic==null)
+		if (ic == null)
 			return;
 		if (ic.getScaleToFit()) {
 			ic.setScaleToFit(false);
@@ -262,5 +300,5 @@ public class Zoom implements PlugIn {
 		}
 
 	}
-	
+
 }
