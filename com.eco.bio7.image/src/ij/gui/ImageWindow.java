@@ -75,6 +75,9 @@ public class ImageWindow extends JFrame
 	private Point initialLoc;
 	private int screenHeight, screenWidth;
 	public SwtAwtImageJ swtAwtMain;// Changed for Bio7!
+	public boolean running2;
+	protected boolean imageInTab;
+	protected ImageWindow win2;
 	/**
 	 * This variable is set false if the user presses the escape key or closes the
 	 * window.
@@ -85,8 +88,7 @@ public class ImageWindow extends JFrame
 	 * This variable is set false if the user clicks in this window, presses the
 	 * escape key, or closes the window.
 	 */
-	public boolean running2;
-	protected Vector ve;
+	
 
 	// private ImageWindow windowInstance;// Changed for Bio7!
 	public SwtAwtImageJ getSwtAwtMain() {
@@ -607,12 +609,13 @@ public class ImageWindow extends JFrame
 			public void run() {
 				for (int i = 0; i < items.length; i++) {
 
-					ve = (Vector) items[i].getData();
+					Vector ve = (Vector) items[i].getData();
 
-					final ImageWindow win2 = (ImageWindow) ve.get(1);
+					win2 = (ImageWindow) ve.get(1);
 
 					/* Search for the tab which embeds this instance! */
 					if (ImageWindow.this.equals(win2)) {
+						imageInTab = true;
 						final CTabItem[] items = CanvasView.getCanvas_view().tabFolder.getItems();
 						Composite com = (Composite) items[i].getControl();
 						Control compo[] = com.getChildren();
@@ -625,6 +628,8 @@ public class ImageWindow extends JFrame
 						items[i].dispose();
 						return;
 
+					} else {
+						imageInTab = false;
 					}
 
 				}
@@ -632,8 +637,10 @@ public class ImageWindow extends JFrame
 			}
 		});
 		/*Get the specific embedded window instance and close it!*/
-		ImageWindow win = (ImageWindow) ve.get(1);
-		win.bio7TabClose();
+		if (imageInTab) {
+			//ImageWindow win = (ImageWindow) ve.get(1);
+			win2.bio7TabClose();
+		}
 
 		return true;
 
@@ -733,7 +740,7 @@ public class ImageWindow extends JFrame
 		});
 		super.repaint();
 	}
-	
+
 	public void show() {
 		/*Changed for Bio7!
 		 * Empty function.
