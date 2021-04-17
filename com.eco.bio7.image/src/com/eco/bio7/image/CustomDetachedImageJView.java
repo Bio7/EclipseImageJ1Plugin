@@ -239,16 +239,17 @@ public class CustomDetachedImageJView extends ViewPart {//implements ISaveablePa
 			}
 			/*
 			 * Workaround a bug on Mac which causes empty views when a perspective has been
-			 * changed!
+			 * changed! Deactivated since it steals key focus of the detached view!
 			 */
 			if (Util.getOS().equals("Mac")) {
 				if (swt != null) {
-					Composite top = swt.getTop();
+					/*Composite top = swt.getTop();
 					if (top != null && top.isDisposed() == false) {
 						top.setVisible(false);
 						top.setVisible(true);
-					}
+					}*/
 				}
+				
 			}
 		}
 
