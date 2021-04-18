@@ -282,8 +282,7 @@ public class CustomDetachedImageJView extends ViewPart {//implements ISaveablePa
 					};
 					
 					// job.setSystem(true);
-					job.schedule();*/
-					
+					job.schedule();*/				
 					SwingUtilities.invokeLater(new Runnable() {
 						// !!
 						public void run() {
