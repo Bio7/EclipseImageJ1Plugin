@@ -626,7 +626,7 @@ public class ImageWindow extends JFrame
 						}
 						com.dispose();
 						items[i].dispose();
-						return;
+						break;
 
 					} else {
 						imageInTab = false;
@@ -636,10 +636,15 @@ public class ImageWindow extends JFrame
 
 			}
 		});
+		//System.out.println(this.getImagePlus().getTitle());
 		/*Get the specific embedded window instance and close it!*/
 		if (imageInTab) {
 			//ImageWindow win = (ImageWindow) ve.get(1);
 			win2.bio7TabClose();
+		}
+		else {
+			/*Check if we have images in the detached views!*/
+			IJTabs.closeDetachedWindowView(this);
 		}
 
 		return true;

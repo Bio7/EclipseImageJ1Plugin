@@ -514,6 +514,7 @@ public class IJTabs {
 
 								viewRefs[i].getPage().hideView(viewRefs[i]);
                                 result.set(true);
+                                break;
 							}
 							else {
 								result.set(false);

@@ -264,7 +264,7 @@ public class CustomDetachedImageJView extends ViewPart {//implements ISaveablePa
 				page.getActivePart();
 
 				if (ref.equals(ref2)) {
-					Job job = new Job("Close Detached Images") {
+					/*Job job = new Job("Close Detached Images") {
 						@Override
 						protected IStatus run(IProgressMonitor monitor) {
 							monitor.beginTask("Close Detached Images ...", IProgressMonitor.UNKNOWN);
@@ -278,13 +278,13 @@ public class CustomDetachedImageJView extends ViewPart {//implements ISaveablePa
 							monitor.done();
 							return Status.OK_STATUS;
 						}
-
+				
 					};
 					
 					// job.setSystem(true);
-					job.schedule();
+					job.schedule();*/
 					
-					/*SwingUtilities.invokeLater(new Runnable() {
+					SwingUtilities.invokeLater(new Runnable() {
 						// !!
 						public void run() {
 							if (WindowManager.getImageCount() > 0) {
@@ -295,7 +295,7 @@ public class CustomDetachedImageJView extends ViewPart {//implements ISaveablePa
 								}
 							}
 						}
-					});*/
+					});
 					/*Remove the part listener?*/
 					page.removePartListener(palist);
 
