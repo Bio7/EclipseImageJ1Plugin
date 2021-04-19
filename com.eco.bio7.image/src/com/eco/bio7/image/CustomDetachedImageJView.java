@@ -251,6 +251,8 @@ public class CustomDetachedImageJView extends ViewPart {//implements ISaveablePa
 				}
 				
 			}
+			/*To show the status message!*/
+            win.repaint();
 		}
 
 		public void partBroughtToTop(IWorkbenchPartReference ref) {

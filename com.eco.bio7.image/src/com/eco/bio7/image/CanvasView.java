@@ -39,9 +39,13 @@ import org.eclipse.core.runtime.jobs.IJobChangeEvent;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.core.runtime.jobs.JobChangeAdapter;
 import org.eclipse.core.runtime.preferences.InstanceScope;
+import org.eclipse.jface.action.IStatusLineManager;
 import org.eclipse.jface.action.IToolBarManager;
+import org.eclipse.jface.action.StatusLineManager;
+import org.eclipse.jface.action.SubContributionManager;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabFolder2Listener;
 import org.eclipse.swt.custom.CTabFolderEvent;
@@ -65,6 +69,7 @@ import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IPartListener;
@@ -855,6 +860,29 @@ public class CanvasView extends ViewPart {
 		IActionBars bars = getViewSite().getActionBars();
 		bars.getStatusLineManager().setMessage(message);
 
+	}
+	
+	public void setStatusLineColor(String message,org.eclipse.swt.graphics.Color col) {
+		IActionBars bars = getViewSite().getActionBars();
+		bars.getStatusLineManager().setMessage(message);
+		IStatusLineManager statusLineManager = bars.getStatusLineManager();
+		if (statusLineManager instanceof SubContributionManager) {
+	        SubContributionManager sub = (SubContributionManager) statusLineManager;
+	        StatusLineManager parent = (StatusLineManager) sub.getParent();
+	        Composite composite = (Composite) parent.getControl();
+	        Control[] controls =  composite.getChildren();
+
+	    	for(Control control : controls){
+	    		if(control instanceof CLabel){
+	    			CLabel cLabel = (CLabel)control;
+	    			   
+	    			//cLabel.setFont(null);
+	    			cLabel.setForeground(col);
+	    			break;
+
+	    		}
+	    	}
+	    } 
 	}
 
 	private void initializeToolBar() {

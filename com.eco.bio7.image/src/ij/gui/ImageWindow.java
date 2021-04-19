@@ -88,7 +88,6 @@ public class ImageWindow extends JFrame
 	 * This variable is set false if the user clicks in this window, presses the
 	 * escape key, or closes the window.
 	 */
-	
 
 	// private ImageWindow windowInstance;// Changed for Bio7!
 	public SwtAwtImageJ getSwtAwtMain() {
@@ -641,8 +640,7 @@ public class ImageWindow extends JFrame
 		if (imageInTab) {
 			//ImageWindow win = (ImageWindow) ve.get(1);
 			win2.bio7TabClose();
-		}
-		else {
+		} else {
 			/*Check if we have images in the detached views!*/
 			IJTabs.closeDetachedWindowView(this);
 		}
@@ -720,6 +718,7 @@ public class ImageWindow extends JFrame
 		display.asyncExec(new Runnable() {
 			public void run() {
 				if (imp != null) {
+
 					if (imp.isComposite()) {
 						CompositeImage ci = (CompositeImage) imp;
 						if (ci.getMode() == IJ.COMPOSITE) {
@@ -730,16 +729,25 @@ public class ImageWindow extends JFrame
 							int red = c.getRed();
 							int green = c.getGreen();
 							int blue = c.getBlue();
-							CanvasView.tabFolder.setSelectionForeground(
-									new org.eclipse.swt.graphics.Color(display, new RGB(red, green, blue)));
+							org.eclipse.swt.graphics.Color color = new org.eclipse.swt.graphics.Color(display,
+									new RGB(red, green, blue));
+							//CanvasView.tabFolder.setSelectionForeground(color);
+							/*On MacOSX we get NullPointerException when we call the status line first. 
+							 * So we place the call to the status line here!*/
+							CanvasView canvasView = CanvasView.getCanvas_view();
+							if (canvasView != null) {
+								canvasView.setStatusLineColor(createSubtitle(), color);
+							}
 
 						}
+
+					} else {
+						CanvasView canvasView = CanvasView.getCanvas_view();
+						if (canvasView != null) {
+							canvasView.setstatusline(createSubtitle());
+						}
 					}
-					/*On MacOSX we get NullPointerException when we call the status line first. 
-					 * So we place the call to the status line here!*/
-					if (CanvasView.getCanvas_view() != null) {
-						CanvasView.getCanvas_view().setstatusline(createSubtitle());
-					}
+
 				}
 			}
 		});
