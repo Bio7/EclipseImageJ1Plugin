@@ -249,10 +249,12 @@ public class CustomDetachedImageJView extends ViewPart {//implements ISaveablePa
 						top.setVisible(true);
 					}*/
 				}
-				
+
 			}
 			/*To show the status message!*/
-            win.repaint();
+			if (win != null) {
+				win.repaint();
+			}
 		}
 
 		public void partBroughtToTop(IWorkbenchPartReference ref) {
@@ -280,11 +282,11 @@ public class CustomDetachedImageJView extends ViewPart {//implements ISaveablePa
 							monitor.done();
 							return Status.OK_STATUS;
 						}
-				
+					
 					};
 					
 					// job.setSystem(true);
-					job.schedule();*/				
+					job.schedule();*/
 					SwingUtilities.invokeLater(new Runnable() {
 						// !!
 						public void run() {
@@ -321,7 +323,6 @@ public class CustomDetachedImageJView extends ViewPart {//implements ISaveablePa
 		}
 
 		public void partHidden(IWorkbenchPartReference ref) {
-			
 
 		}
 
