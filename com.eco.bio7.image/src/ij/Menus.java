@@ -905,6 +905,8 @@ public class Menus {
 	 * found.
 	 */
 	public static Menu getImageJMenu(String menuPath) {
+		if (menus==null)
+			IJ.init();
 		if (menus == null)
 			return null;
 		if (menus.get(menuPath) != null)
@@ -1451,6 +1453,8 @@ public class Menus {
 
 	/** Returns the hashtable that associates commands with plugins. */
 	public static Hashtable getCommands() {
+		if (pluginsTable==null)
+			IJ.init();
 		return pluginsTable;
 	}
 

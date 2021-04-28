@@ -98,7 +98,7 @@ public class ImageJ extends Frame implements ActionListener, MouseListener, KeyL
 	 * string.
 	 */
 	public static final String VERSION = "1.53j";
-	public static final String BUILD = "18";
+	public static final String BUILD = "26";
 	/*Changed for Bio7!*/
 	public static Color backgroundColor;
 	/** SansSerif, 12-point, plain font. */
@@ -971,7 +971,8 @@ public class ImageJ extends Frame implements ActionListener, MouseListener, KeyL
 		if (!noGUI && (ij == null || (ij != null && !ij.isShowing()))) {
 			ij = new ImageJ(null, mode);
 			ij.exitWhenQuitting = true;
-		}
+		} else if (batchMode && noGUI)
+			Prefs.load(null, null);
 		int macros = 0;
 		for (int i = 0; i < nArgs; i++) {
 			String arg = args[i];
