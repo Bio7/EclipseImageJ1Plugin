@@ -13,7 +13,8 @@ package com.eco.bio7.ijmacro.editor.antlr;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Vector;
-import org.antlr.v4.runtime.ANTLRInputStream;
+import org.antlr.v4.runtime.CharStreams;
+import org.antlr.v4.runtime.CodePointCharStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.RuleContext;
 import org.antlr.v4.runtime.Token;
@@ -90,7 +91,7 @@ public class Parse {
 
 		IDocumentProvider dp = editor.getDocumentProvider();
 		IDocument doc = dp.getDocument(editor.getEditorInput());
-		ANTLRInputStream input = new ANTLRInputStream(doc.get());
+		CodePointCharStream input = CharStreams.fromString(doc.get());
 		ImageJMacroLexer lexer = new ImageJMacroLexer(input);
 
 		CommonTokenStream tokens = new CommonTokenStream(lexer);
@@ -164,7 +165,7 @@ public class Parse {
 
 		IDocumentProvider dp = editor.getDocumentProvider();
 		IDocument doc = dp.getDocument(editor.getEditorInput());
-		ANTLRInputStream input = new ANTLRInputStream(doc.get());
+		CodePointCharStream input = CharStreams.fromString(doc.get());
 		ImageJMacroLexer lexer = new ImageJMacroLexer(input);
 
 		CommonTokenStream tokens = new CommonTokenStream(lexer);
