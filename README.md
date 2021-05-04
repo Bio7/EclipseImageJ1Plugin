@@ -1,6 +1,16 @@
 # EclipseImageJ1Plugin
 A repository for an Eclipse ImageJ1 plugin contributed from the Bio7 project.
 
+### New in 1.53j (1.53.j26):
+
+1. Updated the ImageJ plugin to version 1.53j26
+2. Detached images can now be closed in a macro by name or string argument
+3. Improved the image close method. Now also closes detached images if opened
+4. The color for composite images is now displayed in the status line
+5. The image and color information for detached images is shown in the status line
+6. Fixed the ImageWindow show method which opened a minimized JFrame, e.g., in batch mode
+7. Added the latest  macro templates
+
 ### New in 1.53j (1.53.j7):
 
 1. Updated ImageJ plugin to version 1.53j7
@@ -267,7 +277,7 @@ in the color dialog (if created before with the dialog)
 3. Improved dark theme with popular Eclipse darkest dark theme and default dark theme
 4. Editor colors are automatically switched when using the dark theme (or darkest dark theme)
 5. ImageJ toolbar improved for the dark theme
-6. Added a new ImageJ detach image menu in the ‘Window’ menu of the ImageJ-Canvas view
+6. Added a new ImageJ detach image menu in the ï¿½Windowï¿½ menu of the ImageJ-Canvas view
 7. Added all new ImageJ macro API functions to the code completion of the macro editor
 8. Improved the ImageJ MacOSX touchpad resizing of the ImageJ panel
 9. Improved the default font size for Swing components on Retina displays (e.g., ImageJ components - can be changed in the preferences)
