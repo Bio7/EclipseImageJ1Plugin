@@ -108,7 +108,6 @@ public class GenericDialog extends Dialog implements ActionListener, TextListene
 	private static Frame getParentFrame() {
 		return null;
 	}
-
 	/** Creates a new GenericDialog using the specified title and parent frame. */
 	public GenericDialog(String title, Frame parent) {
 		super(parent, title, true);
