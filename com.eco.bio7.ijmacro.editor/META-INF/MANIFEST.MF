@@ -21,13 +21,15 @@ Require-Bundle: org.eclipse.ui,
  com.eco.bio7.imagej2;resolution:=optional
 Eclipse-LazyStart: true
 Import-Package: org.eclipse.ui.views.contentoutline
-Export-Package: com.eco.bio7.ijmacro.editor,
- com.eco.bio7.ijmacro.editor.actions,
- com.eco.bio7.ijmacro.editor.preferences,
- com.eco.bio7.ijmacro.editor.preferences.template,
- com.eco.bio7.ijmacro.editors
 Bundle-ClassPath: .,
  bin/,
  libs/antlr-runtime-4.9.2.jar
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Export-Package: org.antlr.v4.runtime,
+ org.antlr.v4.runtime.atn,
+ org.antlr.v4.runtime.dfa,
+ org.antlr.v4.runtime.misc,
+ org.antlr.v4.runtime.tree,
+ org.antlr.v4.runtime.tree.pattern,
+ org.antlr.v4.runtime.tree.xpath
 
