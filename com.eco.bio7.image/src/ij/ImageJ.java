@@ -25,7 +25,6 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IViewReference;
 import org.eclipse.ui.PlatformUI;
-
 import com.eco.bio7.ImageJPluginActions.ImageJContextMenuAction;
 import com.eco.bio7.image.Activator;
 import com.eco.bio7.image.CanvasView;
@@ -105,7 +104,7 @@ public class ImageJ extends Frame implements ActionListener, MouseListener, KeyL
 	public static final Font SansSerif12 = new Font("SansSerif", Font.PLAIN, 12);
 	/** Address of socket where Image accepts commands */
 	public static final int DEFAULT_PORT = 57294;
-
+ 
 	/** Run as normal application. */
 	public static final int STANDALONE = 0;
 
