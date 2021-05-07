@@ -25,7 +25,6 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IViewReference;
 import org.eclipse.ui.PlatformUI;
-
 import com.eco.bio7.ImageJPluginActions.ImageJContextMenuAction;
 import com.eco.bio7.image.Activator;
 import com.eco.bio7.image.CanvasView;
