@@ -1,7 +1,12 @@
 # EclipseImageJ1Plugin
 A repository for an Eclipse ImageJ1 plugin contributed from the Bio7 project.
 
-### New in 1.53j (1.53.j26):
+## New in 1.53j (1.53.j35):
+
+1. Updated the ImageJ plugin to version 1.53j35
+2. Added the latest  macro templates
+
+## New in 1.53j (1.53.j26):
 
 1. Updated the ImageJ plugin to version 1.53j26
 2. Detached images can now be closed in a macro by name or string argument
