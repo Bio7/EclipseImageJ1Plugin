@@ -404,6 +404,7 @@ public class IJMacroFunctions {
 			"Plot.drawBoxes(\"boxes width=30\",x,y1,y2,y3,y4,y5)####Draws a boxplot,where 'width' is in pixels,array 'x' holds x-positions and arrays 'y1'..'y5' hold the quartile borders in ascending order. Secondary color will fill the box. For horizontal boxes,use \"boxesx width=30\" instead. Requires 1.49u."+linSeparator + 
 			"Plot.drawNormalizedLine(x1,y1,x2,y2)####Draws a line using a normalized 0-1,0-1 coordinate system,with (0,0) at the top left and (1,1) at the lower right corner."+linSeparator + 
 			"Plot.addText(\"A line of text\",x,y)####Adds text to the plot at the specified location,where (0,0) is the upper left corner of the the plot frame and (1,1) is the lower right corner. Call Plot.setJustification() to have the text centered or right justified. Plot.setLimits(xMin,xMax,yMin,yMax)"+linSeparator + 
+			"Plot.removeNaNs####Removes NaNs in the current plot"+linSeparator + 
 			"Plot.replace()####Replaces the current plot"+linSeparator + 
 			"Plot.setLimits(xMin,xMax,yMin,yMax)####Sets the range of the x-axis and y-axis of plots. With version 1.50g and later,when 'NaN' is used as a limit,the range is calculated automatically from the plots that have been added so far."+linSeparator + 
 			"Plot.getLimits(xMin,xMax,yMin,yMax)####Returns the current axis limits. Note that min>max if the axis is reversed. Requires 1.49t."+linSeparator + 

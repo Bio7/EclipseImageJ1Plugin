@@ -310,8 +310,10 @@ public class ImagePlus implements ImageObserver, Measurements, Cloneable {
 	 * (i.e. show() has not been called).
 	 */
 	public synchronized void updateAndDraw() {
-		if (win==null)
+		if (win==null) {
+			img = null;
 			return;
+		}
 		if (stack != null && !stack.isVirtual() && currentSlice >= 1 && currentSlice <= stack.size()) {
 			if (stack.size() > 1 && win != null && !(win instanceof StackWindow)) {
 				setStack(stack); //adds scroll bar if stack size has changed to >1
@@ -452,13 +454,18 @@ public class ImagePlus implements ImageObserver, Measurements, Cloneable {
 	 * new image.
 	 */
 	public void updateImage() {
-		if (ip!=null && win!=null)
+		if (win==null) {
+			img = null;
+			return;
+		}
+		if (ip!=null)
 			img = ip.createImage();
 	}
 
 	/** Closes the window, if any, that is displaying this image. */
 	public void hide() {
 		if (win == null) {
+			img = null;
 			Interpreter.removeBatchModeImage(this);
 			return;
 		}
