@@ -133,6 +133,7 @@ public class IJMacroFunctions {
 			"fillRect(x,y,width,height)####Fills the specified rectangle with the current drawing color. See also: drawRect,setColor,autoUpdate."+linSeparator + 
 			"Fit.doFit(equation,xpoints,ypoints)####Fits the specified equation to the points defined by xpoints,ypoints. Equation can be either the equation name or an index. The equation names are shown in the drop down menu in the Analyze>Tools>Curve Fitting window. With ImageJ 1.42f or later,equation can be a string containing a user-defined equation."+linSeparator + 
 			"Fit.doFit(equation,xpoints,ypoints,initialGuesses)####Fits the specified equation to the points defined by xpoints,ypoints,using initial parameter values contained in initialGuesses,an array equal in length to the number of parameters in equation."+linSeparator + 
+			"Fit.doWeightedFit(equation,x,y,weights)####Fits a weighted specified equation to the points defined by x,y and weights."+linSeparator +
 			"Fit.getEquation(index,name,formula,macroCode)####Returns the fit values."+linSeparator + 
 			"Fit.rSquared####Returns R^2=1-SSE/SSD,where SSE is the sum of the squares of the errors and SSD is the sum of the squares of the deviations about the mean."+linSeparator + 
 			"Fit.p(index)####Returns the value of the specified parameter."+linSeparator + 
