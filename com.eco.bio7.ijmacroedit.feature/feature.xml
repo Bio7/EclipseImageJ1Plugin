@@ -2,7 +2,7 @@
 <feature
       id="com.eco.bio7.ijmacroedit.feature"
       label="ImageJ Macro Editor"
-      version="2.0.280.qualifier">
+      version="2.0.281.qualifier">
 
    <description url="https://github.com/Bio7/EclipseImageJ1Plugin">
       An ImageJ macro editor for the scientific image application
@@ -238,7 +238,7 @@ litigation.
          id="com.eco.bio7.ijmacro.editor"
          download-size="0"
          install-size="0"
-         version="2.0.280"
+         version="2.0.281"
          unpack="false"/>
 
 </feature>
