@@ -270,7 +270,7 @@ public class CustomDetachedImageJView extends ViewPart {//implements ISaveablePa
 			/* Important to control the references! */
 			IWorkbenchPage page = ref.getPage();
 			if (page != null) {
-				page.getActivePart();
+				//page.getActivePart();
 
 				if (ref.equals(ref2)) {
 					/*Job job = new Job("Close Detached Images") {
