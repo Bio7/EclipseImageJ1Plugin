@@ -239,6 +239,10 @@ public class CustomDetachedImageJView extends ViewPart {//implements ISaveablePa
 
 					CanvasView.setCurrent(viewPanel);
 					//ImageJ.setCustomView(customView);
+					/*To show the status message!*/
+					if (win != null) {
+						win.repaint();
+					}
 				}
 			}
 			/*
@@ -255,10 +259,7 @@ public class CustomDetachedImageJView extends ViewPart {//implements ISaveablePa
 				}
 
 			}
-			/*To show the status message!*/
-			if (win != null) {
-				win.repaint();
-			}
+			
 		}
 
 		public void partBroughtToTop(IWorkbenchPartReference ref) {
