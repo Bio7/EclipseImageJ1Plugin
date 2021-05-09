@@ -4,6 +4,7 @@ import java.io.File;
 
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
 import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.jface.preference.IntegerFieldEditor;
 
 import com.eco.bio7.image.Activator;
 import com.eco.bio7.image.Util;
@@ -36,6 +37,19 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
 		store.setDefault("IMAGE_METHODS_SIZE_Y", 450);// 790
 		store.setDefault("IMAGEJ_TOOLBAR_SIZE_X", 750);// 580
 		store.setDefault("IMAGEJ_TOOLBAR_SIZE_Y", 150);// 130
+		
+		store.setDefault("ENABLE_DETACHED_VIEW_WINDOWS",true);
+		store.setDefault("DETACHED_IMAGE_POSITION_X", 100);
+		store.setDefault("DETACHED_IMAGE_POSITION_Y", 100);
+		store.setDefault("DETACHED_IMAGE_WIDTH", 300);
+		store.setDefault("DETACHED_IMAGE_HEIGHT", 300);
+		store.setDefault("DETACHED_IMAGE_SPACING_X", 50);
+		store.setDefault("DETACHED_IMAGE_SPACING_Y", 50);
+		store.setDefault("DETACHED_IMAGE_SPACING_X_MAX", 300);
+		store.setDefault("DETACHED_IMAGE_SPACING_Y_MAX", 0);
+		
+		
+		
 		store.setDefault("MAC_MENU_ENABLED", false);
 
 		if (Util.getOS().equals("Windows")) {

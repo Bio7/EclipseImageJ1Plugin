@@ -70,6 +70,18 @@ public class Bio7ImageJPreferences extends FieldEditorPreferencePage implements 
 		addField(new LabelFieldEditor("ImageJ Toolbar Dialog Size:", getFieldEditorParent()));
 		addField(new IntegerFieldEditor("IMAGEJ_TOOLBAR_SIZE_X", "x", getFieldEditorParent()));
 		addField(new IntegerFieldEditor("IMAGEJ_TOOLBAR_SIZE_Y", "y", getFieldEditorParent()));
+		addField(new SpacerFieldEditor(getFieldEditorParent()));
+		addField(new LabelFieldEditor("Detached ImageJ Views:", getFieldEditorParent()));
+		addField(new BooleanFieldEditor("ENABLE_DETACHED_VIEW_WINDOWS", "&Open detached views in a window", getFieldEditorParent()));
+		addField(new IntegerFieldEditor("DETACHED_IMAGE_POSITION_X", "x", getFieldEditorParent()));
+		addField(new IntegerFieldEditor("DETACHED_IMAGE_POSITION_Y", "y", getFieldEditorParent()));
+		addField(new IntegerFieldEditor("DETACHED_IMAGE_WIDTH", "Width", getFieldEditorParent()));
+		addField(new IntegerFieldEditor("DETACHED_IMAGE_HEIGHT", "Height", getFieldEditorParent()));
+		addField(new IntegerFieldEditor("DETACHED_IMAGE_SPACING_X", "Spacing x-direction", getFieldEditorParent()));
+		addField(new IntegerFieldEditor("DETACHED_IMAGE_SPACING_Y", "Spacing y-direction", getFieldEditorParent()));
+		addField(new IntegerFieldEditor("DETACHED_IMAGE_SPACING_X_MAX", "Max x-direction", getFieldEditorParent()));
+		addField(new IntegerFieldEditor("DETACHED_IMAGE_SPACING_Y_MAX", "Max y-direction", getFieldEditorParent()));
+		
 
 	}
 

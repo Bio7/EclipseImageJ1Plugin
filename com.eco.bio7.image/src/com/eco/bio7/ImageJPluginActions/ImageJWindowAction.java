@@ -29,6 +29,7 @@ import org.eclipse.swt.events.MenuListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
@@ -237,7 +238,22 @@ public class ImageJWindowAction extends Action implements IMenuCreator {
 						CTabFolder ctab = CanvasView.getCanvas_view().tabFolder;
 						int itemCount = ctab.getItemCount();
 						if (itemCount > 0) {
+							IPreferenceStore store = Activator.getDefault().getPreferenceStore();
+							boolean detWindow = store.getBoolean("ENABLE_DETACHED_VIEW_WINDOWS");
+							int xPosDefault = store.getInt("DETACHED_IMAGE_POSITION_X");
+							int yPosDefault = store.getInt("DETACHED_IMAGE_POSITION_Y");
+							int xWidth = store.getInt("DETACHED_IMAGE_WIDTH");
+							int yHeight = store.getInt("DETACHED_IMAGE_HEIGHT");
+							int xSpacing = store.getInt("DETACHED_IMAGE_SPACING_X");
+							int ySpacing = store.getInt("DETACHED_IMAGE_SPACING_Y");
+							int xMaxSpace = store.getInt("DETACHED_IMAGE_SPACING_X_MAX");
+							int yMaxSpace = store.getInt("DETACHED_IMAGE_SPACING_Y_MAX");
+
+							int xPos = xPosDefault;
+							int yPos = yPosDefault;
+
 							for (int i = 0; i < itemCount; i++) {
+
 								IJTabs.setActive(i);
 
 								Vector ve = (Vector) ctab.getSelection().getData();
@@ -265,8 +281,30 @@ public class ImageJWindowAction extends Action implements IMenuCreator {
 								/* Create ImageJ view with unique image ID of the ImagePlus image! */
 								String id = Integer.toString(plu.getID());
 								// detachedSecViewIDs.add(id);
-								custom.setPanel(CanvasView.getCurrent(), id, plu.getTitle());
-								custom.setData(plu, win);
+								if (detWindow) {
+									custom.setPanelFloatingDetached(CanvasView.getCurrent(), id, plu.getTitle(),
+											new Rectangle(xPos, yPos, xWidth, yHeight));
+									custom.setData(plu, win);
+									if (xMaxSpace > 0) {
+										if ((xPos + xSpacing) > xMaxSpace) {
+											xPos = xPosDefault;
+											yPos = yPos + ySpacing;
+										} else {
+											xPos = xPos + xSpacing;
+										}
+									}
+									if (yMaxSpace > 0) {
+										if ((yPos + ySpacing) > yMaxSpace) {
+											yPos = yPosDefault;
+											xPos = xPos + xSpacing;
+										} else {
+											yPos = yPos + ySpacing;
+										}
+									}
+								} else {
+									custom.setPanel(CanvasView.getCurrent(), id, plu.getTitle());
+								}
+
 								/*
 								 * Only hide the tab without to close the ImagePlus object!
 								 */

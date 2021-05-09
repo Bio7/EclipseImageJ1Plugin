@@ -25,6 +25,9 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.core.runtime.preferences.InstanceScope;
+import org.eclipse.e4.ui.model.application.ui.basic.MPart;
+import org.eclipse.e4.ui.model.application.ui.basic.MPartSashContainerElement;
+import org.eclipse.e4.ui.workbench.modeling.EModelService;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.swt.events.ControlAdapter;
 import org.eclipse.swt.events.ControlEvent;
@@ -40,6 +43,7 @@ import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IViewReference;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPartReference;
+import org.eclipse.ui.IWorkbenchPartSite;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
@@ -373,6 +377,56 @@ public class CustomDetachedImageJView extends ViewPart {//implements ISaveablePa
 					top.setParent(customView.getCustomViewParent());
 
 				}
+
+			}
+		});
+
+	}
+	
+	/**
+	 * Creates a given JPanel tab inside a custom view.
+	 * 
+	 * @param jpanel a JPanel
+	 * @param rec 
+	 * @param title  the title of the tab.
+	 */
+	public void setPanelFloatingDetached(final JPanel jpanel, final String id, final String name, Rectangle rec) {
+		secId = id;
+
+		viewPanel = jpanel;
+
+		Display display = PlatformUI.getWorkbench().getDisplay();
+		display.syncExec(new Runnable() {
+			public void run() {
+				try {
+
+					IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+					IWorkbenchPartSite site=page.showView("com.eco.bio7.image.detachedImage", secId, IWorkbenchPage.VIEW_CREATE).getSite();
+					activated = page.showView("com.eco.bio7.image.detachedImage", secId, IWorkbenchPage.VIEW_ACTIVATE);
+					EModelService s = (EModelService) site.getService(EModelService.class);
+					MPartSashContainerElement p = (MPart) site.getService(MPart.class);					
+				     
+				      if (p.getCurSharedRef() != null)
+				        p = p.getCurSharedRef();		 
+				        s.detach(p, rec.x, rec.y, rec.width, rec.height);
+					palist = new ImageJPartListener2();
+					page.addPartListener(palist);
+
+				} catch (PartInitException e) {
+
+					e.printStackTrace();
+				}
+				if (activated instanceof CustomDetachedImageJView) {
+					customView = (CustomDetachedImageJView) activated;
+					customView.setPartName(name);
+					display.update();
+					swt = new FXSwtAwtCustom(viewPanel, customView);
+					swt.addTab(id);
+					//ImageJ.setCustomView(customView);
+					Composite top = swt.getTop();
+					top.setParent(customView.getCustomViewParent());
+
+				}				
 
 			}
 		});
