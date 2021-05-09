@@ -390,6 +390,7 @@ public class CustomDetachedImageJView extends ViewPart {//implements ISaveablePa
 	 * @param jpanel a JPanel
 	 * @param rec 
 	 * @param title  the title of the tab.
+	 * @param rec a Rectangle for the  size and coordinates.
 	 */
 	public void setPanelFloatingDetached(final JPanel jpanel, final String id, final String name, Rectangle rec) {
 		secId = id;
