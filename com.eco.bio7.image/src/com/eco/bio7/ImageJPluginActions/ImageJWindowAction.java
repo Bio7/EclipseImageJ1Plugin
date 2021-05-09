@@ -303,7 +303,7 @@ public class ImageJWindowAction extends Action implements IMenuCreator {
 									}
 								} else {
 									custom.setPanel(CanvasView.getCurrent(), id, plu.getTitle());
-								}
+									custom.setData(plu, win);								}
 
 								/*
 								 * Only hide the tab without to close the ImagePlus object!
