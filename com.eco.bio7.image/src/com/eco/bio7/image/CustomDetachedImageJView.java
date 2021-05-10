@@ -75,7 +75,7 @@ public class CustomDetachedImageJView extends ViewPart {//implements ISaveablePa
 
 	private String secId;
 
-	protected IViewPart activated;
+	
 
 	public ImagePlus plus;
 
@@ -92,6 +92,8 @@ public class CustomDetachedImageJView extends ViewPart {//implements ISaveablePa
 	protected FXSwtAwtCustom swt;
 
 	private boolean isDetached;
+
+	protected IViewPart activated;
 
 	public boolean isDetached() {
 		return isDetached;
@@ -354,6 +356,7 @@ public class CustomDetachedImageJView extends ViewPart {//implements ISaveablePa
 		Display display = PlatformUI.getWorkbench().getDisplay();
 		display.syncExec(new Runnable() {
 			public void run() {
+				 IViewPart activated = null;
 				try {
 
 					IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();

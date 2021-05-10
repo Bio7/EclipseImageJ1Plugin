@@ -233,6 +233,14 @@ public class IJTabs {
 
 			public void run() {
 				if (item != null) {
+					Composite com = (Composite) item.getControl();
+					Control compo[] = com.getChildren();
+					for (int i = 0; i < compo.length; i++) {
+						if (compo[i] != null && compo[i].isDisposed() == false) {
+							compo[i].dispose();
+						}
+					}
+					com.dispose();
 					item.dispose();
 				}
 			}
@@ -253,7 +261,14 @@ public class IJTabs {
 		dis.syncExec(new Runnable() {
 
 			public void run() {
-
+				Composite com = (Composite) items[nrdel].getControl();
+				Control compo[] = com.getChildren();
+				for (int i = 0; i < compo.length; i++) {
+					if (compo[i] != null && compo[i].isDisposed() == false) {
+						compo[i].dispose();
+					}
+				}
+				com.dispose();
 				items[nrdel].dispose();
 			}
 		});
