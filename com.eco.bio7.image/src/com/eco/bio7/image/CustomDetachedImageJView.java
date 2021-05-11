@@ -360,8 +360,8 @@ public class CustomDetachedImageJView extends ViewPart {//implements ISaveablePa
 				try {
 
 					IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-					page.showView("com.eco.bio7.image.detachedImage", secId, IWorkbenchPage.VIEW_CREATE);
-					activated = page.showView("com.eco.bio7.image.detachedImage", secId, IWorkbenchPage.VIEW_ACTIVATE);
+					activated=page.showView("com.eco.bio7.image.detachedImage", secId, IWorkbenchPage.VIEW_CREATE);
+					//IWorkbenchPartSite site = activated.getSite();
 
 					palist = new ImageJPartListener2();
 					page.addPartListener(palist);
@@ -406,8 +406,9 @@ public class CustomDetachedImageJView extends ViewPart {//implements ISaveablePa
 				try {
 
 					IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-					IWorkbenchPartSite site=page.showView("com.eco.bio7.image.detachedImage", secId, IWorkbenchPage.VIEW_CREATE).getSite();
-					activated = page.showView("com.eco.bio7.image.detachedImage", secId, IWorkbenchPage.VIEW_ACTIVATE);
+					 activated=page.showView("com.eco.bio7.image.detachedImage", secId, IWorkbenchPage.VIEW_CREATE);
+					IWorkbenchPartSite site = activated.getSite();
+					//activated = page.showView("com.eco.bio7.image.detachedImage", secId, IWorkbenchPage.VIEW_ACTIVATE);
 					EModelService s = (EModelService) site.getService(EModelService.class);
 					MPartSashContainerElement p = (MPart) site.getService(MPart.class);					
 				     

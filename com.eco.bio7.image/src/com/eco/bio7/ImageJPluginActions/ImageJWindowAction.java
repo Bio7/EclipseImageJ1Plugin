@@ -308,12 +308,12 @@ public class ImageJWindowAction extends Action implements IMenuCreator {
 								/*
 								 * Only hide the tab without to close the ImagePlus object!
 								 */
-								//IJTabs.hideTab();
-							}
-							for (int i = 0; i < itemCount; i++) {
-								IJTabs.setActive(i);
 								IJTabs.hideTab();
 							}
+							/*for (int i = 0; i < itemCount; i++) {
+								IJTabs.setActive(i);
+								IJTabs.hideTab();
+							}*/
 						}
 
 					}
