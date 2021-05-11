@@ -75,8 +75,6 @@ public class CustomDetachedImageJView extends ViewPart {//implements ISaveablePa
 
 	private String secId;
 
-	
-
 	public ImagePlus plus;
 
 	public ImageWindow win;
@@ -261,7 +259,7 @@ public class CustomDetachedImageJView extends ViewPart {//implements ISaveablePa
 				}
 
 			}
-			
+
 		}
 
 		public void partBroughtToTop(IWorkbenchPartReference ref) {
@@ -356,11 +354,11 @@ public class CustomDetachedImageJView extends ViewPart {//implements ISaveablePa
 		Display display = PlatformUI.getWorkbench().getDisplay();
 		display.syncExec(new Runnable() {
 			public void run() {
-				 IViewPart activated = null;
+				IViewPart activated = null;
 				try {
 
 					IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-					activated=page.showView("com.eco.bio7.image.detachedImage", secId, IWorkbenchPage.VIEW_CREATE);
+					activated = page.showView("com.eco.bio7.image.detachedImage", secId, IWorkbenchPage.VIEW_CREATE);
 					//IWorkbenchPartSite site = activated.getSite();
 
 					palist = new ImageJPartListener2();
@@ -386,57 +384,48 @@ public class CustomDetachedImageJView extends ViewPart {//implements ISaveablePa
 		});
 
 	}
-	
+
 	/**
 	 * Creates a given JPanel tab inside a custom view.
 	 * 
 	 * @param jpanel a JPanel
-	 * @param rec 
+	 * @param rec
 	 * @param title  the title of the tab.
-	 * @param rec a Rectangle for the  size and coordinates.
+	 * @param rec    a Rectangle for the size and coordinates.
 	 */
 	public void setPanelFloatingDetached(final JPanel jpanel, final String id, final String name, Rectangle rec) {
 		secId = id;
-
 		viewPanel = jpanel;
+		try {
 
-		Display display = PlatformUI.getWorkbench().getDisplay();
-		display.syncExec(new Runnable() {
-			public void run() {
-				try {
+			IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+			activated = page.showView("com.eco.bio7.image.detachedImage", secId, IWorkbenchPage.VIEW_CREATE);
+			IWorkbenchPartSite site = activated.getSite();
+			//activated = page.showView("com.eco.bio7.image.detachedImage", secId, IWorkbenchPage.VIEW_ACTIVATE);
+			EModelService s = (EModelService) site.getService(EModelService.class);
+			MPartSashContainerElement p = (MPart) site.getService(MPart.class);
 
-					IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-					 activated=page.showView("com.eco.bio7.image.detachedImage", secId, IWorkbenchPage.VIEW_CREATE);
-					IWorkbenchPartSite site = activated.getSite();
-					//activated = page.showView("com.eco.bio7.image.detachedImage", secId, IWorkbenchPage.VIEW_ACTIVATE);
-					EModelService s = (EModelService) site.getService(EModelService.class);
-					MPartSashContainerElement p = (MPart) site.getService(MPart.class);					
-				     
-				      if (p.getCurSharedRef() != null)
-				        p = p.getCurSharedRef();		 
-				        s.detach(p, rec.x, rec.y, rec.width, rec.height);
-					palist = new ImageJPartListener2();
-					page.addPartListener(palist);
+			if (p.getCurSharedRef() != null)
+				p = p.getCurSharedRef();
+			s.detach(p, rec.x, rec.y, rec.width, rec.height);
+			palist = new ImageJPartListener2();
+			page.addPartListener(palist);
 
-				} catch (PartInitException e) {
+		} catch (PartInitException e) {
 
-					e.printStackTrace();
-				}
-				if (activated instanceof CustomDetachedImageJView) {
-					customView = (CustomDetachedImageJView) activated;
-					customView.setPartName(name);
-					display.update();
-					swt = new FXSwtAwtCustom(viewPanel, customView);
-					swt.addTab(id);
-					//ImageJ.setCustomView(customView);
-					Composite top = swt.getTop();
-					top.setParent(customView.getCustomViewParent());
+			e.printStackTrace();
+		}
+		if (activated instanceof CustomDetachedImageJView) {
+			customView = (CustomDetachedImageJView) activated;
+			customView.setPartName(name);
+			//display.update();
+			swt = new FXSwtAwtCustom(viewPanel, customView);
+			swt.addTab(id);
+			//ImageJ.setCustomView(customView);
+			Composite top = swt.getTop();
+			top.setParent(customView.getCustomViewParent());
 
-				}				
-
-			}
-		});
-
+		}
 	}
 
 	public void dispose() {
