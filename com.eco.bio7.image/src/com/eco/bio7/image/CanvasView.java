@@ -413,16 +413,22 @@ public class CanvasView extends ViewPart {
 					int correction = 0;
 					if (tabFolder.isDisposed() == false && tabFolder != null) {
 						/* Height correction for the plot! */
-						correction = CanvasView.tabFolder.getTabHeight()+40;
+						correction = CanvasView.tabFolder.getTabHeight() + 40;
 					}
 
 					if (selection.equals("PLOT_IMAGEJ_DISPLAYSIZE_CAIRO")) {
 
-						store.setValue("DEVICE_DEFINITION", ".bio7Device <- function(filename = \"" + pathTo + "tempDevicePlot%05d.tiff" + "\") { tiff(filename,width = " + (rec.width-20) + ", height = "
-								+ (rec.height - correction) + ", type=\"cairo\")}; options(device=\".bio7Device\")");
+						store.setValue("DEVICE_DEFINITION",
+								".bio7Device <- function(filename = \"" + pathTo + "tempDevicePlot%05d.tiff"
+										+ "\") { tiff(filename,width = " + (rec.width - 20) + ", height = "
+										+ (rec.height - correction)
+										+ ", type=\"cairo\")}; options(device=\".bio7Device\")");
 					} else if (selection.equals("PLOT_IMAGEJ_DISPLAYSIZE")) {
-						store.setValue("DEVICE_DEFINITION", ".bio7Device <- function(filename = \"" + pathTo + "tempDevicePlot%05d.tiff" + "\") { tiff(filename,width =  " + (rec.width-20) + ", height = "
-								+ (rec.height - correction) + ", units = \"px\")}; options(device=\".bio7Device\")");
+						store.setValue("DEVICE_DEFINITION",
+								".bio7Device <- function(filename = \"" + pathTo + "tempDevicePlot%05d.tiff"
+										+ "\") { tiff(filename,width =  " + (rec.width - 20) + ", height = "
+										+ (rec.height - correction)
+										+ ", units = \"px\")}; options(device=\".bio7Device\")");
 
 					}
 				}
@@ -465,7 +471,8 @@ public class CanvasView extends ViewPart {
 										if (frameSwtAwt != null)
 											// frameSwtAwt.dispatchEvent(new WindowEvent(frameSwtAwt,
 											// WindowEvent.WINDOW_ACTIVATED));
-											frameSwtAwt.dispatchEvent(new WindowEvent(frameSwtAwt, WindowEvent.WINDOW_ACTIVATED));
+											frameSwtAwt.dispatchEvent(
+													new WindowEvent(frameSwtAwt, WindowEvent.WINDOW_ACTIVATED));
 
 									}
 								}
@@ -574,7 +581,19 @@ public class CanvasView extends ViewPart {
 
 								final int x = i;
 
-								dragAndDrop.openFile(new File(fileList[x].toString()));
+								if (Util.getOS().equals("Mac") == false) {
+									dragAndDrop.openFile(new File(fileList[x].toString()));
+									recalculateLayout();
+								} else {
+									Display dis = CanvasView.getParent2().getDisplay();
+									dis.syncExec(new Runnable() {
+
+										public void run() {
+
+											dragAndDrop.openFile(new File(fileList[x].toString()));
+										}
+									});
+								}
 								/*
 								 * if (javaFXEmbedded) {
 								 * 
@@ -585,9 +604,6 @@ public class CanvasView extends ViewPart {
 								 * 
 								 * openFile(new File(fileList[x].toString())); } }); }
 								 */
-								if (Util.getOS().equals("Mac") == false) {
-									recalculateLayout();
-								}
 								monitor.worked(1);
 
 							}
@@ -719,21 +735,21 @@ public class CanvasView extends ViewPart {
 					});
 				}
 
-	}
+			}
 
-	public void maximize(CTabFolderEvent event) {
+			public void maximize(CTabFolderEvent event) {
 
-	}
+			}
 
-	public void minimize(CTabFolderEvent event) {
+			public void minimize(CTabFolderEvent event) {
 
-	}
+			}
 
-	public void restore(CTabFolderEvent event) {
+			public void restore(CTabFolderEvent event) {
 
-	}
+			}
 
-	public void showList(CTabFolderEvent event) {
+			public void showList(CTabFolderEvent event) {
 
 			}
 
@@ -759,7 +775,7 @@ public class CanvasView extends ViewPart {
 						WindowManager.setCurrentWindow(win);
 					}
 				});
-				
+
 				/* import to set current Panel! */
 				current = (JPanel) ve.get(2);
 				// current.requestFocus();
@@ -818,7 +834,7 @@ public class CanvasView extends ViewPart {
 						current = (JPanel) ve.get(2); // current.requestFocus();
 						plu.getCanvas().repaint();
 						/*To show the status message!*/
-		                win.repaint();
+						win.repaint();
 
 					}
 
@@ -861,28 +877,28 @@ public class CanvasView extends ViewPart {
 		bars.getStatusLineManager().setMessage(message);
 
 	}
-	
-	public void setStatusLineColor(String message,org.eclipse.swt.graphics.Color col) {
+
+	public void setStatusLineColor(String message, org.eclipse.swt.graphics.Color col) {
 		IActionBars bars = getViewSite().getActionBars();
 		bars.getStatusLineManager().setMessage(message);
 		IStatusLineManager statusLineManager = bars.getStatusLineManager();
 		if (statusLineManager instanceof SubContributionManager) {
-	        SubContributionManager sub = (SubContributionManager) statusLineManager;
-	        StatusLineManager parent = (StatusLineManager) sub.getParent();
-	        Composite composite = (Composite) parent.getControl();
-	        Control[] controls =  composite.getChildren();
+			SubContributionManager sub = (SubContributionManager) statusLineManager;
+			StatusLineManager parent = (StatusLineManager) sub.getParent();
+			Composite composite = (Composite) parent.getControl();
+			Control[] controls = composite.getChildren();
 
-	    	for(Control control : controls){
-	    		if(control instanceof CLabel){
-	    			CLabel cLabel = (CLabel)control;
-	    			   
-	    			//cLabel.setFont(null);
-	    			cLabel.setForeground(col);
-	    			break;
+			for (Control control : controls) {
+				if (control instanceof CLabel) {
+					CLabel cLabel = (CLabel) control;
 
-	    		}
-	    	}
-	    } 
+					//cLabel.setFont(null);
+					cLabel.setForeground(col);
+					break;
+
+				}
+			}
+		}
 	}
 
 	private void initializeToolBar() {
@@ -898,10 +914,8 @@ public class CanvasView extends ViewPart {
 		tbm.add(help);
 		// tbm.add(new PlaceholderLabel().getPlaceholderLabel());
 		/*If we have a plugin which installs a main menu item!*/
-		 Menus.updateBio7ImageJMenu();
+		Menus.updateBio7ImageJMenu();
 	}
-
-	
 
 	public void setFocus() {
 

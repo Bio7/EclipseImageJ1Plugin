@@ -1,6 +1,16 @@
 # EclipseImageJ1Plugin
 A repository for an Eclipse ImageJ1 plugin contributed from the Bio7 project.
 
+## New in 1.53j (1.53.j43):
+
+1. Updated the ImageJ plugin to version 1.53j43
+2. Renamed the 'Detach Images' menu actions
+2. Images can now be detached in a seperate view window ('Open All Images as Views')
+3. Added 'Open All Images as Views' action preferences (coordinates, size, etc., to layout 
+   several windows side by side, e.g., on a secondary screen)
+4. Added the latest  macro templates
+5. Fixed some minor bugs
+
 ## New in 1.53j (1.53.j35):
 
 1. Updated the ImageJ plugin to version 1.53j35
