@@ -182,7 +182,7 @@ public class ImageJWindowAction extends Action implements IMenuCreator {
 
 				MenuItem menuItemDetachTab = new MenuItem(fMenu, SWT.PUSH);
 
-				menuItemDetachTab.setText("Detach Current Image");
+				menuItemDetachTab.setText("Open Current Image as View");
 
 				menuItemDetachTab.addSelectionListener(new SelectionListener() {
 
@@ -230,7 +230,7 @@ public class ImageJWindowAction extends Action implements IMenuCreator {
 				});
 				MenuItem menuItemDetachAllTab = new MenuItem(fMenu, SWT.PUSH);
 
-				menuItemDetachAllTab.setText("Detach All Images");
+				menuItemDetachAllTab.setText("Open All Images As Views ");
 
 				menuItemDetachAllTab.addSelectionListener(new SelectionListener() {
 
