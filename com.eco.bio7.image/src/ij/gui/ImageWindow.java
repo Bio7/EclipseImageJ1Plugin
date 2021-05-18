@@ -641,8 +641,11 @@ public class ImageWindow extends JFrame
 			//ImageWindow win = (ImageWindow) ve.get(1);
 			win2.bio7TabClose();
 		} else {
-			/*Check if we have images in the detached views!*/
-			IJTabs.closeDetachedWindowView(this);
+			/*Check if we have images in the detached views!*/		
+			boolean isDetachedWin=IJTabs.closeDetachedWindowView(this);
+			if(isDetachedWin) {
+				this.bio7TabClose();
+			}
 		}
 
 		return true;
