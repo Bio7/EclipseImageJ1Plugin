@@ -31,6 +31,7 @@ import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.ui.IViewReference;
@@ -303,13 +304,16 @@ public class ImageJWindowAction extends Action implements IMenuCreator {
 									}
 								} else {
 									custom.setPanel(CanvasView.getCurrent(), id, plu.getTitle());
-									custom.setData(plu, win);								}
+									custom.setData(plu, win);
+								}
 
 								/*
 								 * Only hide the tab without to close the ImagePlus object!
 								 */
 								IJTabs.hideTab();
 							}
+							//SIJTabs.doSecondaryViewLayout();
+
 							/*for (int i = 0; i < itemCount; i++) {
 								IJTabs.setActive(i);
 								IJTabs.hideTab();
@@ -460,4 +464,102 @@ public class ImageJWindowAction extends Action implements IMenuCreator {
 
 	}
 
+	public static void openDetachedView() {
+		Display dis = CanvasView.getParent2().getDisplay();
+		dis.syncExec(new Runnable() {
+			public void run() {
+				CTabFolder ctab = CanvasView.getCanvas_view().tabFolder;
+				int itemCount = ctab.getItemCount();
+				if (itemCount > 0) {
+					IPreferenceStore store = Activator.getDefault().getPreferenceStore();
+					boolean detWindow = store.getBoolean("ENABLE_DETACHED_VIEW_WINDOWS");
+					int xPosDefault = store.getInt("DETACHED_IMAGE_POSITION_X");
+					int yPosDefault = store.getInt("DETACHED_IMAGE_POSITION_Y");
+					int xWidth = store.getInt("DETACHED_IMAGE_WIDTH");
+					int yHeight = store.getInt("DETACHED_IMAGE_HEIGHT");
+					int xSpacing = store.getInt("DETACHED_IMAGE_SPACING_X");
+					int ySpacing = store.getInt("DETACHED_IMAGE_SPACING_Y");
+					int xMaxSpace = store.getInt("DETACHED_IMAGE_SPACING_X_MAX");
+					int yMaxSpace = store.getInt("DETACHED_IMAGE_SPACING_Y_MAX");
+
+					int xPos = xPosDefault;
+					int yPos = yPosDefault;
+
+					for (int i = 0; i < itemCount; i++) {
+
+						IJTabs.setActive(i);
+
+						Vector ve = (Vector) ctab.getSelection().getData();
+						ImagePlus plu = (ImagePlus) ve.get(0);
+
+						ImageWindow win = (ImageWindow) ve.get(1);
+						/*In the menu action we also need to set the panel! Not necessary in the
+						 *CanvasView action!*/
+						// Wrap to avoid deadlock of awt frame access!
+						java.awt.EventQueue.invokeLater(new Runnable() {
+							public void run() {
+								WindowManager.setTempCurrentImage(plu);
+								WindowManager.setCurrentWindow(win);
+							}
+						});
+
+						/* import to set current Panel for the menu action (as if we select a tab)! */
+						CanvasView.setCurrent((JPanel) ve.get(2));
+
+						// JPanel current = (JPanel) ve.get(2);
+
+						CustomDetachedImageJView custom = new CustomDetachedImageJView();
+						/* Create ImageJ view with unique ID! */
+						//String id = UUID.randomUUID().toString();
+						/* Create ImageJ view with unique image ID of the ImagePlus image! */
+						String id = Integer.toString(plu.getID());
+						// detachedSecViewIDs.add(id);
+						if (detWindow) {
+							custom.setPanelFloatingDetached(CanvasView.getCurrent(), id, plu.getTitle(),
+									new Rectangle(xPos, yPos, xWidth, yHeight));
+							custom.setData(plu, win);
+							if (xMaxSpace > 0) {
+								if ((xPos + xSpacing) > xMaxSpace) {
+									xPos = xPosDefault;
+									yPos = yPos + ySpacing;
+								} else {
+									xPos = xPos + xSpacing;
+								}
+							}
+							if (yMaxSpace > 0) {
+								if ((yPos + ySpacing) > yMaxSpace) {
+									yPos = yPosDefault;
+									xPos = xPos + xSpacing;
+								} else {
+									yPos = yPos + ySpacing;
+								}
+							}
+						} else {
+							custom.setPanel(CanvasView.getCurrent(), id, plu.getTitle());
+							custom.setData(plu, win);
+						}
+
+						/*
+						 * Only hide the tab without to close the ImagePlus object!
+						 */
+						IJTabs.hideTab();
+					}
+					//SIJTabs.doSecondaryViewLayout();
+
+					/*for (int i = 0; i < itemCount; i++) {
+						IJTabs.setActive(i);
+						IJTabs.hideTab();
+					}*/
+				}
+
+
+				/*
+				 * Only hide the tab without to close the ImagePlus object!
+				 */
+
+			}
+		});
+		
+		
+	}
 }

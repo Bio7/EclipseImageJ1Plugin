@@ -485,7 +485,7 @@ public class WindowManager {
 		Prefs.closingAll = true;
 		while (imageList.size() > 0) {
 			/* Changed for Bio7! */
-			if (!((ImageWindow) imageList.get(0)).bio7TabClose()) {
+			if (!((ImageWindow) imageList.get(0)).bio7TabClose(true)) {
 				Prefs.closingAll = false;
 				return false;
 			}

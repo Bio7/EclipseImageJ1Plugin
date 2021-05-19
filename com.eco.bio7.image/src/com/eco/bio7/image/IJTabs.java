@@ -18,14 +18,22 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
+
+import org.eclipse.e4.ui.model.application.ui.basic.MPart;
+import org.eclipse.e4.ui.model.application.ui.basic.MPartSashContainerElement;
+import org.eclipse.e4.ui.workbench.modeling.EModelService;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabItem;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IViewReference;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.IWorkbenchPartSite;
+import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 
 import ij.ImagePlus;
@@ -89,6 +97,53 @@ public class IJTabs {
 
 		return items.length;
 
+	}
+
+	public static void setSecondaryViewShellLocAndSize(String sec, Rectangle rec) {
+
+		Display dis = CanvasView.getParent2().getDisplay();
+		dis.syncExec(new Runnable() {
+			public void run() {
+
+				IViewReference[] viewRefs = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+						.getViewReferences();
+				for (int i = 0; i < viewRefs.length; i++) {
+					String id = viewRefs[i].getId();
+					if (id.equals("com.eco.bio7.image.detachedImage")) {
+						//IViewPart view = viewRefs[i].getView(false);
+						String secId = viewRefs[i].getSecondaryId();
+						if (secId.equals(sec)) {
+							IViewPart view = viewRefs[i].getView(false);
+							CustomDetachedImageJView cdview = (CustomDetachedImageJView)view;
+							if (cdview.isDetached()) {
+
+								IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow()
+										.getActivePage();
+								IViewPart activated = null;
+								try {
+									activated = page.showView("com.eco.bio7.image.detachedImage", sec,
+											IWorkbenchPage.VIEW_ACTIVATE);
+								} catch (PartInitException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}
+								IWorkbenchPartSite site = activated.getSite();
+								//activated = page.showView("com.eco.bio7.image.detachedImage", secId, IWorkbenchPage.VIEW_ACTIVATE);
+								EModelService s = (EModelService) site.getService(EModelService.class);
+								MPartSashContainerElement p = (MPart) site.getService(MPart.class);
+
+								if (p.getCurSharedRef() != null)
+									p = p.getCurSharedRef();
+								s.detach(p, rec.x, rec.y, rec.width, rec.height);
+								
+								cdview.customViewParent.layout();
+								
+							}
+						}
+					}
+				}
+			}
+		});
 	}
 
 	/**
@@ -180,7 +235,7 @@ public class IJTabs {
 
 							final ImageWindow win = (ImageWindow) ve.get(1);
 
-							win.bio7TabClose();
+							win.bio7TabClose(true);
 
 						}
 					});
@@ -203,7 +258,7 @@ public class IJTabs {
 
 							final ImageWindow win = (ImageWindow) ve.get(1);
 
-							win.bio7TabClose();
+							win.bio7TabClose(true);
 						}
 					});
 					Composite com = (Composite) items[nrdel].getControl();
@@ -292,7 +347,7 @@ public class IJTabs {
 
 						final ImageWindow win = (ImageWindow) ve.get(1);
 
-						win.bio7TabClose();
+						win.bio7TabClose(true);
 						Composite com = (Composite) item.getControl();
 						Control compo[] = com.getChildren();
 						for (int i = 0; i < compo.length; i++) {
@@ -310,7 +365,7 @@ public class IJTabs {
 
 								final ImageWindow win = (ImageWindow) ve.get(1);
 
-								win.bio7TabClose();
+								win.bio7TabClose(true);
 							}
 						});
 						Composite com = (Composite) item.getControl();
@@ -503,7 +558,7 @@ public class IJTabs {
 		});
 	}
 
-	public static boolean  closeDetachedWindowView(ImageWindow refWin) {
+	public static boolean closeDetachedWindowView(ImageWindow refWin) {
 		final AtomicReference<Object> result = new AtomicReference<Object>();
 		result.set(false);
 		Display dis = CanvasView.getParent2().getDisplay();
@@ -528,10 +583,9 @@ public class IJTabs {
 							if (refWin.equals(window)) {
 
 								viewRefs[i].getPage().hideView(viewRefs[i]);
-                                result.set(true);
-                                break;
-							}
-							else {
+								result.set(true);
+								break;
+							} else {
 								result.set(false);
 							}
 

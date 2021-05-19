@@ -519,7 +519,7 @@ public class CanvasView extends ViewPart {
 							 */
 							SwingUtilities.invokeLater(new Runnable() {
 								public void run() {
-									win.bio7TabClose();
+									win.bio7TabClose(true);
 								}
 							});
 
@@ -718,7 +718,7 @@ public class CanvasView extends ViewPart {
 				if (javaFXEmbedded) {
 					java.awt.EventQueue.invokeLater(new Runnable() {
 						public void run() {
-							win.bio7TabClose();
+							win.bio7TabClose(true);
 						}
 					});
 					/*
@@ -730,7 +730,7 @@ public class CanvasView extends ViewPart {
 				} else {
 					java.awt.EventQueue.invokeLater(new Runnable() {
 						public void run() {
-							win.bio7TabClose();
+							win.bio7TabClose(true);
 						}
 					});
 				}

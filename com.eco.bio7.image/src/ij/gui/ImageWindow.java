@@ -237,7 +237,7 @@ public class ImageWindow extends JFrame
 			 * renamed to bio7TabClose because we have hidden the tab already (close
 			 * searches for the tab and closes it)!
 			 */
-			previousWindow.bio7TabClose();
+			previousWindow.bio7TabClose(true);
 			imp.changes = changes;
 			if (unlocked)
 				imp.unlock();
@@ -639,12 +639,19 @@ public class ImageWindow extends JFrame
 		/*Get the specific embedded window instance and close it!*/
 		if (imageInTab) {
 			//ImageWindow win = (ImageWindow) ve.get(1);
-			win2.bio7TabClose();
+			win2.bio7TabClose(true);
 		} else {
-			/*Check if we have images in the detached views!*/		
-			boolean isDetachedWin=IJTabs.closeDetachedWindowView(this);
-			if(isDetachedWin) {
-				this.bio7TabClose();
+			/*Check if we have images in the detached views!*/
+			boolean isDetachedWin = IJTabs.closeDetachedWindowView(this);
+			if (isDetachedWin) {
+
+				bio7TabClose(false);
+				java.awt.EventQueue.invokeLater(new Runnable() {
+					public void run() {
+						dispose();
+					}
+				});
+
 			}
 		}
 
@@ -653,7 +660,7 @@ public class ImageWindow extends JFrame
 	}
 
 	/* Changed for Bio7! */
-	public boolean bio7TabClose() {
+	public boolean bio7TabClose(boolean disposeFrame) {
 
 		boolean isRunning = running || running2;
 		running = running2 = false;
@@ -686,7 +693,10 @@ public class ImageWindow extends JFrame
 		setVisible(false);
 		if (ij != null && ij.quitting()) // this may help avoid thread deadlocks
 			return true;
-		dispose();
+		/*Changed for Bio7!*/
+		if (disposeFrame) {
+			dispose();
+		}
 		if (imp != null)
 			imp.flush();
 		imp = null;
@@ -1048,10 +1058,13 @@ public class ImageWindow extends JFrame
 	 * the window.
 	 */
 	public void setLocationAndSize(int x, int y, int width, int height) {
-		setBounds(x, y, width, height);
-		getCanvas().fitToWindow();
+		/*Changed for Bio7 for detached views only!*/
+		//setBounds(x, y, width, height);
+		//getCanvas().fitToWindow();
 		initialLoc = null;
-		pack();
+		//pack();
+		String idValue = Integer.toString(getImagePlus().getID());
+		IJTabs.setSecondaryViewShellLocAndSize(idValue,new org.eclipse.swt.graphics.Rectangle(x,y,width,height));
 	}
 
 	@Override

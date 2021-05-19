@@ -292,20 +292,13 @@ public class CustomDetachedImageJView extends ViewPart {//implements ISaveablePa
 					
 					// job.setSystem(true);
 					job.schedule();*/
-					
 					SwingUtilities.invokeLater(new Runnable() {
 						// !!
 						public void run() {
-							try {
-								Thread.sleep(100);
-							} catch (InterruptedException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}
 							if (WindowManager.getImageCount() > 0) {
 								if (win != null) {
 									if (win.getImagePlus() != null) {
-										win.bio7TabClose();
+										win.bio7TabClose(true);
 									}
 								}
 							}
