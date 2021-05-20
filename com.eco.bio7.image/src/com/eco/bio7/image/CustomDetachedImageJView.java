@@ -292,18 +292,29 @@ public class CustomDetachedImageJView extends ViewPart {//implements ISaveablePa
 					
 					// job.setSystem(true);
 					job.schedule();*/
-					SwingUtilities.invokeLater(new Runnable() {
-						// !!
-						public void run() {
-							if (WindowManager.getImageCount() > 0) {
-								if (win != null) {
-									if (win.getImagePlus() != null) {
-										win.bio7TabClose(true);
+					if (Util.getOS().equals("Mac")) {
+						SwingUtilities.invokeLater(new Runnable() {
+							// !!
+							public void run() {
+								if (WindowManager.getImageCount() > 0) {
+									if (win != null) {
+										if (win.getImagePlus() != null) {
+											win.bio7TabClose(true);
+										}
 									}
 								}
 							}
+						});
+					} else {
+						if (WindowManager.getImageCount() > 0) {
+							if (win != null) {
+								if (win.getImagePlus() != null) {
+									win.bio7TabClose(true);
+								}
+							}
 						}
-					});
+
+					}
 					/*Remove the part listener?*/
 					page.removePartListener(palist);
 

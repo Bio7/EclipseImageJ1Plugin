@@ -252,7 +252,7 @@ public class ImageJWindowAction extends Action implements IMenuCreator {
 
 							int xPos = xPosDefault;
 							int yPos = yPosDefault;
-
+                            String tempId = "";
 							for (int i = 0; i < itemCount; i++) {
 
 								IJTabs.setActive(i);
@@ -281,6 +281,7 @@ public class ImageJWindowAction extends Action implements IMenuCreator {
 								//String id = UUID.randomUUID().toString();
 								/* Create ImageJ view with unique image ID of the ImagePlus image! */
 								String id = Integer.toString(plu.getID());
+								tempId=id;//for the last detached view which nedds to be activated!
 								// detachedSecViewIDs.add(id);
 								if (detWindow) {
 									custom.setPanelFloatingDetached(CanvasView.getCurrent(), id, plu.getTitle(),
@@ -306,12 +307,15 @@ public class ImageJWindowAction extends Action implements IMenuCreator {
 									custom.setPanel(CanvasView.getCurrent(), id, plu.getTitle());
 									custom.setData(plu, win);
 								}
+								
 
 								/*
 								 * Only hide the tab without to close the ImagePlus object!
 								 */
 								IJTabs.hideTab();
 							}
+							/*Import for Windows to activate the detached views for the close event!*/
+							IJTabs.setSecondaryViewShellLocAndSize(tempId,null);
 							//SIJTabs.doSecondaryViewLayout();
 
 							/*for (int i = 0; i < itemCount; i++) {

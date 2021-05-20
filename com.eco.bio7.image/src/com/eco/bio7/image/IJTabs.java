@@ -114,7 +114,7 @@ public class IJTabs {
 						String secId = viewRefs[i].getSecondaryId();
 						if (secId.equals(sec)) {
 							IViewPart view = viewRefs[i].getView(false);
-							CustomDetachedImageJView cdview = (CustomDetachedImageJView)view;
+							CustomDetachedImageJView cdview = (CustomDetachedImageJView) view;
 							if (cdview.isDetached()) {
 
 								IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow()
@@ -127,17 +127,19 @@ public class IJTabs {
 									// TODO Auto-generated catch block
 									e.printStackTrace();
 								}
-								IWorkbenchPartSite site = activated.getSite();
-								//activated = page.showView("com.eco.bio7.image.detachedImage", secId, IWorkbenchPage.VIEW_ACTIVATE);
-								EModelService s = (EModelService) site.getService(EModelService.class);
-								MPartSashContainerElement p = (MPart) site.getService(MPart.class);
+								if (rec != null) {
+									IWorkbenchPartSite site = activated.getSite();
+									//activated = page.showView("com.eco.bio7.image.detachedImage", secId, IWorkbenchPage.VIEW_ACTIVATE);
+									EModelService s = (EModelService) site.getService(EModelService.class);
+									MPartSashContainerElement p = (MPart) site.getService(MPart.class);
 
-								if (p.getCurSharedRef() != null)
-									p = p.getCurSharedRef();
-								s.detach(p, rec.x, rec.y, rec.width, rec.height);
-								
-								cdview.customViewParent.layout();
-								
+									if (p.getCurSharedRef() != null)
+										p = p.getCurSharedRef();
+									s.detach(p, rec.x, rec.y, rec.width, rec.height);
+
+									cdview.customViewParent.layout();
+								}
+
 							}
 						}
 					}
@@ -542,6 +544,7 @@ public class IJTabs {
 						String secId = viewRefs[i].getSecondaryId();
 						CustomDetachedImageJView cdview = (CustomDetachedImageJView) view;
 						cdview.customViewParent.layout();
+						cdview.setFocus();
 						ImagePlus ip = WindowManager.getImage(Integer.valueOf(secId));
 						ImageCanvas canvas = ip.getCanvas();
 						if (canvas != null) {

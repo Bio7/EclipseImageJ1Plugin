@@ -643,15 +643,17 @@ public class ImageWindow extends JFrame
 		} else {
 			/*Check if we have images in the detached views!*/
 			boolean isDetachedWin = IJTabs.closeDetachedWindowView(this);
-			if (isDetachedWin) {
+			if (Util.getOS().equals("Mac")) {
+				if (isDetachedWin) {
 
-				bio7TabClose(false);
-				java.awt.EventQueue.invokeLater(new Runnable() {
-					public void run() {
-						dispose();
-					}
-				});
+					bio7TabClose(false);
+					java.awt.EventQueue.invokeLater(new Runnable() {
+						public void run() {
+							dispose();
+						}
+					});
 
+				}
 			}
 		}
 
@@ -1064,7 +1066,7 @@ public class ImageWindow extends JFrame
 		initialLoc = null;
 		//pack();
 		String idValue = Integer.toString(getImagePlus().getID());
-		IJTabs.setSecondaryViewShellLocAndSize(idValue,new org.eclipse.swt.graphics.Rectangle(x,y,width,height));
+		IJTabs.setSecondaryViewShellLocAndSize(idValue, new org.eclipse.swt.graphics.Rectangle(x, y, width, height));
 	}
 
 	@Override
