@@ -8,7 +8,7 @@ A repository for an Eclipse ImageJ1 plugin contributed from the Bio7 project.
 3. Improved the layout action for orthogonal stack views (in detached views) 
 4. Added an API method to invoke the 'Open All Images as Views' action
 5. The ImageJ macro action 'setLocation'  will now change the size and location of detached views if available
-5. Fixed some minor bugs
+5. Fixed some minor bugs 
 
 ## New in 1.53j (1.53.j43):
 
