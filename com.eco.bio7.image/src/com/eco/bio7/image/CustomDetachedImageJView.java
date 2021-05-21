@@ -305,16 +305,17 @@ public class CustomDetachedImageJView extends ViewPart {//implements ISaveablePa
 								}
 							}
 						});
-					} else {
+					} 
+					else {
 						if (WindowManager.getImageCount() > 0) {
 							if (win != null) {
 								if (win.getImagePlus() != null) {
-									win.bio7TabClose(true);
+									win.bio7TabClose(false);
 								}
 							}
 						}
-
 					}
+					
 					/*Remove the part listener?*/
 					page.removePartListener(palist);
 

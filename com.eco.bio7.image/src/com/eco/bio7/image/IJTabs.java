@@ -137,7 +137,7 @@ public class IJTabs {
 										p = p.getCurSharedRef();
 									s.detach(p, rec.x, rec.y, rec.width, rec.height);
 
-									cdview.customViewParent.layout();
+									cdview.customViewParent.requestLayout();
 								}
 
 							}
@@ -543,7 +543,7 @@ public class IJTabs {
 						IViewPart view = viewRefs[i].getView(false);
 						String secId = viewRefs[i].getSecondaryId();
 						CustomDetachedImageJView cdview = (CustomDetachedImageJView) view;
-						cdview.customViewParent.layout();
+						
 						cdview.setFocus();
 						ImagePlus ip = WindowManager.getImage(Integer.valueOf(secId));
 						ImageCanvas canvas = ip.getCanvas();
@@ -555,6 +555,7 @@ public class IJTabs {
 								parent.repaint();
 							}
 						}
+						cdview.customViewParent.requestLayout();
 					}
 				}
 			}

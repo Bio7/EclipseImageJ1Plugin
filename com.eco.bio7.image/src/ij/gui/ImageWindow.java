@@ -645,7 +645,7 @@ public class ImageWindow extends JFrame
 			boolean isDetachedWin = IJTabs.closeDetachedWindowView(this);
 			if (Util.getOS().equals("Mac")) {
 				if (isDetachedWin) {
-
+                    /*Avoid deadlock situation by disposing the JFrame!*/
 					bio7TabClose(false);
 					java.awt.EventQueue.invokeLater(new Runnable() {
 						public void run() {
@@ -654,6 +654,13 @@ public class ImageWindow extends JFrame
 					});
 
 				}
+			}
+			else {
+				java.awt.EventQueue.invokeLater(new Runnable() {
+					public void run() {
+						dispose();
+					}
+				});
 			}
 		}
 
@@ -695,7 +702,7 @@ public class ImageWindow extends JFrame
 		setVisible(false);
 		if (ij != null && ij.quitting()) // this may help avoid thread deadlocks
 			return true;
-		/*Changed for Bio7!*/
+		/*Changed for Bio7! - Avoid deadlock situation by disposing the JFrame!*/
 		if (disposeFrame) {
 			dispose();
 		}
