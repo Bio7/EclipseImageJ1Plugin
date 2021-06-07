@@ -44,18 +44,20 @@ public class IJMacroFunctions {
 			"close()####Closes the active image. This function has the advantage of not closing the \"Log\" or \"Results\" window when you meant to close the active image."+linSeparator + 
 			"close(pattern)####Closes all image windows whose title matches pattern. Pattern may contain the wildcard characters \"*\" (matches any character sequence) or \"?\" (matches any single character). For example,close(\"Histo*\") could be used to dispose all histogram windows. The front image remains in front if it still exists. Pattern is not case sensitive. Use close(\"\\\\Others\") to close all except the front image."+linSeparator+
 			"cos(angle)####Returns the cosine of an angle (in radians)."+linSeparator + 
-			"Color.background####Returns the background color."+linSeparator +
-			"Color.foreground####Returns the foreground color."+linSeparator +
-			"Color.setForeground(r,g,b)####Sets the foreground color from the given r,g,b arguments."+linSeparator + 
-			"Color.setBackgroundValue(value)####Sets the background from the given numeric value."+linSeparator +
-			"Color.setBackground(r,b,g)####Sets the background color from the given r,g,b arguments."+linSeparator +  
-			"Color.setForegroundValue(value)####Sets the foreground from the given numeric value."+linSeparator +
-			"Color.setForeground(string)####Sets the foreground color from the given string."+linSeparator +
-			"Color.setBackground(string)####Sets the background color from the given string."+linSeparator +
-			"Color.setLut(reds, greens, blues)####Sets the LUT color from the given reds, greens, blues arguments."+linSeparator +
+			"Color.set(string)####Sets the drawing color, where 'string' is \"red\", \"blue\", etc., or a hex value like \"#ff0000\"."+linSeparator +
+			"Color.set(value)####Sets the drawing color. For 8 bit images, 0<=value<=255. For 16 bit images, 0<=value<=65535. With RGB images, use hex constants (e.g., 0xff0000 for red)."+linSeparator +
+			"Color.background####Returns the background color as a string, for example \"cyan\" or \"#00ffff\"."+linSeparator +
+			"Color.foreground####Returns the foreground color as a string, for example \"red\" or \"#ff0000\"."+linSeparator +
+			"Color.setForeground(r,g,b)####Sets the foreground color, where r, g, and b are >= 0 and <= 255."+linSeparator + 
+			"Color.setBackgroundValue(value)####Sets the background color, where 'value' is a number."+linSeparator +
+			"Color.setBackground(r,b,g)####Sets the background color, where r, g, and b are >= 0 and <= 255."+linSeparator +  
+			"Color.setForegroundValue(value)####Sets the foreground color, where 'value' is a number."+linSeparator +
+			"Color.setForeground(string)####Sets the foreground color, where 'string' is \"red\", \"blue\", etc., or a hex value like \"#ff0000\"."+linSeparator +
+			"Color.setBackground(string)####Sets the background color, where 'string' is \"red\", \"blue\", etc., or a hex value like \"#ff0000\"."+linSeparator +
+			"Color.setLut(reds, greens, blues)####Creates a new lookup table and assigns it to the current image. Three input arrays are required, each containing 256 intensity values."+linSeparator +
 			"Color.getLut(reds, greens, blues)####Returns three arrays containing the red, green and blue intensity values from the current lookup table. See the LookupTables macros for examples."+linSeparator +
-			"Color.toArray(color)####Returns the color array."+linSeparator +
-			"Color.toString(r,g,b)####Returns a string representation of the color."+linSeparator +
+			"Color.toArray(color)####Converts a color (e.g., \"red\" or \"#ff0000\") to a three element array."+linSeparator +
+			"Color.toString(r,g,b)####Converts an r,g,b color to a string."+linSeparator +
 			"d2s(n,decimalPlaces)####Converts the number n into a string using the specified number of decimal places. Note that d2s stands for \"double to string\". This function will probably be replaced by one with a better name."+linSeparator +
 			"Dialog.create(\"Title\")####Creates a dialog box with the specified title. Call Dialog.addString(),Dialog.addNumber(),etc. to add components to the dialog. Call Dialog.show() to display the dialog and Dialog.getString(),Dialog.getNumber(),etc. to retrieve the values entered by the user. Refer to the DialogDemo macro for an example."+linSeparator+
 			"Dialog.addFile(label,defaultPath)####Adds a file field and \"Browse\" button. The field width is determined by the length of 'defaultPath', with a minimum of 25 columns. Use Dialog getString to retrieve the file path. Requires 1.53d.####"+linSeparator + 
@@ -241,9 +243,11 @@ public class IJMacroFunctions {
 			"getWidth()####Returns the width in pixels of the current image."+linSeparator + 
 			"getZoom()####Returns the magnification of the active image,a number in the range 0.03125 to 32.0 (3.1% to 3200%)."+linSeparator +
 			"GenericDialog.addFileField()####Adds a file field to the Generic Dialog."+linSeparator + 
-			"IJ.checksum(\"md5 file\",path)####Returns the MD5 (or SHA-256 - \"SHA-256 file\") checksum from a string or file."+linSeparator + 
+			"IJ.checksum(\"MD5 string\", string)####Returns the MD5 (or SHA-256) checksum from a string."+linSeparator + 
+			"IJ.checksum(\"MD5 file\",filepath)####Returns the MD5 (or SHA-256 - \"SHA-256 file\") checksum from a file. If 'filepath' is a directory or invalid, \"0\" is returned."+linSeparator + 
 			"IJ.deleteRows(index1,index2)####Deletes rows index1 through index2 in the results table."+linSeparator + 
 			"IJ.getToolName()####Returns the name of the currently selected tool. See also: setTool."+linSeparator + 
+			"IJ.getFullVersion####Returns the ImageJ version and build number as a string (e.g., \"1.52d11\")."+linSeparator + 
 			"IJ.freeMemory()####Returns the memory status string (e.g.,\"2971K of 658MB (<1%)\") that is displayed when the users clicks in the ImageJ status bar."+linSeparator + 
 			"IJ.currentMemory()####Returns,as a string,the amount of memory in bytes currently used by ImageJ."+linSeparator + 
 			"IJ.log(string)####Displays string in the Log window."+linSeparator + 

@@ -2285,7 +2285,10 @@ public class ImagePlus implements ImageObserver, Measurements, Cloneable {
 				}
 			}
 			if (Prefs.pointAutoNextSlice && getStackSize() > 1) {
+				boolean order = Prefs.reverseNextPreviousOrder;
+				Prefs.reverseNextPreviousOrder = true;
 				IJ.run(this, "Next Slice [>]", "");
+				Prefs.reverseNextPreviousOrder = order;
 				deleteRoi();
 			}
 			break;
