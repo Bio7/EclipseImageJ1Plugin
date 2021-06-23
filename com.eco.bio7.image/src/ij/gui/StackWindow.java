@@ -198,7 +198,8 @@ public class StackWindow extends ImageWindow
 				if (t == imp.getFrame() && e.getAdjustmentType() == AdjustmentEvent.TRACK)
 					return;
 			}
-			updatePosition();
+			slice = (t-1)*nChannels*nSlices + (z-1)*nChannels + c;
+			//System.out.println("notify: "+slice);
 			notify();
 		}
 		if (!running)
@@ -222,11 +223,6 @@ public class StackWindow extends ImageWindow
 			SyncWindows.setT(this, tSelector.getValue());
 		else
 			throw new RuntimeException("Unknownsource:" + source);
-	}
-
-	void updatePosition() {
-		slice = (t - 1) * nChannels * nSlices + (z - 1) * nChannels + c;
-		imp.updatePosition(c, z, t);
 	}
 
 	public void actionPerformed(ActionEvent e) {
@@ -309,11 +305,14 @@ public class StackWindow extends ImageWindow
 			}
 			if (done)
 				return;
+			//System.out.println("setSlice: "+slice);
 			if (slice > 0) {
 				int s = slice;
 				slice = 0;
-				if (s != imp.getCurrentSlice())
+				if (s!=imp.getCurrentSlice()) {
+					imp.updatePosition(c, z, t);
 					setSlice(imp, s);
+				}
 			}
 		}
 	}
@@ -373,7 +372,8 @@ public class StackWindow extends ImageWindow
 			tSelector.setValue(frame);
 			SyncWindows.setT(this, frame);
 		}
-		updatePosition();
+		this.slice = (t-1)*nChannels*nSlices + (z-1)*nChannels + c;
+		imp.updatePosition(c, z, t);
 		if (this.slice > 0) {
 			int s = this.slice;
 			this.slice = 0;

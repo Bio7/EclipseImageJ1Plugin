@@ -125,7 +125,7 @@ public class Prefs {
 	/**
 	 * Only show ROIs associated with current slice in Roi Manager "Show All" mode.
 	 */
-	public static boolean showAllSliceOnly;
+	public static boolean showAllSliceOnly = true;
 	/** Include column headers when copying tables to clipboard. */
 	public static boolean copyColumnHeaders;
 	/** Do not include row numbers when copying tables to clipboard. */
