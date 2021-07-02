@@ -198,8 +198,7 @@ public class StackWindow extends ImageWindow
 				if (t == imp.getFrame() && e.getAdjustmentType() == AdjustmentEvent.TRACK)
 					return;
 			}
-			slice = (t-1)*nChannels*nSlices + (z-1)*nChannels + c;
-			//System.out.println("notify: "+slice);
+			slice = (t-1)*nChannels*nSlices + (z-1)*nChannels + c;		
 			notify();
 		}
 		if (!running)
@@ -305,7 +304,6 @@ public class StackWindow extends ImageWindow
 			}
 			if (done)
 				return;
-			//System.out.println("setSlice: "+slice);
 			if (slice > 0) {
 				int s = slice;
 				slice = 0;

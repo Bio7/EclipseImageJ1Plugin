@@ -97,7 +97,7 @@ public class ImageJ extends Frame implements ActionListener, MouseListener, KeyL
 	 * string.
 	 */
 	public static final String VERSION = "1.53k";
-	public static final String BUILD = "11";
+	public static final String BUILD = "14";
 	/*Changed for Bio7!*/
 	public static Color backgroundColor;
 	/** SansSerif, 12-point, plain font. */
@@ -269,10 +269,15 @@ public class ImageJ extends Frame implements ActionListener, MouseListener, KeyL
 		/*if (IJ.isMacintosh() && applet == null) {
 		
 			try {
-				//IJ.runPlugIn("ij.plugin.MacAdapter", "");
+				if (IJ.javaVersion()>8) // newer JREs use different drag-drop, about mechanism
+					IJ.runPlugIn("ij.plugin.MacAdapter9", "");
+				else
+					IJ.runPlugIn("ij.plugin.MacAdapter", "");
 			} catch (Throwable e) {
 				
 			}
+			
+			
 		
 		}*/
 		if (applet == null)
