@@ -11,7 +11,6 @@ import java.awt.Graphics2D;
 import java.awt.Menu;
 import java.awt.MenuBar;
 import java.awt.MenuItem;
-import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.PopupMenu;
 import java.awt.RenderingHints;
@@ -28,22 +27,11 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.Hashtable;
 import java.util.Locale;
+import java.util.Timer;
 import java.util.TimerTask;
-
-import ij.plugin.frame.*;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
-import javax.swing.Timer;
-
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.MenuEvent;
-import org.eclipse.swt.events.MenuListener;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
-
 import com.eco.bio7.ImageJPluginActions.ImageJContextMenuAction;
-import com.eco.bio7.ImageJPluginActions.ImageJSubmenu;
 import com.eco.bio7.image.Util;
 import ij.IJ;
 import ij.IJEventListener;
@@ -54,6 +42,9 @@ import ij.Prefs;
 import ij.WindowManager;
 import ij.macro.Program;
 import ij.plugin.MacroInstaller;
+import ij.plugin.frame.ColorPicker;
+import ij.plugin.frame.Editor;
+import ij.plugin.frame.Recorder;
 import ij.plugin.tool.MacroToolRunner;
 import ij.plugin.tool.PlugInTool;
 
@@ -1607,7 +1598,7 @@ public class Toolbar extends JPanel implements MouseListener, MouseMotionListene
 		}
 		if (!isRightClick && longClickDelay>0) {
 			if (pressTimer==null)
-				pressTimer = new java.util.Timer();			
+				pressTimer = new Timer();			
 			pressTimer.schedule(new TimerTask() {
 				public void run() {
 					if (pressTimer != null) {
