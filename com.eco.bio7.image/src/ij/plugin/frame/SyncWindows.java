@@ -237,7 +237,7 @@ public class SyncWindows extends PlugInFrame implements
 
 		// get ImageCanvas that received event
 		ImageCanvas icc = (ImageCanvas) e.getSource();
-		ImageWindow iwc = (ImageWindow) icc.getParent();
+		ImageWindow iwc = (ImageWindow) icc.getImage().getWindow();
 
 		// Draw new cursor box in each synchronized window.
 		// and pass on mouse moved event
@@ -292,7 +292,7 @@ public class SyncWindows extends PlugInFrame implements
 
 		// get ImageCanvas that received event
 		ImageCanvas icc = (ImageCanvas) e.getSource();
-		ImageWindow iwc = (ImageWindow) icc.getParent();
+		ImageWindow iwc = (ImageWindow) icc.getImage().getWindow();
 
 		// Draw new cursor box in each synchronized window.
 		// and pass on mouse dragged event
@@ -348,7 +348,7 @@ public class SyncWindows extends PlugInFrame implements
 
 		// get ImageCanvas that received event
 		ImageCanvas icc = (ImageCanvas) e.getSource();
-		ImageWindow iwc = (ImageWindow) icc.getParent();
+		ImageWindow iwc = (ImageWindow) icc.getImage().getWindow();
 
 		for(int n=0; n<vwins.size();++n) {
 			// to keep ImageJ from freezing when a mouse event is processed on exit
@@ -384,7 +384,7 @@ public class SyncWindows extends PlugInFrame implements
 
 		// get ImageCanvas that received event
 		ImageCanvas icc = (ImageCanvas) e.getSource();
-		ImageWindow iwc = (ImageWindow) icc.getParent();
+		ImageWindow iwc = (ImageWindow) icc.getImage().getWindow();
 
 		for(int n=0; n<vwins.size();++n) {
 			// to keep ImageJ from freezing when a mouse event is processed on exit
@@ -422,7 +422,7 @@ public class SyncWindows extends PlugInFrame implements
 
 		// get ImageCanvas that received event
 		ImageCanvas icc = (ImageCanvas) e.getSource();
-		ImageWindow iwc = (ImageWindow) icc.getParent();
+		ImageWindow iwc = (ImageWindow) icc.getImage().getWindow();
 
 		for(int n=0; n<vwins.size();++n) {
 			// to keep ImageJ from freezing when a mouse event is processed on exit
@@ -468,7 +468,7 @@ public class SyncWindows extends PlugInFrame implements
 		// Current window already received mouse event.
 		// get ImageCanvas that received event
 		ImageCanvas icc = (ImageCanvas) e.getSource();
-		ImageWindow iwc = (ImageWindow) icc.getParent();
+		ImageWindow iwc = (ImageWindow) icc.getImage().getWindow();
 
 		for(int n=0; n<vwins.size();++n) {
 			// to keep ImageJ from freezing when a mouse event is processed on exit
@@ -513,7 +513,7 @@ public class SyncWindows extends PlugInFrame implements
 
 		// get ImageCanvas that received event
 		ImageCanvas icc = (ImageCanvas) e.getSource();
-		ImageWindow iwc = (ImageWindow) icc.getParent();
+		ImageWindow iwc = (ImageWindow) icc.getImage().getWindow();
 
 		for(int n=0; n<vwins.size();++n) {
 			// to keep ImageJ from freezing when a mouse event is processed on exit
