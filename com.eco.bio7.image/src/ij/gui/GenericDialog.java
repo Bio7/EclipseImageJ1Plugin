@@ -1576,6 +1576,10 @@ public class GenericDialog extends Dialog implements ActionListener, TextListene
 			String cmd = Recorder.getCommand();
 			if (cmd != null && cmd.equals("Calibrate..."))
 				text2 = text2.replace('\n', ' ');
+			if (cmd!=null && cmd.equals("Convolve...")){
+				if (!text2.endsWith("\n"))
+					text2 += "\n";
+			}
 			text2 = Recorder.fixString(text2);
 			Recorder.recordOption(key, text2);
 		}

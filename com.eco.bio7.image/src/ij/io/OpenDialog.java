@@ -117,6 +117,8 @@ public class OpenDialog {
 	void jOpenDispatchThread(String title, String path, final String fileName) {
 		JFileChooser fc = new JFileChooser();
 		fc.setDialogTitle(title);
+		fc.setDragEnabled(true);
+		fc.setTransferHandler(new DragAndDropHandler(fc));
 		File fdir = null;
 		if (path != null)
 			fdir = new File(path);
@@ -146,6 +148,8 @@ public class OpenDialog {
 				public void run() {
 					JFileChooser fc = new JFileChooser();
 					fc.setDialogTitle(title);
+					fc.setDragEnabled(true);
+					fc.setTransferHandler(new DragAndDropHandler(fc));
 					File fdir = null;
 					if (path != null)
 						fdir = new File(path);
