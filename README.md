@@ -1,6 +1,13 @@
 # EclipseImageJ1Plugin
 A repository for an Eclipse ImageJ1 plugin contributed from the Bio7 project.
 
+## New in 1.53m (1.53.m7):
+
+1. Updated the ImageJ plugin to version 1.53m7
+2. Improved the "Synchronize Windows" action for detached views
+3. Added the latest  macro templates
+4. Fixed some minor bugs 
+
 ## New in 1.53j (1.53.j43 (2)):
 
 1. Improved the 'Detach Images' menu action
