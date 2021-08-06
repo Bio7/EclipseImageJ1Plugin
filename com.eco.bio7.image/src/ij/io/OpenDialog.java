@@ -20,7 +20,7 @@ import com.eco.bio7.image.Util;
 
 /**
  * This class displays a dialog window from which the user can select an input
- * file.
+ * file. 
  */
 public class OpenDialog {
 
