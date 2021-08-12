@@ -95,6 +95,7 @@ public class TextPanel extends Panel implements AdjustmentListener, MouseListene
 
 	void addPopupMenu() {
 		pm = new PopupMenu();
+		GUI.scalePopupMenu(pm);
 		addPopupItem("Save As...");
 		pm.addSeparator();
 		addPopupItem("Cut");

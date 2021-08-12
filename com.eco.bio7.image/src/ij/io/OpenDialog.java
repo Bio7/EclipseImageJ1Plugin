@@ -18,10 +18,9 @@ import org.eclipse.ui.PlatformUI;
 
 import com.eco.bio7.image.Util;
 
-/**
- * This class displays a dialog window from which the user can select an input
- * file. 
- */
+/** This class displays a dialog window from 
+ * which the user can select an input file.
+*/ 
 public class OpenDialog {
 
 	private String dir;
