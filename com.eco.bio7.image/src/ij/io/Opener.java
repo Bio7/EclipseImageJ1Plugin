@@ -412,6 +412,13 @@ public class Opener {
 			return null;
 		}
 	}
+	
+	public ImagePlus openTempImage(String directory, String name) {
+		ImagePlus imp = openImage(directory, name);
+		if (imp!=null)
+			imp.setTemporary();
+		return imp;
+	}
 
 	// Call HandleExtraFileTypes plugin to see if it can handle unknown formats
 	// or files in TIFF format that the built in reader is unable to open.

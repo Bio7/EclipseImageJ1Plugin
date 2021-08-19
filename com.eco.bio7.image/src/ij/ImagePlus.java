@@ -104,6 +104,7 @@ public class ImagePlus implements ImageObserver, Measurements, Cloneable {
 	private Plot plot;
 	private Properties imageProperties;
  	private Color borderColor;
+ 	private boolean temporary;
  	
 	/** Constructs an uninitialized ImagePlus. */
 	public ImagePlus() {
@@ -166,6 +167,14 @@ public class ImagePlus implements ImageObserver, Measurements, Cloneable {
 
 	private void setID() {
 		ID = --currentID;
+	}
+	
+	public void setTemporary() {
+		if (!temporary) {
+			temporary = true;		
+    		currentID++;
+    		ID = -Integer.MAX_VALUE;
+    	}
 	}
 
 	/**
@@ -505,7 +514,7 @@ public class ImagePlus implements ImageObserver, Measurements, Cloneable {
 	 * status bar.
 	 */
 	public void show(String statusMessage) {
-		if (isVisible())
+		if (isVisible() || temporary)
 			return;
 		win = null;
 		if ((IJ.isMacro() && ij == null) || Interpreter.isBatchMode()) {
@@ -3223,6 +3232,8 @@ public class ImagePlus implements ImageObserver, Measurements, Cloneable {
 	}
 
 	protected void notifyListeners(final int id) {
+		if (temporary)
+			return;
 		final ImagePlus imp = this;
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
