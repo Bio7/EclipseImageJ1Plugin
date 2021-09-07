@@ -172,9 +172,9 @@ public class ImagePlus implements ImageObserver, Measurements, Cloneable {
 	public void setTemporary() {
 		if (!temporary) {
 			temporary = true;		
-    		currentID++;
-    		ID = -Integer.MAX_VALUE;
-    	}
+			currentID++;
+			ID = -Integer.MAX_VALUE;
+		}
 	}
 
 	/**
