@@ -885,7 +885,7 @@ public class ImageWindow extends JFrame
 	}
 
 	public void maximize() {
-		if (GenericDialog.getInstance() != null)
+		if (GenericDialog.getInstance()!=null && IJ.isMacOSX() && IJ.isJava18())
 			return; // workaround for OSX/Java 8 maximize bug
 		Rectangle rect = getMaximumBounds();
 		if (IJ.debugMode)

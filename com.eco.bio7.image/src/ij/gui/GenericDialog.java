@@ -86,7 +86,7 @@ public class GenericDialog extends Dialog implements ActionListener, TextListene
 	private String helpURL;
 	private boolean smartRecording;
 	private Vector imagePanels;
-	private static GenericDialog instance;
+	protected static GenericDialog instance;
 	private boolean firstPaint = true;
 	private boolean fontSizeSet;
 	private boolean showDialogCalled;
@@ -1642,8 +1642,7 @@ public class GenericDialog extends Dialog implements ActionListener, TextListene
 			c.gridwidth = addToSameRowCalled ? GridBagConstraints.REMAINDER : 2;
 			c.insets = new Insets(15, 0, 0, 0);
 			add(buttons, c);
-			if (IJ.isMacOSX() && IJ.isJava18())
-				instance = this;
+			instance = this;
 			Font font = getFont();
 			if (!fontSizeSet && font != null && Prefs.getGuiScale() != 1.0) {
 				fontSizeSet = true;

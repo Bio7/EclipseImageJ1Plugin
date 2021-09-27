@@ -305,9 +305,13 @@ class ColorCanvas extends JPanel implements MouseListener, MouseMotionListener {
 			Color c = Toolbar.getBackgroundColor();
 			Toolbar.setBackgroundColor(Toolbar.getForegroundColor());
 			Toolbar.setForegroundColor(c);
+			Recorder.setForegroundColor(Toolbar.getForegroundColor());
+			Recorder.setBackgroundColor(Toolbar.getBackgroundColor());
 		} else if (resetRect.contains(x, y)) {
 			Toolbar.setForegroundColor(Color.white);
 			Toolbar.setBackgroundColor(Color.black);
+			Recorder.setForegroundColor(Color.white);
+			Recorder.setBackgroundColor(Color.black);
 		} else if ((background1Rect.contains(x, y)) || (background2Rect.contains(x, y))) {
 			background = true;
 			if (doubleClick)

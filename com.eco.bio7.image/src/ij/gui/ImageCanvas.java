@@ -1523,7 +1523,7 @@ public class ImageCanvas extends JPanel implements MouseListener, MouseWheelList
 					if ((roi1 == null && (size2 <= 1 || empty)) || unchanged) {
 						if (roi1 == null)
 							imp.deleteRoi();
-						if (!cursorMoved)
+						if (!cursorMoved && Toolbar.getToolId()!=Toolbar.HAND)
 							handlePopupMenu(e);
 					}
 				}

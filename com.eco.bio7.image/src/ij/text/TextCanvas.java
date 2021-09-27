@@ -78,6 +78,7 @@ class TextCanvas extends Canvas {
 		for (; y < iHeight && j < tp.iRowCount; j++, y += tp.iRowHeight) {
 			int x = -tp.iX;
 			for (int i = 0; i < tp.iColCount; i++) {
+				if (i>=tp.iColWidth.length) break;
 				int w = tp.iColWidth[i];
 				/*Changed for Bio7!*/
 				Color b, t;

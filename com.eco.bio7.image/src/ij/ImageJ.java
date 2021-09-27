@@ -97,7 +97,7 @@ public class ImageJ extends Frame implements ActionListener, MouseListener, KeyL
 	 * string.
 	 */
 	public static final String VERSION = "1.53m";
-	public static final String BUILD = "20";
+	public static final String BUILD = "36";
 	/*Changed for Bio7!*/
 	public static Color backgroundColor;
 	/** SansSerif, 12-point, plain font. */
@@ -282,6 +282,10 @@ public class ImageJ extends Frame implements ActionListener, MouseListener, KeyL
 		}*/
 		if (applet == null)
 			IJ.runPlugIn("ij.plugin.DragAndDrop", "");
+		if (!getTitle().contains("Fiji")) {
+			Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());
+			System.setProperty("sun.awt.exception.handler",ExceptionHandler.class.getName());
+		}
 		String str = m.getMacroCount() == 1 ? " macro" : " macros";
 		configureProxy();
 		if (applet == null)
@@ -1148,5 +1152,34 @@ public class ImageJ extends Frame implements ActionListener, MouseListener, KeyL
 		progressBar.init((int) (ProgressBar.WIDTH * scale), (int) (ProgressBar.HEIGHT * scale));
 		pack();
 	}
+	
+	 /** Handles exceptions on the EDT. */
+	  public static class ExceptionHandler implements Thread.UncaughtExceptionHandler {
+
+	    // for EDT exceptions
+	    public void handle(Throwable thrown) {
+	      handleException(Thread.currentThread().getName(), thrown);
+	    }
+
+	    // for other uncaught exceptions
+	    public void uncaughtException(Thread thread, Throwable thrown) {
+	      handleException(thread.getName(), thrown);
+	    }
+
+	    protected void handleException(String tname, Throwable e) {
+	    	if (Macro.MACRO_CANCELED.equals(e.getMessage()))
+				return;
+			CharArrayWriter caw = new CharArrayWriter();
+			PrintWriter pw = new PrintWriter(caw);
+			e.printStackTrace(pw);
+			String s = caw.toString();
+			if (s!=null && s.contains("ij.")) {
+				if (IJ.getInstance()!=null)
+					s = IJ.getInstance().getInfo()+"\n"+s;
+				IJ.log(s);
+			}
+	    }
+
+	  } // inner class ExceptionHandler
 
 }
