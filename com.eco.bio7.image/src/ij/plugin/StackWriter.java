@@ -80,7 +80,6 @@ public class StackWriter implements PlugIn {
 			IJ.error("File>Save As>Image Sequence", "Directory not found: "+directory);
 			return;
 		}
-		
 		int number = 0;
 		if (ndigits<1) ndigits = 1;
 		if (ndigits>8) ndigits = 8;
@@ -123,12 +122,12 @@ public class StackWriter implements PlugIn {
 			}
 			imp2.setProcessor(null, ip);
 			String label2 = stack.getSliceLabel(i);
-			imp2.setProperty("Label", null);
+			imp2.setProp("Slice_Label", null);
 			if (label2!=null) {
 				if (label2.contains("\n"))
 					imp2.setProperty("Info", label2);
 				else
-					imp2.setProperty("Label", label2);;
+					imp2.setProp("Slice_Label", label2);;
 			} else {
 				Properties props = imp2.getProperties();
 				if (props!=null) props.remove("Info");

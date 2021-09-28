@@ -113,8 +113,7 @@ public class StackEditor implements PlugIn {
 		stack.deleteSlice(n);
 		if (stack.size() == 1) {
 			String label = stack.getSliceLabel(1);
-			if (label != null)
-				imp.setProperty("Label", label);
+			if (label!=null) imp.setProp("Slice_Label", label);
 		}
 		imp.setStack(null, stack);
 		if (n-- < 1)
