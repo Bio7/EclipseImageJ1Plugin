@@ -1,3 +1,5 @@
+/*Message Dialog copied from the Bio7 project.
+ * Author: Marcel Austenfeld*/
 package ij.gui;
 
 import java.awt.Frame;
