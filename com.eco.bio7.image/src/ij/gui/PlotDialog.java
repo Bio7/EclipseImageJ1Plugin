@@ -322,8 +322,8 @@ public class PlotDialog implements DialogListener {
 	 * sequence).
 	 */
 	public boolean dialogItemChanged(GenericDialog gd, AWTEvent e) {
-		if (dialogShowing && e == null)
-			return true; //gets called with e=null upon OK; ignore this
+		if (dialogShowing && e==null)
+			return true;	//gets called with e=null upon OK; ignore this
 		boolean livePlot = plot.plotMaker != null;
 
 		if (dialogType == SET_RANGE || dialogType == X_AXIS) {

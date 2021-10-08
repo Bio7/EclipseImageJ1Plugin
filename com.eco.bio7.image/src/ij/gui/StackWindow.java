@@ -54,6 +54,8 @@ public class StackWindow extends ImageWindow
 		ic = imp.getCanvas();
 		if (ic != null)
 			ic.setMaxBounds();
+		if (IJ.isMacro())
+			imp.setDeactivated(); //prepare for waitTillActivated (imp may have been activated before if it gets a new Window now)
 		// show();
 		/* We also add the slice selector here! */
 		swtAwtMainFrameStackWindow = new SwtAwtImageJ(cSelector, zSelector, tSelector, ic, imp, this);// Add
@@ -79,6 +81,8 @@ public class StackWindow extends ImageWindow
 		 * ic = imp.getCanvas(); if (ic != null) ic.setMaxBounds();
 		 */
 		// show();
+		if (IJ.isMacro())
+			imp.waitTillActivated();
 		int previousSlice = imp.getCurrentSlice();
 		if (previousSlice > 1 && previousSlice <= imp.getStackSize())
 			imp.setSlice(previousSlice);

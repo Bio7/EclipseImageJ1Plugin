@@ -425,9 +425,11 @@ public class ImageWindow extends JFrame
 			return;
 		if (textGap != 0) {
 			Insets insets = super.getInsets();
+			Color savec = null;
 			if (imp.isComposite()) {
 				CompositeImage ci = (CompositeImage) imp;
 				if (ci.getMode() == IJ.COMPOSITE) {
+					savec = g.getColor();
 					Color c = ci.getChannelColor();
 					if (Color.green.equals(c))
 						c = new Color(0, 180, 0);
@@ -440,6 +442,8 @@ public class ImageWindow extends JFrame
 				g.setFont(font);
 			}
 			g.drawString(createSubtitle(), insets.left + 5, insets.top + TEXT_GAP);
+			if (savec!=null)
+				g.setColor(savec);
 		}
 	}
 
