@@ -77,7 +77,7 @@ public class Prefs {
 			ENHANCED_LINE_TOOL = 1 << 3, SKIP_RAW_DIALOG = 1 << 4, REVERSE_NEXT_PREVIOUS_ORDER = 1 << 5,
 			AUTO_RUN_EXAMPLES = 1 << 6, SHOW_ALL_POINTS = 1 << 7, DO_NOT_SAVE_WINDOW_LOCS = 1 << 8,
 			JFILE_CHOOSER_CHANGED = 1 << 9, CANCEL_BUTTON_ON_RIGHT = 1 << 10, IGNORE_RESCALE_SLOPE = 1 << 11,
-			NON_BLOCKING_DIALOGS=1<<12, MODERN_MODE=1<<13;
+					NON_BLOCKING_DIALOGS=1<<12, FIXED_DICOM_SCALINGg=1<<13;
 
 	public static final String OPTIONS2 = "prefs.options2";
 
@@ -146,6 +146,8 @@ public class Prefs {
 	public static boolean openDicomsAsFloat;
 	/** Ignore Rescale Slope when opening DICOMs */
 	public static boolean ignoreRescaleSlope;
+	/** Currently not used */	
+	public static boolean fixedDicomScaling;
 	/** Plot rectangular selectons vertically */
 	public static boolean verticalProfile;
 	/** Rotate YZ orthogonal views 90 degrees */
@@ -224,10 +226,9 @@ public class Prefs {
 	public static boolean supportMacroUndo;
 	/** Use NonBlockingGenericDialogs in filters */
 	public static boolean nonBlockingFilterDialogs;
-	/** Currently not used */	
-	public static boolean modernMode;
 	//Save location of moved image windows */	
 	//public static boolean saveImageLocation = true;
+	public static boolean whiteBackgroundSet;
 	static boolean commandLineMacro;
 	static Properties ijPrefs = new Properties();
 	static Properties props = new Properties(ijPrefs);
@@ -624,7 +625,7 @@ public class Prefs {
 		dialogCancelButtonOnRight = (options2 & CANCEL_BUTTON_ON_RIGHT) != 0;
 		ignoreRescaleSlope = (options2 & IGNORE_RESCALE_SLOPE) != 0;
 		nonBlockingFilterDialogs = (options2 & NON_BLOCKING_DIALOGS) != 0;
-		modernMode = (options2&MODERN_MODE)!=0;
+		fixedDicomScaling = (options2&FIXED_DICOM_SCALINGg)!=0;
 	}
 
 	static void saveOptions(Properties prefs) {
@@ -653,7 +654,7 @@ public class Prefs {
 				+ (dialogCancelButtonOnRight ? CANCEL_BUTTON_ON_RIGHT : 0)
 				+ (ignoreRescaleSlope ? IGNORE_RESCALE_SLOPE : 0)
 				+ (nonBlockingFilterDialogs?NON_BLOCKING_DIALOGS:0)
-				+ (modernMode?MODERN_MODE:0);
+				+ (fixedDicomScaling?FIXED_DICOM_SCALINGg:0);
 		prefs.put(OPTIONS2, Integer.toString(options2));
 	}
 
@@ -872,7 +873,10 @@ public class Prefs {
 	public static boolean commandLineMacro() {
 		return commandLineMacro;
 	}
-
-
+	
+	public static void setBlackBackground(boolean bb) {
+		blackBackground = bb;
+		if (!bb) whiteBackgroundSet=true;
+	}
 
 }

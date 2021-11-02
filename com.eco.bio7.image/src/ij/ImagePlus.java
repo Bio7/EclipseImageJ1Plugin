@@ -597,6 +597,7 @@ public class ImagePlus implements ImageObserver, Measurements, Cloneable {
 		long start = System.currentTimeMillis();
 		while (!activated) {
 			IJ.wait(5);
+			if (ij != null && ij.quitting()) return;
 			if ((System.currentTimeMillis()-start)>2000) {
 				WindowManager.setTempCurrentImage(this);
 				break; // 2 second timeout
@@ -604,7 +605,7 @@ public class ImagePlus implements ImageObserver, Measurements, Cloneable {
 		}
 	}
 
-	/** Called by ImageWindow.windowActivated(). */
+	/** Called by ImageWindow.windowActivated(); to end waiting in waitTillActivated. */
 	public void setActivated() {
 		activated = true;
 		if (borderColor!=null && win!=null)
@@ -649,7 +650,17 @@ public class ImagePlus implements ImageObserver, Measurements, Cloneable {
 	 */
 	public void setImage(Image image) {
 		if (image instanceof BufferedImage) {
-			BufferedImage bi = (BufferedImage) image;
+			BufferedImage bi = (BufferedImage)image;			
+			int nBands = bi.getSampleModel().getNumBands();
+			int type = bi.getType();
+			boolean rgb = type==BufferedImage.TYPE_3BYTE_BGR || type==BufferedImage.TYPE_INT_RGB || type==BufferedImage.TYPE_4BYTE_ABGR;
+			if (nBands>1 && !rgb) {
+				ImageStack biStack = new ImageStack(bi.getWidth(), bi.getHeight());			
+				for (int b=0; b<nBands; b++)
+					biStack.addSlice(convertToImageProcessor(bi, b));
+				setImage(new ImagePlus("", biStack));
+				return;
+			}			
 			if (bi.getType() == BufferedImage.TYPE_USHORT_GRAY) {
 				setProcessor(null, new ShortProcessor(bi));
 				return;
@@ -683,6 +694,33 @@ public class ImagePlus implements ImageObserver, Measurements, Cloneable {
 			else
 				repaintWindow();
 		}
+	}
+	
+	/**
+	 * Extract pixels as an an ImageProcessor from a single band of a BufferedImage.
+	 * @param img
+	 * @param band
+	 * @return
+	 */
+	public static ImageProcessor convertToImageProcessor(BufferedImage img, int band) {
+		int w = img.getWidth();
+		int h = img.getHeight();
+		int dataType = img.getSampleModel().getDataType();
+		// Read data as float (no matter what it is - it's the most accuracy ImageJ can provide)
+		FloatProcessor fp = new FloatProcessor(w, h);
+		float[] pixels = (float[])fp.getPixels();
+		img.getRaster().getSamples(0, 0, w, h, band, pixels);
+		// Convert to 8 or 16-bit, if appropriate
+		if (dataType == DataBuffer.TYPE_BYTE) {
+			ByteProcessor bp = new ByteProcessor(w, h);
+			bp.setPixels(0, fp);
+			return bp;
+		} else if (dataType == DataBuffer.TYPE_USHORT) {
+			ShortProcessor sp = new ShortProcessor(w, h);
+			sp.setPixels(0, fp);
+			return sp;
+		} else
+			return fp;
 	}
 
 	/**
@@ -867,14 +905,7 @@ public class ImagePlus implements ImageObserver, Measurements, Cloneable {
 				setOpenAsHyperStack(true);
 			activated = false;
 			win = new StackWindow(this, dimensionsChanged ? null : getCanvas()); // replaces this window
-			if (IJ.isMacro()) { // wait for stack window to be activated
-				long start = System.currentTimeMillis();
-				while (!activated) {
-					IJ.wait(5);
-					if ((System.currentTimeMillis() - start) > 200)
-						break; // 0.2 second timeout
-				}
-			}
+			if (IJ.isMacro()) waitTillActivated(); // wait for stack window to be activated
 			setPosition(1, 1, 1);
 		} else if (newStackSize > 1 && invalidDimensions) {
 			if (isDisplayedHyperStack())

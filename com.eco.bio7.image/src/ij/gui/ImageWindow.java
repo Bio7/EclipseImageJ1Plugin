@@ -202,7 +202,8 @@ public class ImageWindow extends JFrame
 			else
 				ic.update(previousWindow.getCanvas());
 
-			if (!(this instanceof StackWindow || this instanceof PlotWindow)) { // layout now unless components will be added later
+			if (!(this instanceof StackWindow || this instanceof PlotWindow)) { // layout now unless components will be
+																				// added later
 				swtAwtMain = new SwtAwtImageJ(null, null, null, ic, imp, this);
 				/* Add the panel to the tab folder with the image */
 				swtAwtMain.addTab(imp.getTitle());
@@ -224,7 +225,9 @@ public class ImageWindow extends JFrame
 				 * The next seems to be important for Mac. Else at the first zoom level the
 				 * image disapears!
 				 */
-
+				if (IJ.isMacro())
+					imp.setDeactivated(); // prepare for waitTillActivated (imp may have been activated before if it
+											// gets a new Window now)
 				// show();
 			}
 			if (ic.getMagnification() != 0.0)
@@ -258,6 +261,9 @@ public class ImageWindow extends JFrame
 			}
 
 			else {
+				if (IJ.isMacro())
+					imp.setDeactivated(); // prepare for waitTillActivated (imp may have been activated previously and
+											// gets a new Window now)
 
 				if (!(this instanceof StackWindow)) {
 					swtAwtMain = new SwtAwtImageJ(null, null, null, ic, imp, this);
@@ -302,7 +308,8 @@ public class ImageWindow extends JFrame
 				bounds = null;
 			}
 		}
-		// if loc not valid, use screen bounds of visible window (this) or of main window (ij) if not visible yet (updating == false)
+		// if loc not valid, use screen bounds of visible window (this) or of main
+		// window (ij) if not visible yet (updating == false)
 		Rectangle maxWindow = bounds != null ? bounds : GUI.getMaxWindowBounds(updating ? this : ij);
 
 		if (WindowManager.getWindowCount() <= 1)
@@ -388,7 +395,7 @@ public class ImageWindow extends JFrame
 		/* Changed for Bio7! */
 		Rectangle bounds = CanvasView.getCanvas_view().getCurrent().getBounds();
 
-		//return GUI.getMaxWindowBounds(new Point(xloc, yloc));
+		// return GUI.getMaxWindowBounds(new Point(xloc, yloc));
 
 		return bounds;
 	}
@@ -442,7 +449,7 @@ public class ImageWindow extends JFrame
 				g.setFont(font);
 			}
 			g.drawString(createSubtitle(), insets.left + 5, insets.top + TEXT_GAP);
-			if (savec!=null)
+			if (savec != null)
 				g.setColor(savec);
 		}
 	}
@@ -639,17 +646,17 @@ public class ImageWindow extends JFrame
 
 			}
 		});
-		//System.out.println(this.getImagePlus().getTitle());
+		// System.out.println(this.getImagePlus().getTitle());
 		/*Get the specific embedded window instance and close it!*/
 		if (imageInTab) {
-			//ImageWindow win = (ImageWindow) ve.get(1);
+			// ImageWindow win = (ImageWindow) ve.get(1);
 			win2.bio7TabClose(true);
 		} else {
 			/*Check if we have images in the detached views!*/
 			boolean isDetachedWin = IJTabs.closeDetachedWindowView(this);
 			if (Util.getOS().equals("Mac")) {
 				if (isDetachedWin) {
-                    /*Avoid deadlock situation by disposing the JFrame!*/
+					/*Avoid deadlock situation by disposing the JFrame!*/
 					bio7TabClose(false);
 					java.awt.EventQueue.invokeLater(new Runnable() {
 						public void run() {
@@ -658,8 +665,7 @@ public class ImageWindow extends JFrame
 					});
 
 				}
-			}
-			else {
+			} else {
 				java.awt.EventQueue.invokeLater(new Runnable() {
 					public void run() {
 						dispose();
@@ -751,13 +757,13 @@ public class ImageWindow extends JFrame
 							Color c = ci.getChannelColor();
 							if (Color.green.equals(c))
 								c = new Color(0, 180, 0);
-							//g.setColor(c);
+							// g.setColor(c);
 							int red = c.getRed();
 							int green = c.getGreen();
 							int blue = c.getBlue();
 							org.eclipse.swt.graphics.Color color = new org.eclipse.swt.graphics.Color(display,
 									new RGB(red, green, blue));
-							//CanvasView.tabFolder.setSelectionForeground(color);
+							// CanvasView.tabFolder.setSelectionForeground(color);
 							/*On MacOSX we get NullPointerException when we call the status line first. 
 							 * So we place the call to the status line here!*/
 							CanvasView canvasView = CanvasView.getCanvas_view();
@@ -788,7 +794,7 @@ public class ImageWindow extends JFrame
 		 * Functions class method: displayBatchModeImage in a macro when calling
 		 * setBatchMode(false)
 		 * */
-		//System.out.println("Show");
+		// System.out.println("Show");
 	}
 
 	public void updateImage(ImagePlus imp) {
@@ -889,7 +895,7 @@ public class ImageWindow extends JFrame
 	}
 
 	public void maximize() {
-		if (GenericDialog.getInstance()!=null && IJ.isMacOSX() && IJ.isJava18())
+		if (GenericDialog.getInstance() != null && IJ.isMacOSX() && IJ.isJava18())
 			return; // workaround for OSX/Java 8 maximize bug
 		Rectangle rect = getMaximumBounds();
 		if (IJ.debugMode)
@@ -1072,10 +1078,10 @@ public class ImageWindow extends JFrame
 	 */
 	public void setLocationAndSize(int x, int y, int width, int height) {
 		/*Changed for Bio7 for detached views only!*/
-		//setBounds(x, y, width, height);
-		//getCanvas().fitToWindow();
+		// setBounds(x, y, width, height);
+		// getCanvas().fitToWindow();
 		initialLoc = null;
-		//pack();
+		// pack();
 		String idValue = Integer.toString(getImagePlus().getID());
 		IJTabs.setSecondaryViewShellLocAndSize(idValue, new org.eclipse.swt.graphics.Rectangle(x, y, width, height));
 	}

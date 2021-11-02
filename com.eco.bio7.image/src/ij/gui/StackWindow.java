@@ -52,10 +52,10 @@ public class StackWindow extends ImageWindow
 
 		/* Changed for Bio7! */
 		ic = imp.getCanvas();
-		if (ic != null)
+		if (ic!=null)
 			ic.setMaxBounds();
-		if (IJ.isMacro())
-			imp.setDeactivated(); //prepare for waitTillActivated (imp may have been activated before if it gets a new Window now)
+		if (IJ.isMacro() && !isVisible()) //'super' may have called show()
+			imp.setDeactivated(); //prepare for waitTillActivated (imp may have been activated before)
 		// show();
 		/* We also add the slice selector here! */
 		swtAwtMainFrameStackWindow = new SwtAwtImageJ(cSelector, zSelector, tSelector, ic, imp, this);// Add
