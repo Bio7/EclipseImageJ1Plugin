@@ -146,7 +146,7 @@ public class Prefs {
 	public static boolean openDicomsAsFloat;
 	/** Ignore Rescale Slope when opening DICOMs */
 	public static boolean ignoreRescaleSlope;
-	/** Currently not used */	
+	/** Assume DICOM volumes use identical RescaleSlope and RescaleIntercept across all slices */	
 	public static boolean fixedDicomScaling;
 	/** Plot rectangular selectons vertically */
 	public static boolean verticalProfile;
@@ -228,7 +228,6 @@ public class Prefs {
 	public static boolean nonBlockingFilterDialogs;
 	//Save location of moved image windows */	
 	//public static boolean saveImageLocation = true;
-	public static boolean whiteBackgroundSet;
 	static boolean commandLineMacro;
 	static Properties ijPrefs = new Properties();
 	static Properties props = new Properties(ijPrefs);
@@ -872,11 +871,6 @@ public class Prefs {
 	
 	public static boolean commandLineMacro() {
 		return commandLineMacro;
-	}
-	
-	public static void setBlackBackground(boolean bb) {
-		blackBackground = bb;
-		if (!bb) whiteBackgroundSet=true;
 	}
 
 }

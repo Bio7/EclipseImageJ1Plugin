@@ -60,7 +60,7 @@ public class ContrastAdjuster extends PlugInDialog implements Runnable,
 	Font sanFont = IJ.font12;
 	int channels = 7; // RGB
 	Choice choice;
-	private String blankMinLabel = "-------";
+	private String blankMinLabel = "--------";
 	private String blankMaxLabel = "--------";
 	private double scale = Prefs.getGuiScale();
 	private int digits;
@@ -129,7 +129,7 @@ public class ContrastAdjuster extends PlugInDialog implements Runnable,
 			if (IJ.debugMode) maxLabel.setBackground(Color.yellow);
 			panel.add("East", maxLabel);
 			add(panel);
-			blankMinLabel = "       ";
+			blankMinLabel = "        ";
 			blankMaxLabel = "        ";
 		}
 
