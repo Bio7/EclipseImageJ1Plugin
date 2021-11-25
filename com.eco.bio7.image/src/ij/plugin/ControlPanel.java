@@ -56,7 +56,7 @@ public class ControlPanel implements PlugIn {
 
 	public ControlPanel() {
 		//requireDoubleClick = !(IJ.isWindows() || IJ.isMacintosh());
-		Java2.setSystemLookAndFeel();
+		//Java2.setSystemLookAndFeel();
 	}
 
 
@@ -1088,5 +1088,3 @@ class TreePanel implements
 	private void showHelp() {pcp.showHelp();}
 
 } // TreePanel
-
-
