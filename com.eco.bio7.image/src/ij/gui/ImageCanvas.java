@@ -1562,6 +1562,8 @@ public class ImageCanvas extends JPanel implements MouseListener, MouseWheelList
 		int ox = offScreenX(sx);
 		int oy = offScreenY(sy);
 		Roi roi = imp.getRoi();
+		if (roi!=null && roi.getType()==Roi.COMPOSITE && Toolbar.getToolId()==Toolbar.OVAL && Toolbar.getBrushSize()>0)
+			return; // selection brush tool
 		if (roi != null && (roi.getType() == Roi.POLYGON || roi.getType() == Roi.POLYLINE || roi.getType() == Roi.ANGLE)
 				&& roi.getState() == roi.CONSTRUCTING) {
 			roi.handleMouseUp(sx, sy); // simulate double-click to finalize

@@ -219,7 +219,14 @@ public class GenericDialog extends Dialog implements ActionListener, TextListene
 			columns -= 2;
 		if (columns < 1)
 			columns = 1;
+		boolean scientificNotationAsNeeded = false;
+		if (digits<0) {
+			digits = -digits;
+			scientificNotationAsNeeded = true;
+		}
 		String defaultString = IJ.d2s(defaultValue, digits);
+		if (scientificNotationAsNeeded)
+			defaultString = ij.measure.ResultsTable.d2s(defaultValue, digits);
 		if (Double.isNaN(defaultValue))
 			defaultString = "";
 		TextField tf = new TextField(defaultString, columns);
