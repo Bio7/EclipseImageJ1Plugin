@@ -105,6 +105,7 @@ public class ImagePlus implements ImageObserver, Measurements, Cloneable {
 	private Properties imageProperties;
  	private Color borderColor;
  	private boolean temporary;
+ 	private double defaultMin, defaultMax;
  	
 	/** Constructs an uninitialized ImagePlus. */
 	public ImagePlus() {
@@ -3400,11 +3401,17 @@ public class ImagePlus implements ImageObserver, Measurements, Cloneable {
 	}
 
 	public void resetDisplayRange() {
-		if (imageType == GRAY16 && default16bitDisplayRange >= 8 && default16bitDisplayRange <= 16
-				&& !(getCalibration().isSigned16Bit()))
+		if (defaultMin!=0.0 || defaultMax!=0.0)
+			setDisplayRange(defaultMin, defaultMax);
+		else if (imageType==GRAY16 && default16bitDisplayRange>=8 && default16bitDisplayRange<=16 && !(getCalibration().isSigned16Bit()))
 			ip.setMinAndMax(0, Math.pow(2, default16bitDisplayRange) - 1);
 		else
 			ip.resetMinAndMax();
+	}
+	
+	public void setDefaultDisplayRange(double min, double max) {
+		this.defaultMin = min;
+		this.defaultMax = max;
 	}
 
 	/** Returns 'true' if this image is thresholded. */
