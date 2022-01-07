@@ -115,10 +115,7 @@ public class RoiManager extends PlugInFrame implements ActionListener, ItemListe
 		showWindow();
 	}
 
-	/**
-	 * Constructs an ROIManager without displaying it. The boolean argument is
-	 * ignored.
-	 */
+ 	/** Constructs an ROI Manager without displaying it. The boolean argument is ignored. */
 	public RoiManager(boolean b) {
 		super("ROI Manager");
 		list = new JList();
@@ -227,6 +224,7 @@ public class RoiManager extends PlugInFrame implements ActionListener, ItemListe
 		addPopupItem("Translate...");
 		addPopupItem("Help");
 		addPopupItem("Options...");
+		addPopupItem("ROI Manager Action");
 		add(pm);
 
 	}
@@ -336,6 +334,8 @@ public class RoiManager extends PlugInFrame implements ActionListener, ItemListe
 			options();
 		else if (command.equals("\"Show All\" Color..."))
 			setShowAllColor();
+		else if (command.equals("ROI Manager Action"))
+  			IJ.run(command);
 		allowRecording = false;
 	}
 
@@ -2211,10 +2211,9 @@ public class RoiManager extends PlugInFrame implements ActionListener, ItemListe
 			ignoreInterrupts = false;
 	}
 
-	/**
-	 * Returns a reference to the ROI Manager and opens the "ROI Manager" window if
-	 * it is not already open.
-	 */
+	/** Returns a reference to the ROI Manager if it
+	 * open or opens it if it is not already open.
+	*/
 	public static RoiManager getRoiManager() {
 		if (instance != null)
 			return (RoiManager) instance;
@@ -2559,7 +2558,8 @@ public class RoiManager extends PlugInFrame implements ActionListener, ItemListe
 	public void reset() {
 		if (IJ.isMacOSX() && IJ.isMacro())
 			ignoreInterrupts = true;
-		listModel.removeAllElements();
+		if (listModel!=null)
+			listModel.removeAllElements();
 		overlayTemplate = null;
 		rois.clear();
 		updateShowAll();
@@ -2910,8 +2910,11 @@ public class RoiManager extends PlugInFrame implements ActionListener, ItemListe
 		if (imp == null)
 			return;
 		ImageCanvas ic = imp.getCanvas();
-		if (ic==null)
+		if (ic==null) {
+			if (imp.getOverlay()==null)
+				imp.setOverlay(overlay);
 			return;
+		}
 		ic.setShowAllList(overlay);
 		imp.draw();
 	}
@@ -2927,8 +2930,13 @@ public class RoiManager extends PlugInFrame implements ActionListener, ItemListe
 	public void allowRecording(boolean allow) {
 		this.allowRecording = allow;
 	}
-
-	public void mouseClicked(MouseEvent e) {
+	
+	/* handle double clicking on a ROI. */
+	public void mouseClicked (MouseEvent e) {
+		if (e.getClickCount() == 2 && !e.isConsumed()) {
+			e.consume();
+			IJ.run("ROI Manager Action");
+		}
 	}
 
 	public void mouseEntered(MouseEvent e) {

@@ -10,11 +10,7 @@ import ij.util.Tools;
 import ij.io.*;
 import ij.macro.MacroConstants;
 import ij.plugin.frame.*;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                import java.util.*;
-
-import org.apache.commons.io.FileUtils;
-
-import com.eco.bio7.image.Util;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                import java.util.*;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
 
 /** This plugin implements the Plugins/Macros/Install Macros command. It is also used by the Editor
 	class to install macros in menus and by the ImageJ class to install macros at startup. */
@@ -406,40 +402,22 @@ public class MacroInstaller implements PlugIn, MacroConstants, ActionListener {
 		}
 	}
 	 
-	/*
-	 * Changed for Bio7! ImageJ resources are not wrapped in a *.jar. So we
-	 * calculate and return the paths!
-	 */
-	/** Returns a text file contained in ij.jar. */
-	public String openFromIJJar(String path) {
-
-		String pathDir = Util.getImageJPath().toString();
-		path = pathDir + path;
-
-		/*
-		 * String currentDir = path; // System.out.println(path); pluginsPath = path +
-		 * "plugins/";// plugins dir; macrosPath = path + "macros/";// macros dir;
-		 * ImageJPath = path;
-		 */
-
-		/*
-		 * String text = null; try { InputStream is =
-		 * this.getClass().getResourceAsStream(path); //IJ.log(is+"	"+path); if
-		 * (is==null) return null; InputStreamReader isr = new InputStreamReader(is);
-		 * StringBuffer sb = new StringBuffer(); char [] b = new char [8192]; int n;
-		 * while ((n = isr.read(b)) > 0) sb.append(b,0, n); text = sb.toString(); }
-		 * catch (IOException e) {}
-		 */
-		/* Open the calculated file with the ApacheIO lib! */
-		File file = new File(path);
-		String result = null;
-		try {
-			result = FileUtils.readFileToString(file);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return result;
+	 /** Returns a text file contained in ij.jar. */
+	 public String openFromIJJar(String path) {
+		String text = null;
+		  try {
+			InputStream is = this.getClass().getResourceAsStream(path);
+			if (is==null) return null;
+				InputStreamReader isr = new InputStreamReader(is);
+				StringBuffer sb = new StringBuffer();
+				char [] b = new char [8192];
+				int n;
+				while ((n = isr.read(b)) > 0)
+					 sb.append(b,0, n);
+				text = sb.toString();
+		  }
+		  catch (IOException e) {}
+		  return text;
 	}
 	
 	public boolean runMacroTool(String name) {
@@ -482,6 +460,19 @@ public class MacroInstaller implements PlugIn, MacroConstants, ActionListener {
 		return false;
 	}
 	
+	/** Returns 'true' if the macro command 'name' exists. */
+	public static boolean isMacroCommand(String name) {
+		if (instance==null)
+			return false;
+		if (name.startsWith(commandPrefixS))
+			name = name.substring(1);
+		for (int i=0; i<instance.nMacros; i++) {
+			if (name.equals(instance.macroNames[i]))
+				return true;
+		}
+		return false;
+	}
+
 	public static void runMacroShortcut(String name) {
 		if (instance==null)
 			return;
@@ -567,7 +558,4 @@ public class MacroInstaller implements PlugIn, MacroConstants, ActionListener {
 		autoRunPgm = null;
 	}
 
-} 
-
-
-
+}

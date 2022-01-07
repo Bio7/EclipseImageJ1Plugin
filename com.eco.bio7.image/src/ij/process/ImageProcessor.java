@@ -44,10 +44,13 @@ public abstract class ImageProcessor implements Cloneable {
 
 	/** Modified isodata method used in Image/Adjust/Threshold tool */
 	public static final int ISODATA2 = 1;
+	
+	/** Composite image projection modes. */
+	public static final int UPDATE_RED=1, UPDATE_GREEN=2, UPDATE_BLUE=3, SET_FIRST_CHANNEL=4,
+		SUM_PROJECTION=5, MAX_PROJECTION=6, MIN_PROJECTION=7, INVERT_PROJECTION=8;
 
 	/** Interpolation methods */
 	public static final int NEAREST_NEIGHBOR=0, NONE=0, BILINEAR=1, BICUBIC=2;
-
 	public static final int BLUR_MORE=0, FIND_EDGES=1, MEDIAN_FILTER=2, MIN=3, MAX=4, CONVOLVE=5;
 	static public final int RED_LUT=0, BLACK_AND_WHITE_LUT=1, NO_LUT_UPDATE=2, OVER_UNDER_LUT=3;
 	static final int INVERT=0, FILL=1, ADD=2, MULT=3, AND=4, OR=5,
@@ -2625,8 +2628,11 @@ public abstract class ImageProcessor implements Cloneable {
 		return 255.0;
 	}
 
-	/** CompositeImage calls this method to generate an updated color image. */
-	public void updateComposite(int[] rgbPixels, int channel) {
+	/** This method is used by CompositeImage.updateImage()
+	 * to create RGB images (for display) of a multi-channel
+	 * composite images.
+	*/
+	public void updateComposite(int[] rgbPixels, int mode) {
 		int redValue, greenValue, blueValue;
 		int size = width*height;
 		if (bytes==null || !lutAnimation)
@@ -2635,31 +2641,28 @@ public abstract class ImageProcessor implements Cloneable {
 			makeDefaultColorModel();
 		if (reds==null || cm!=cm2)
 			updateLutBytes();
-		switch (channel) {
-			case 1: // update red channel
+		switch (mode) {
+			case UPDATE_RED: // update red channel
 				for (int i=0; i<size; i++)
-					rgbPixels[i] = (rgbPixels[i]&0xff00ffff) | reds[bytes[i]&0xff];
+					rgbPixels[i] = (rgbPixels[i]&0xff00ffff) | (reds[bytes[i]&0xff]);
 				break;
-			case 2: // update green channel
+			case UPDATE_GREEN: // update green channel
 				for (int i=0; i<size; i++)
-					rgbPixels[i] = (rgbPixels[i]&0xffff00ff) | greens[bytes[i]&0xff];
+					rgbPixels[i] = (rgbPixels[i]&0xffff00ff) | (greens[bytes[i]&0xff]);
 				break;
-			case 3: // update blue channel
+			case UPDATE_BLUE: // update blue channel
 				for (int i=0; i<size; i++)
 					rgbPixels[i] = (rgbPixels[i]&0xffffff00) | blues[bytes[i]&0xff];
 				break;
-			case 4: // get first channel
+			case SET_FIRST_CHANNEL:
 				for (int i=0; i<size; i++) {
-					redValue = reds[bytes[i]&0xff];
-					greenValue = greens[bytes[i]&0xff];
-					blueValue = blues[bytes[i]&0xff];
-					rgbPixels[i] = redValue | greenValue | blueValue;
+					int index = bytes[i]&0xff;
+					rgbPixels[i] = reds[index] | greens[index] | blues[index];
 				}
 				break;
-			case 5: // merge next channel
-				int pixel;
+			case SUM_PROJECTION: // default up to v1.53o
 				for (int i=0; i<size; i++) {
-					pixel = rgbPixels[i];
+					int pixel = rgbPixels[i];
 					redValue = (pixel&0x00ff0000) + reds[bytes[i]&0xff];
 					greenValue = (pixel&0x0000ff00) + greens[bytes[i]&0xff];
 					blueValue = (pixel&0x000000ff) + blues[bytes[i]&0xff];
@@ -2669,9 +2672,61 @@ public abstract class ImageProcessor implements Cloneable {
 					rgbPixels[i] = redValue | greenValue | blueValue;
 				}
 				break;
+			case MAX_PROJECTION: // default with v1.53o and later
+				for (int i=0; i<size; i++) {
+					int pixel = rgbPixels[i];
+					int index = bytes[i]&0xff;
+					redValue = reds[index]&0x00ff0000;
+					if (redValue>(pixel&0x00ff0000))
+						rgbPixels[i] = (rgbPixels[i]&0xff00ffff) | redValue;
+					greenValue = greens[index]&0x0000ff00;
+					if (greenValue>(pixel&0x0000ff00))
+						rgbPixels[i] = (rgbPixels[i]&0xffff00ff) | greenValue;
+					blueValue = blues[index]&0xff;
+					if (blueValue>(pixel&0xff))
+						rgbPixels[i] = (rgbPixels[i]&0xffffff00) | blueValue;
+				}
+				break;
+			case MIN_PROJECTION: 
+				int pixel;
+				for (int i=0; i<size; i++) {
+					pixel = rgbPixels[i];
+					int index = bytes[i]&0xff;
+					redValue = reds[index]&0x00ff0000;
+					if (redValue<(pixel&0x00ff0000))
+						rgbPixels[i] = (rgbPixels[i]&0xff00ffff) | redValue;
+					greenValue = greens[index]&0x0000ff00;
+					if (greenValue<(pixel&0x0000ff00))
+						rgbPixels[i] = (rgbPixels[i]&0xffff00ff) | greenValue;
+					blueValue = blues[index]&0xff;
+					if (blueValue<(pixel&0xff))
+						rgbPixels[i] = (rgbPixels[i]&0xffffff00) | blueValue;
+				}
+				break;
 		}
 		lutAnimation = false;
 	}
+	
+	/*
+	public void updateComposite(short[] red, short[] green, short[] blue, int mode) {
+		int redValue, greenValue, blueValue;
+		int size = width*height;
+		if (bytes==null || !lutAnimation)
+			bytes = create8BitImage();
+		if (cm==null)
+			makeDefaultColorModel();
+		if (reds==null || cm!=cm2)
+			updateLutBytes();
+		for (int i=0; i<size; i++) {
+			int pixel = rgbPixels[i];
+			redValue = reds[bytes[i]&0xff];
+			greenValue = greens[bytes[i]&0xff];
+			blueValue = blues[bytes[i]&0xff];
+			
+		}
+		lutAnimation = false;
+	}
+	*/
 
 	// method and variables used by updateComposite()
 	byte[]  create8BitImage() {return null;}
@@ -2701,7 +2756,7 @@ public abstract class ImageProcessor implements Cloneable {
 	public static void setOverColor(int red, int green, int blue) {
 		overRed=red; overGreen=green; overBlue=blue;
 	}
-
+	
 	/** Set the lower Over/Under thresholding color. */
 	public static void setUnderColor(int red, int green, int blue) {
 		underRed=red; underGreen=green; underBlue=blue;

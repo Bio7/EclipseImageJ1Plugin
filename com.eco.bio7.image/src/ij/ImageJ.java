@@ -97,7 +97,7 @@ public class ImageJ extends Frame implements ActionListener, MouseListener, KeyL
 	 * string.
 	 */
 	public static final String VERSION = "1.53o";
-	public static final String BUILD = "31";
+	public static final String BUILD = "60";
 	/*Changed for Bio7!*/
 	public static Color backgroundColor;
 	/** SansSerif, 12-point, plain font. */
@@ -978,7 +978,7 @@ public class ImageJ extends Frame implements ActionListener, MouseListener, KeyL
 			}
 		}
 		// If existing ImageJ instance, pass arguments to it and quit.
-		boolean passArgs = mode == STANDALONE && !noGUI;
+		boolean passArgs = (mode==IMAGEJ_APP||mode==STANDALONE) && !noGUI;
 		if (IJ.isMacOSX() && !commandLine)
 			passArgs = false;
 		if (passArgs && isRunning(args))
