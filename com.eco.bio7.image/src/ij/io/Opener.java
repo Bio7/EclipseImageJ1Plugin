@@ -18,18 +18,6 @@ import java.util.*;
 import java.util.zip.*;
 import javax.swing.*;
 import javax.swing.filechooser.*;
-
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.jobs.IJobChangeEvent;
-import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.core.runtime.jobs.JobChangeAdapter;
-import org.eclipse.swt.widgets.Display;
-
-import com.eco.bio7.image.CanvasView;
-import com.eco.bio7.image.Util;
-
 import java.awt.event.KeyEvent;
 import javax.imageio.ImageIO;
 import java.lang.reflect.Method;
@@ -120,33 +108,8 @@ public class Opener {
 			WindowManager.checkForDuplicateName = true;
 			if (isRGB48)
 				openRGB48(imp);
-			else {
-				/*Changed for Bio7!*/
-				final ImagePlus impp=imp;
-				Job job = new Job("Open...") {
-					@Override
-					protected IStatus run(IProgressMonitor monitor) {
-						monitor.beginTask("Opening...", IProgressMonitor.UNKNOWN);
-						impp.show(getLoadRate(start,impp));
-						monitor.done();
-						return Status.OK_STATUS;
-					}
-
-				};
-				job.addJobChangeListener(new JobChangeAdapter() {
-					public void done(IJobChangeEvent event) {
-						if (event.getResult().isOK()) {
-
-						} else {
-
-						}
-					}
-				});
-				// job.setUser(true);
-				job.schedule();
-				
-				
-			}
+			else
+				imp.show(getLoadRate(start,imp));
 		} else {
 			switch (this.fileType) {
 				case LUT:
