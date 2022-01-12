@@ -234,11 +234,12 @@ public class IJ {
 			else
 				new PlugInFilterRunner(thePlugIn, commandName, arg);
 		} catch (ClassNotFoundException e) {
-			if (!(className!=null && className.startsWith("ij.plugin.MacAdapter"))) {
-				log("Plugin or class not found: \"" + className + "\"\n(" + e+")");
+			if (!(className != null && className.startsWith("ij.plugin.MacAdapter"))) {
+				log("Plugin or class not found: \"" + className + "\"\n(" + e + ")");
 				String path = Prefs.getCustomPropsPath();
-				if (path!=null);
-					log("Error may be due to custom properties at " + path);
+				if (path != null)
+					;
+				log("Error may be due to custom properties at " + path);
 			}
 		} catch (InstantiationException e) {
 			log("Unable to load plugin (ins)");
@@ -561,7 +562,7 @@ public class IJ {
 			delay = 8000;
 		ImageJ ij = IJ.getInstance();
 		if (flashImage) {
-			//Color previousColor = imp.getWindow().getBackground();
+			// Color previousColor = imp.getWindow().getBackground();
 			/*Changed for Bio7!*/
 			Color previousColor = Util.getSWTBackgroundToAWT();
 
@@ -572,13 +573,13 @@ public class IJ {
 				}
 			});
 			imp.getWindow().setBackground(color);
-			//g.setColor(c);
+			// g.setColor(c);
 			setTabItemColor(color);
 			if (delay > 0) {
 				wait(delay);
 				imp.getWindow().setBackground(previousColor);
 				setTabItemColor(previousTabForegColor);
-				//current.setBackground(previousColor);
+				// current.setBackground(previousColor);
 			}
 
 		} else if (ij != null) {
@@ -882,12 +883,12 @@ public class IJ {
 
 	/**
 	 * Updates the progress bar, where the length of the bar is set to (
-	 * (<code>currentValue+1)/finalValue</code> of the maximum bar length.
-     * The bar is erased if <code>currentValue&gt;=finalValue</code>. 
-     * The bar is updated only if more than 90 ms have passed since the
-     * last call. Displays subordinate progress bars as dots if
-     * 'currentIndex' is negative (example: Plugins/Utilities/Benchmark).
-    */
+	 * (<code>currentValue+1)/finalValue</code> of the maximum bar length. The bar
+	 * is erased if <code>currentValue&gt;=finalValue</code>. The bar is updated
+	 * only if more than 90 ms have passed since the last call. Displays subordinate
+	 * progress bars as dots if 'currentIndex' is negative (example:
+	 * Plugins/Utilities/Benchmark).
+	 */
 	public static void showProgress(int currentIndex, int finalIndex) {
 		if (progressBar != null) {
 			progressBar.show(currentIndex, finalIndex);
@@ -1270,7 +1271,7 @@ public class IJ {
 		case KeyEvent.VK_SPACE: {
 			spaceDown = true;
 			ImageWindow win = WindowManager.getCurrentWindow();
-			//if (win != null) win.getCanvas().setCursor(-1, -1, -1, -1);
+			// if (win != null) win.getCanvas().setCursor(-1, -1, -1, -1);
 			break;
 		}
 		case KeyEvent.VK_ESCAPE: {
@@ -1302,7 +1303,7 @@ public class IJ {
 		case KeyEvent.VK_SPACE:
 			spaceDown = false;
 			ImageWindow win = WindowManager.getCurrentWindow();
-			//if (win != null) win.getCanvas().setCursor(-1, -1, -1, -1);
+			// if (win != null) win.getCanvas().setCursor(-1, -1, -1, -1);
 			break;
 		case ALL_KEYS:
 			shiftDown = controlDown = altDown = spaceDown = false;
@@ -1648,20 +1649,21 @@ public class IJ {
 		}
 		setRawThreshold(img, lowerThreshold, upperThreshold, displayMode);
 	}
-	
-	/** This is a version of setThreshold() that uses raw (uncalibrated)
-	 * values in the range 0-255 for 8-bit images and 0-65535 for 16-bit
-	 * images and the "Red" LUT display mode.
-	*/
+
+	/**
+	 * This is a version of setThreshold() that uses raw (uncalibrated) values in
+	 * the range 0-255 for 8-bit images and 0-65535 for 16-bit images and the "Red"
+	 * LUT display mode.
+	 */
 	public static void setRawThreshold(ImagePlus img, double lowerThreshold, double upperThreshold) {
 		setRawThreshold(img, lowerThreshold, upperThreshold, null);
 	}
 
 	/**
 	 * This is a version of setThreshold() that always uses raw (uncalibrated)
-	 * values  * in the range 0-255 for 8-bit images and 0-65535 for 16-bit images.
-	*/
-	 
+	 * values * in the range 0-255 for 8-bit images and 0-65535 for 16-bit images.
+	 */
+
 	public static void setRawThreshold(ImagePlus img, double lowerThreshold, double upperThreshold,
 			String displayMode) {
 		int mode = ImageProcessor.RED_LUT;
@@ -1793,7 +1795,8 @@ public class IJ {
 			// thread
 			String thread = Thread.currentThread().getName();
 			/*We run in an Eclipse job here so we don't have an "EventQueue"*/
-			//int timeout = thread != null && thread.indexOf("EventQueue") != -1 ? 0 : 1000;
+			// int timeout = thread != null && thread.indexOf("EventQueue") != -1 ? 0 :
+			// 1000;
 			int timeout = thread != null ? 0 : 1000;
 			if (IJ.isMacOSX() && IJ.isJava18() && timeout > 0)
 				timeout = 250; // work around OS X/Java 8 window activation bug
@@ -2072,10 +2075,11 @@ public class IJ {
 	 * ("user.home"), "downloads", "startup", "imagej" (ImageJ directory),
 	 * "plugins", "macros", "luts", "temp", "current", "default", "image" (directory
 	 * active image was loaded from), "file" (directory most recently used to open
-	 * or save a file) or "cwd" (current working directory), otherwise displays a
-	 * dialog and returns the path to the directory selected by the user. Returns
-	 * null if the specified directory is not found or the user cancels the dialog
-	 * box. Also aborts the macro if the user cancels the dialog box.
+	 * or save a file), "cwd" (current working directory) or "preferences" (location
+	 * of "IJ_Prefs.txt" file), otherwise displays a dialog and returns the path to
+	 * the directory selected by the user. Returns null if the specified directory
+	 * is not found or the user cancels the dialog box. Also aborts the macro if the
+	 * user cancels the dialog box.
 	 */
 	public static String getDirectory(String title) {
 		String dir = null;
@@ -2100,6 +2104,8 @@ public class IJ {
 			dir = Prefs.getImageJDir();
 		else if (title2.equals("current") || title2.equals("default"))
 			dir = OpenDialog.getDefaultDirectory();
+		else if (title2.equals("preferences"))
+			dir = Prefs.getPrefsDir();
 		else if (title2.equals("temp")) {
 			dir = System.getProperty("java.io.tmpdir");
 			if (isMacintosh())

@@ -234,6 +234,7 @@ public class Prefs {
 	static String prefsDir;
 	static String imagesURL;
 	static String ImageJDir;
+	static String pluginsDirProperty;
 	static int threads;
 	static int transparentIndex = -1;
 	private static boolean resetPreferences;
@@ -436,6 +437,21 @@ public class Prefs {
 			return ImageJDir + File.separator;
 		else
 			return path + File.separator;
+	}
+	
+	public static String getPluginsDirProperty() {
+		if (pluginsDirProperty==null) {
+			String ijDir = System.getProperty("plugins.dir");
+			if (ijDir!=null) {
+				if (ijDir.endsWith("/")||ijDir.endsWith("\\"))
+					ijDir = ijDir.substring(0, ijDir.length()-1);
+				if (ijDir.endsWith("/plugins")||ijDir.endsWith("\\plugins"))
+					ijDir = ijDir.substring(0, ijDir.length()-8);
+				pluginsDirProperty = ijDir;
+			} else
+				pluginsDirProperty = "";
+		}
+		return pluginsDirProperty.length()>0?pluginsDirProperty:null;
 	}
 
 	/**

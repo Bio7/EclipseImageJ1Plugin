@@ -158,6 +158,7 @@ public class IJMacroFunctions {
 			"getDimensions(width,height,channels,slices,frames)####Returns the dimensions of the current image. Requires 1.38s."+linSeparator + 
 			"getDir(\"cwd\")####Returns the  current working directory."+linSeparator + 
 			"getDir(\"file\")####Returns the  directory of most recently opened or saved file."+linSeparator + 
+			"getDir(\"preferences\")####Returns the preferences directory."+linSeparator + 
 			"getDirectory(string)####Displays a \"choose directory\" dialog and returns the selected directory,or returns the path to a specified directory,such as \"plugins\",\"home\",etc. The returned path ends with a file separator,either \"\\\" (Windows) or \"/\". Returns an empty string if the specified directory is not found or aborts the macro if the user cancels the \"choose directory\" dialog box. For examples,see the GetDirectoryDemo and ListFilesRecursively macros. See also: getFileList and the File functions."+linSeparator+
 			"getDirectory(\"Choose a Directory\")####Displays a file open dialog,using the argument as a title,and returns the path to the directory selected by the user."+linSeparator + 
 			"getDirectory(\"plugins\")####Returns the path to the plugins directory."+linSeparator + 
