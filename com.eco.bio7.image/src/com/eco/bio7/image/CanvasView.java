@@ -585,14 +585,9 @@ public class CanvasView extends ViewPart {
 									dragAndDrop.openFile(new File(fileList[x].toString()));
 									recalculateLayout();
 								} else {
-									Display dis = CanvasView.getParent2().getDisplay();
-									dis.syncExec(new Runnable() {
 
-										public void run() {
+									dragAndDrop.openFile(new File(fileList[x].toString()));
 
-											dragAndDrop.openFile(new File(fileList[x].toString()));
-										}
-									});
 								}
 								/*
 								 * if (javaFXEmbedded) {

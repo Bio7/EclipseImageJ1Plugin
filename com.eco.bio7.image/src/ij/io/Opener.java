@@ -42,7 +42,6 @@ public class Opener {
 	private static boolean openUsingPlugins;
 	private static boolean bioformats;
 	private String url;
- 	private boolean useHandleExtraFileTypes;
 	private static boolean errorMessage;// Changed for Bio7!
     
 	
@@ -101,10 +100,8 @@ public class Opener {
 		ImagePlus imp = null;
 		if (path.endsWith(".txt"))
 			this.fileType = JAVA_OR_TEXT;
-		else {
-			useHandleExtraFileTypes = true;
+		else
 			imp = openImage(path);
-		}
 		if (imp==null && isURL)
 			return;
 		if (imp!=null) {
@@ -376,11 +373,8 @@ public class Opener {
 					return null;
 			case UNKNOWN: case TEXT:
 				imp = null;
-				if (name.endsWith(".lsm"))
-					useHandleExtraFileTypes = true; // use LSM_Reader to opem .lsm files
-				if (!useHandleExtraFileTypes)
+				if (!name.endsWith(".lsm"))  // use LSM_Reader to opem .lsm files
 					imp = openUsingBioFormats(path);
-				useHandleExtraFileTypes = false;
 				if (imp!=null)
 					return imp;
 				else
