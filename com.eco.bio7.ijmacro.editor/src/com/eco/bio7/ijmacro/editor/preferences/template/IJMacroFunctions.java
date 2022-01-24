@@ -124,6 +124,7 @@ public class IJMacroFunctions {
 			"File.openAsString(path)####Opens a text file and returns the contents as a string. Displays a file open dialog box if path is an empty string. Use lines=split(str,\"\\n\") to convert the string to an array of lines."+linSeparator + 
 			"File.openAsRawString(path)####Opens a file and returns up to the first 5,000 bytes as a string. Returns all the bytes in the file if the name ends with \".txt\". Refer to the First10Bytes and ZapGremlins macros for examples."+linSeparator + 
 			"File.openAsRawString(path,count)####Opens a file and returns up to the first count bytes as a string."+linSeparator + 
+			"File.openSequence(path,options)####Opens a file file sequence with the given options."+linSeparator + 
 			"File.openUrlAsString(url)####Opens a URL and returns the contents as a string. Returns an emptly string if the host or file cannot be found. With v1.41i and later,returns \"<Error: message>\" if there any error,including host or file not found."+linSeparator + 
 			"File.openDialog(title)####Displays a file open dialog and returns the path to the file choosen by the user. The macro exits if the user cancels the dialog."+linSeparator + 
 			"File.rename(path1,path2)####Renames,or moves,a file or directory. Returns \"1\" (true) if successful."+linSeparator + 
