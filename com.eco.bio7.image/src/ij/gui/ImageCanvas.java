@@ -393,10 +393,10 @@ public class ImageCanvas extends JPanel implements MouseListener, MouseWheelList
 			Roi roi = overlay.get(i);
 			if (roi == null)
 				break;
+			int c = roi.getCPosition();
+			int z = roi.getZPosition();
+			int t = roi.getTPosition();
 			if (hyperstack) {
-				int c = roi.getCPosition();
-				int z = roi.getZPosition();
-				int t = roi.getTPosition();
 				int position = roi.getPosition();
 				// IJ.log(c+" "+z+" "+t+" "+position+" "+roiManagerShowAllMode);
 				if (position > 0) {
@@ -409,12 +409,18 @@ public class ImageCanvas extends JPanel implements MouseListener, MouseWheelList
 						|| roiManagerShowAllMode)
 					drawRoi(g, roi, drawLabels ? i + LIST_OFFSET : -1);
 			} else {
-				int position = stackSize > 1 ? roi.getPosition() : 0;
+				int position = stackSize>1?roi.getPosition():0;
+				if (position==0 && c==1) {
+					if (z==1)
+						position = t;
+					else if (t==1)
+						position = z;
+				}
 				if (position == 0 && stackSize > 1)
 					position = getSliceNumber(roi.getName());
 				if (position > 0 && imp.getCompositeMode() == IJ.COMPOSITE)
 					position = 0;
-				// IJ.log(position+" "+currentImage+" "+roiManagerShowAllMode);
+				//IJ.log(position+"  "+currentImage+" "+roiManagerShowAllMode+" "+c+" "+z+" "+t);
 				if (position == 0 || position == currentImage || roiManagerShowAllMode)
 					drawRoi(g, roi, drawLabels ? i + LIST_OFFSET : -1);
 			}
@@ -1990,7 +1996,7 @@ public class ImageCanvas extends JPanel implements MouseListener, MouseWheelList
 					Toolbar.getInstance().setTool(Toolbar.RECTANGLE);
 				roi.setImage(null);
 				imp.setRoi(roi);
-				//roi.handleMouseDown(sx, sy);
+				roi.handleMouseDown(sx, sy);
 				roiManagerSelect(roi, false);
 				ResultsTable.selectRow(roi);
 				return true;

@@ -49,7 +49,8 @@ import java.awt.dnd.*;
  * when the dialog is displayed. For example, change the checkbox labels "Show
  * Quality" and "Show Residue" to "Show_Quality" and "Show_Residue".
  */
-public class GenericDialog extends Dialog implements ActionListener, TextListener, FocusListener, ItemListener, KeyListener, AdjustmentListener, WindowListener, ComponentListener {
+public class GenericDialog extends Dialog implements ActionListener, TextListener, FocusListener, ItemListener,
+		KeyListener, AdjustmentListener, WindowListener, ComponentListener {
 
 	protected Vector numberField, stringField, checkbox, choice, slider, radioButtonGroups;
 	protected TextArea textArea1, textArea2;
@@ -108,12 +109,14 @@ public class GenericDialog extends Dialog implements ActionListener, TextListene
 	private static Frame getParentFrame() {
 		return null;
 	}
+
 	/** Creates a new GenericDialog using the specified title and parent frame. */
 	public GenericDialog(String title, Frame parent) {
 		super(parent, title, true);
 		ImageJ ij = IJ.getInstance();
-		if (ij!=null) setFont(ij.getFont());
-		okay = new Button("  OK  ");
+		if (ij != null)
+			setFont(ij.getFont());
+		okay = new Button("	 OK	 ");
 		cancel = new Button("Cancel");
 		if (Prefs.blackCanvas) {
 			setForeground(SystemColor.controlText);
@@ -220,7 +223,7 @@ public class GenericDialog extends Dialog implements ActionListener, TextListene
 		if (columns < 1)
 			columns = 1;
 		boolean scientificNotationAsNeeded = false;
-		if (digits<0) {
+		if (digits < 0) {
 			digits = -digits;
 			scientificNotationAsNeeded = true;
 		}
@@ -431,19 +434,20 @@ public class GenericDialog extends Dialog implements ActionListener, TextListene
 		if (Recorder.record || macro)
 			saveLabel(panel, label);
 	}
-	
+
 	/**
 	 * Add button to the dialog
-	 * @param label button label
+	 * 
+	 * @param label    button label
 	 * @param listener listener to handle the action when pressing the button
-	*/
+	 */
 	public void addButton(String label, ActionListener listener) {
 		if (GraphicsEnvironment.isHeadless())
 			return;
 		Button button = new Button(label);
 		button.addActionListener(listener);
-		button.addKeyListener(this);		
-		GridBagLayout layout = (GridBagLayout)getLayout();
+		button.addKeyListener(this);
+		GridBagLayout layout = (GridBagLayout) getLayout();
 		Panel panel = new Panel();
 		addPanel(panel);
 		GridBagConstraints constraints = layout.getConstraints(panel);
@@ -453,9 +457,9 @@ public class GenericDialog extends Dialog implements ActionListener, TextListene
 	}
 
 	/**
-	 * Adds a popup menu that lists the currently open images. Call getNextImage() to
-	 * retrieve the selected image. Based on the addImageChoice() method in Fiji's
-	 * GenericDialogPlus class.
+	 * Adds a popup menu that lists the currently open images. Call getNextImage()
+	 * to retrieve the selected image. Based on the addImageChoice() method in
+	 * Fiji's GenericDialogPlus class.
 	 * 
 	 * @param label        the label
 	 * @param defaultImage the image title initially selected in the menu or the
@@ -478,19 +482,19 @@ public class GenericDialog extends Dialog implements ActionListener, TextListene
 	public ImagePlus getNextImage() {
 		return WindowManager.getImage(windowIDs[getNextChoiceIndex()]);
 	}
-	
+
 	/**
 	 * Adds a group of choices to the dialog with menu items taken from the
-	 * <code>enum</code> class of the specified default item (enum constant).
-	 * The default item is automatically set. Calls the original (string-based)
+	 * <code>enum</code> class of the specified default item (enum constant). The
+	 * default item is automatically set. Calls the original (string-based)
 	 * {@link GenericDialog#addChoice(String, String[], String)} method.
 	 * 
-	 * @param <E> the generic enum type containing the items to chose from
-	 * @param label the label displayed for this choice group
+	 * @param <E>         the generic enum type containing the items to chose from
+	 * @param label       the label displayed for this choice group
 	 * @param defaultItem the menu item initially selected
 	 */
 	public <E extends Enum<E>> void addEnumChoice(String label, Enum<E> defaultItem) {
-		Class<E> enumClass = defaultItem.getDeclaringClass();	
+		Class<E> enumClass = defaultItem.getDeclaringClass();
 		E[] enums = enumClass.getEnumConstants();
 		String[] items = new String[enums.length];
 		for (int i = 0; i < enums.length; i++) {
@@ -500,12 +504,12 @@ public class GenericDialog extends Dialog implements ActionListener, TextListene
 	}
 
 	/**
-	 * Returns the selected item in the next enum choice menu.
-	 * Note that 'enumClass' is required to infer the proper enum type.
-	 * Throws {@code IllegalArgumentException} if the selected item is not a defined
+	 * Returns the selected item in the next enum choice menu. Note that 'enumClass'
+	 * is required to infer the proper enum type. Throws
+	 * {@code IllegalArgumentException} if the selected item is not a defined
 	 * constant in the specified enum class.
 	 * 
-	 * @param <E> the generic enum type
+	 * @param <E>       the generic enum type
 	 * @param enumClass the enum type
 	 * @return the selected item
 	 */
@@ -824,31 +828,30 @@ public class GenericDialog extends Dialog implements ActionListener, TextListene
 	}
 
 	/**
-	 * Adds one or two (side by side) text areas.
-	 * Append "SCROLLBARS_VERTICAL_ONLY" to the text of
-	 * the first text area to get vertical scrollbars
-	 * and "SCROLLBARS_BOTH" to get both vertical and
-	 * horizontal scrollbars.
-	 * @param text1	initial contents of the first text area
-	 * @param text2	initial contents of the second text area or null
-	 * @param rows	the number of rows
-	 * @param columns	the number of columns
+	 * Adds one or two (side by side) text areas. Append "SCROLLBARS_VERTICAL_ONLY"
+	 * to the text of the first text area to get vertical scrollbars and
+	 * "SCROLLBARS_BOTH" to get both vertical and horizontal scrollbars.
+	 * 
+	 * @param text1   initial contents of the first text area
+	 * @param text2   initial contents of the second text area or null
+	 * @param rows    the number of rows
+	 * @param columns the number of columns
 	 */
 	public void addTextAreas(String text1, String text2, int rows, int columns) {
 		if (textArea1 != null)
 			return;
 		Panel panel = new Panel();
 		int scrollbars = TextArea.SCROLLBARS_NONE;
-		if (text1!=null && text1.endsWith("SCROLLBARS_BOTH")) {
+		if (text1 != null && text1.endsWith("SCROLLBARS_BOTH")) {
 			scrollbars = TextArea.SCROLLBARS_BOTH;
-			text1 = text1.substring(0, text1.length()-15);
+			text1 = text1.substring(0, text1.length() - 15);
 		}
-		if (text1!=null && text1.endsWith("SCROLLBARS_VERTICAL_ONLY")) {
+		if (text1 != null && text1.endsWith("SCROLLBARS_VERTICAL_ONLY")) {
 			scrollbars = TextArea.SCROLLBARS_VERTICAL_ONLY;
-			text1 = text1.substring(0, text1.length()-24);
+			text1 = text1.substring(0, text1.length() - 24);
 		}
 		Font font = new Font("SansSerif", Font.PLAIN, (int) (14 * Prefs.getGuiScale()));
-		textArea1 = new TextArea(text1,rows,columns,scrollbars);
+		textArea1 = new TextArea(text1, rows, columns, scrollbars);
 		if (IJ.isLinux())
 			textArea1.setBackground(Color.white);
 		/*Changed for Bio7!*/
@@ -863,7 +866,7 @@ public class GenericDialog extends Dialog implements ActionListener, TextListene
 		textArea1.addTextListener(this);
 		panel.add(textArea1);
 		if (text2 != null) {
-			textArea2 = new TextArea(text2,rows,columns,scrollbars);
+			textArea2 = new TextArea(text2, rows, columns, scrollbars);
 			if (IJ.isLinux())
 				textArea2.setBackground(Color.white);
 
@@ -903,7 +906,8 @@ public class GenericDialog extends Dialog implements ActionListener, TextListene
 			defaultValue = maxValue;
 		int digits = 0;
 		double scale = 1.0;
-		if ((maxValue - minValue) <= 5.0 && (minValue != (int) minValue || maxValue != (int) maxValue || defaultValue != (int) defaultValue)) {
+		if ((maxValue - minValue) <= 5.0
+				&& (minValue != (int) minValue || maxValue != (int) maxValue || defaultValue != (int) defaultValue)) {
 			scale = 50.0;
 			minValue *= scale;
 			maxValue *= scale;
@@ -957,7 +961,8 @@ public class GenericDialog extends Dialog implements ActionListener, TextListene
 		return digits;
 	}
 
-	private void addSlider(String label, double minValue, double maxValue, double defaultValue, double scale, int digits) {
+	private void addSlider(String label, double minValue, double maxValue, double defaultValue, double scale,
+			int digits) {
 		int columns = 4 + digits - 2;
 		if (columns < 4)
 			columns = 4;
@@ -1282,8 +1287,10 @@ public class GenericDialog extends Dialog implements ActionListener, TextListene
 					errorMessage = "\"" + theText + "\" is an invalid number";
 					value = Double.NaN;
 					if (macro) {
-						IJ.error("Macro Error", "Numeric value expected in run() function\n \n" + "   Dialog box title: \"" + getTitle() + "\"\n" + "   Key: \"" + label.toLowerCase(Locale.US) + "\"\n"
-								+ "   Value or variable name: \"" + theText + "\"");
+						IJ.error("Macro Error",
+								"Numeric value expected in run() function\n \n" + "   Dialog box title: \"" + getTitle()
+										+ "\"\n" + "   Key: \"" + label.toLowerCase(Locale.US) + "\"\n"
+										+ "   Value or variable name: \"" + theText + "\"");
 					}
 				}
 			}
@@ -1394,7 +1401,8 @@ public class GenericDialog extends Dialog implements ActionListener, TextListene
 		}
 		if (recorderOn && !label.equals("")) {
 			String s = theText;
-			if (s != null && s.length() >= 3 && Character.isLetter(s.charAt(0)) && s.charAt(1) == ':' && s.charAt(2) == '\\')
+			if (s != null && s.length() >= 3 && Character.isLetter(s.charAt(0)) && s.charAt(1) == ':'
+					&& s.charAt(2) == '\\')
 				s = s.replaceAll("\\\\", "/"); // replace "\" with "/" in Windows file paths
 			s = Recorder.fixString(s);
 			if (!smartRecording || !s.equals((String) defaultStrings.elementAt(sfIndex)))
@@ -1583,7 +1591,7 @@ public class GenericDialog extends Dialog implements ActionListener, TextListene
 			String cmd = Recorder.getCommand();
 			if (cmd != null && cmd.equals("Calibrate..."))
 				text2 = text2.replace('\n', ' ');
-			if (cmd!=null && cmd.equals("Convolve...")){
+			if (cmd != null && cmd.equals("Convolve...")) {
 				if (!text2.endsWith("\n"))
 					text2 += "\n";
 			}
@@ -1617,7 +1625,7 @@ public class GenericDialog extends Dialog implements ActionListener, TextListene
 
 			boolean addHelp = helpURL != null;
 			if (addHelp) {
-				help = new Button(helpLabel);
+				help.setLabel(helpLabel);
 				help.addActionListener(this);
 				help.addKeyListener(this);
 			}
@@ -1656,12 +1664,13 @@ public class GenericDialog extends Dialog implements ActionListener, TextListene
 				setFont(font.deriveFont((float) (font.getSize() * Prefs.getGuiScale())));
 			}
 			pack();
-			if (okay != null && numberField == null && stringField == null && checkbox == null && choice == null && slider == null && radioButtonGroups == null && textArea1 == null)
+			if (okay != null && numberField == null && stringField == null && checkbox == null && choice == null
+					&& slider == null && radioButtonGroups == null && textArea1 == null)
 				okay.requestFocusInWindow();
 			setup();
 			if (centerDialog)
 				GUI.centerOnImageJScreen(this);
- 			setVisible(true);  //except for NonBlockingGenericDialog, returns after 'dispose' by OK or Cancel
+			setVisible(true); //except for NonBlockingGenericDialog, returns after 'dispose' by OK or Cancel
 		}
 	}
 
@@ -1683,7 +1692,9 @@ public class GenericDialog extends Dialog implements ActionListener, TextListene
 
 	@Override
 	public void setFont(Font font) {
- 		super.setFont(!fontSizeSet&&Prefs.getGuiScale()!=1.0&&font!=null?font.deriveFont((float)(font.getSize()*Prefs.getGuiScale())):font);
+		super.setFont(!fontSizeSet && Prefs.getGuiScale() != 1.0 && font != null
+				? font.deriveFont((float) (font.getSize() * Prefs.getGuiScale()))
+				: font);
 		fontSizeSet = true;
 	}
 
@@ -1757,15 +1768,12 @@ public class GenericDialog extends Dialog implements ActionListener, TextListene
 	}
 
 	/**
-	 * Returns references to the "OK" ("Yes"), "Cancel", and if present, "No"
-	 * buttons as an array.
+	 * Returns references to the "OK" ("Yes"), "Cancel", * "No", and "Help" buttons
+	 * as an array of length 4. If a button is not present, the corresponding array
+	 * element is null.
 	 */
 	public Button[] getButtons() {
-		Button[] buttons = new Button[3];
-		buttons[0] = okay;
-		buttons[1] = cancel;
-		buttons[2] = no;
-		return buttons;
+		return new Button[] { okay, cancel, no, help };
 	}
 
 	/**
@@ -1776,7 +1784,7 @@ public class GenericDialog extends Dialog implements ActionListener, TextListene
 		if (previewCheckbox != null) {
 			previewCheckbox.setLabel(isRunning ? previewRunning : previewLabel);
 			if (IJ.isMacOSX())
-				repaint(); // workaround OSX 10.4 refresh bug
+				repaint(); //workaround OSX 10.4 refresh bug
 		}
 	}
 
@@ -1888,7 +1896,8 @@ public class GenericDialog extends Dialog implements ActionListener, TextListene
 			wasCanceled = true;
 			dispose();
 			IJ.resetEscape();
-		} else if (keyCode == KeyEvent.VK_W && (e.getModifiers() & Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()) != 0) {
+		} else if (keyCode == KeyEvent.VK_W
+				&& (e.getModifiers() & Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()) != 0) {
 			wasCanceled = true;
 			dispose();
 		}
@@ -1959,7 +1968,8 @@ public class GenericDialog extends Dialog implements ActionListener, TextListene
 					everythingOk = false; // disable further listeners if false (invalid parameters) returned
 			} catch (Exception err) { // for exceptions, don't cover the input by a window but
 				IJ.beep(); // show them at in the "Log"
-				IJ.log("ERROR: " + err + "\nin DialogListener of " + dialogListeners.elementAt(i) + "\nat " + (err.getStackTrace()[0]) + "\nfrom " + (err.getStackTrace()[1])); // requires Java 1.4
+				IJ.log("ERROR: " + err + "\nin DialogListener of " + dialogListeners.elementAt(i) + "\nat "
+						+ (err.getStackTrace()[0]) + "\nfrom " + (err.getStackTrace()[1])); // requires Java 1.4
 			}
 		}
 		resetCounters();
@@ -2006,21 +2016,24 @@ public class GenericDialog extends Dialog implements ActionListener, TextListene
 	 * Adds a "Help" button that opens the specified URL in the default browser.
 	 * With v1.46b or later, displays an HTML formatted message if 'url' starts with
 	 * "<html>". There is an example at
-	 * http://imagej.nih.gov/ij/macros/js/DialogWithHelp.js
+	 * http://imagej.nih.gov/ij/macros/js/DialogWithHelp.js If url is an empty
+	 * String, pressing the "Help" button does nothing except calling the
+	 * DialogListeners (if any). See also: setHelpLabel.
 	 */
 	public void addHelp(String url) {
+		help = new Button(helpLabel);
 		helpURL = url;
 	}
 
 	void showHelp() {
 		if (helpURL.startsWith("<html>")) {
-			String title = getTitle()+" "+helpLabel;
+			String title = getTitle() + " " + helpLabel;
 			if (this instanceof NonBlockingGenericDialog)
 				new HTMLDialog(title, helpURL, false); // non blocking
 			else
 				new HTMLDialog(this, title, helpURL); //modal
 		} else {
-			String macro = "call('ij.plugin.BrowserLauncher.open', '"+helpURL+"');";
+			String macro = "call('ij.plugin.BrowserLauncher.open', '" + helpURL + "');";
 			new MacroRunner(macro); // open on separate thread using BrowserLauncher
 		}
 	}

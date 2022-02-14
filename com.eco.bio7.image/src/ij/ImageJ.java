@@ -97,7 +97,7 @@ public class ImageJ extends Frame implements ActionListener, MouseListener, KeyL
 	 * string.
 	 */
 	public static final String VERSION = "1.53p";
- 	public static final String BUILD = "6"; //70
+ 	public static final String BUILD = "24";
 	/*Changed for Bio7!*/
 	public static Color backgroundColor;
 	/** SansSerif, 12-point, plain font. */

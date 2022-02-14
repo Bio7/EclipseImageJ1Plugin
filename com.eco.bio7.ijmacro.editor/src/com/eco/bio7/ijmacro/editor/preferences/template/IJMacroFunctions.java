@@ -127,6 +127,7 @@ public class IJMacroFunctions {
 			"File.openSequence(path,options)####Opens a file file sequence with the given options."+linSeparator + 
 			"File.openUrlAsString(url)####Opens a URL and returns the contents as a string. Returns an emptly string if the host or file cannot be found. With v1.41i and later,returns \"<Error: message>\" if there any error,including host or file not found."+linSeparator + 
 			"File.openDialog(title)####Displays a file open dialog and returns the path to the file choosen by the user. The macro exits if the user cancels the dialog."+linSeparator + 
+			"File.openSequence(path,options)####Opens a sequence of files from a given path with given options."+linSeparator + 
 			"File.rename(path1,path2)####Renames,or moves,a file or directory. Returns \"1\" (true) if successful."+linSeparator + 
 			"File.saveString(string,path)####Saves string as a file."+linSeparator + 
 			"File.separator####Returns the file name separator character (\"/\" or \"\\\")."+linSeparator + 

@@ -1125,8 +1125,12 @@ public class Opener {
 		if (imp==null)
 			return null;
 		int[] offsets = info[0].stripOffsets;
-		if (offsets!=null&&offsets.length>1 && offsets[offsets.length-1]<offsets[0])
-			ij.IJ.run(imp, "Flip Vertically", "stack");
+		if (offsets!=null&&offsets.length>1) {
+			long firstOffset = (long)offsets[0]&0xffffffffL;
+			long lastOffset = (long)offsets[offsets.length-1]&0xffffffffL;
+			if (lastOffset<firstOffset)
+				ij.IJ.run(imp, "Flip Vertically", "stack");
+		}
 		imp = makeComposite(imp, info[0]);
 		if (imp.getBitDepth()==32 && imp.getTitle().startsWith("FFT of"))
 			return openFFT(imp);
