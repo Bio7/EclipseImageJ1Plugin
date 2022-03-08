@@ -480,7 +480,8 @@ public class GenericDialog extends Dialog implements ActionListener, TextListene
 	}
 
 	public ImagePlus getNextImage() {
-		return WindowManager.getImage(windowIDs[getNextChoiceIndex()]);
+		int index = getNextChoiceIndex();
+		return index<0 ? null :  WindowManager.getImage(windowIDs[index]);
 	}
 
 	/**

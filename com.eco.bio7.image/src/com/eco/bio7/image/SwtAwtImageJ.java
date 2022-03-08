@@ -125,7 +125,7 @@ public class SwtAwtImageJ {
 					public void run() {
 
 						createSwingTabDisplay(title);
-
+                        
 					}
 				});
 			} else {

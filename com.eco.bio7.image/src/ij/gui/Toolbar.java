@@ -1516,6 +1516,7 @@ public class Toolbar extends JPanel implements MouseListener, MouseMotionListene
 	}
 
 	public void mousePressed(final MouseEvent e) {
+		boolean disablePopup = false;
 		int x = e.getX();
 		if (inGap(x))
 			return;
@@ -1560,8 +1561,10 @@ public class Toolbar extends JPanel implements MouseListener, MouseMotionListene
 			case RECTANGLE:
 				if (rectType == ROUNDED_RECT_ROI)
 					IJ.doCommand("Rounded Rect Tool...");
-				else
+				else {
+					disablePopup = true;
 					IJ.doCommand("Roi Defaults...");
+				}
 				break;
 			case OVAL:
 				showBrushDialog();
@@ -1600,7 +1603,7 @@ public class Toolbar extends JPanel implements MouseListener, MouseMotionListene
 			default:
 			}
 		}
-		if (!isRightClick && longClickDelay>0) {
+		if (!isRightClick && longClickDelay>0 && !disablePopup) {
 			if (pressTimer==null)
 				pressTimer = new Timer();			
 			pressTimer.schedule(new TimerTask() {
