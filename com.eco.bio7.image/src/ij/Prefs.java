@@ -313,7 +313,7 @@ public class Prefs {
 		Double d = null;
 		if (s != null) {
 			try {
-				d = new Double(s);
+				d = Double.valueOf(s);
 			} catch (NumberFormatException e) {
 				d = null;
 			}
@@ -853,7 +853,7 @@ public class Prefs {
 		Double d = null;
 		if (s != null) {
 			try {
-				d = new Double(s);
+				d = Double.valueOf(s);
 			} catch (NumberFormatException e) {
 				d = null;
 			}
