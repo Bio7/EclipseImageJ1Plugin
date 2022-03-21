@@ -25,7 +25,7 @@ some basic methods to manipulate it.
 @see ij.ImageStack
 */
 public abstract class ImageProcessor implements Cloneable {
-
+ 
 	/** Value of pixels included in masks. */
 	public static final int BLACK = 0xFF000000;
 

@@ -1032,6 +1032,80 @@ public class ImageCanvas extends JPanel implements MouseListener, MouseWheelList
 		setMagnification(newMag);
 		// IJ.log("adjustSourceRect2: "+srcRect+" "+dstWidth+" "+dstHeight);
 	}
+	
+	/**
+	 * Zooms in by making the window bigger. If it can't be made bigger, then makes
+	 * the source rectangle (srcRect) smaller and centers it on the position in the
+	 * image where the cursor was when zooming has started. Note that sx and sy are
+	 * screen coordinates.
+	 */
+	/*public void zoomIn(int sx, int sy) {
+		
+		if (magnification >= 32)
+			return;
+		scaleToFit = false;
+		boolean mouseMoved = sqr(sx - lastZoomSX) + sqr(sy - lastZoomSY) > MAX_MOUSEMOVE_ZOOM * MAX_MOUSEMOVE_ZOOM;
+		lastZoomSX = sx;
+		lastZoomSY = sy;
+		if (mouseMoved || zoomTargetOX < 0) {
+			boolean cursorInside = sx >= 0 && sy >= 0 && sx < dstWidth && sy < dstHeight;
+			zoomTargetOX = offScreenX(cursorInside ? sx : dstWidth / 2); // where to zoom, offscreen (image) coordinates
+			zoomTargetOY = offScreenY(cursorInside ? sy : dstHeight / 2);
+		}
+		double newMag = getHigherZoomLevel(magnification);
+		// System.out.println(newMag);
+		int newWidth = (int) (imageWidth * newMag);
+		int newHeight = (int) (imageHeight * newMag);
+		Dimension newSize = canEnlarge(newWidth, newHeight);
+		Rectangle clientArea  = CanvasView.getCurrent().getBounds();
+		if (newSize != null) {
+			setSize(newSize.width, newSize.height);
+			//imp.getWindow().scResizeEvent(newSize.width, newSize.height);
+
+			if (newSize.width != newWidth || newSize.height != newHeight) {
+				
+				 * Changed for the SWT parent. If the next zoom level runs out of the max width
+				 * we increase the size to the max of the parent!
+				 
+				if (newSize.width != newWidth) {
+					newSize = new Dimension(clientArea.width, newSize.height);
+					setSize(newSize.width, newSize.height);
+					// System.out.println("resize");
+					//imp.getWindow().scResizeEvent(newSize.width, newSize.height);
+				}
+				
+				 * If the next zoom level runs out of the max height we increase the height to
+				 * the max of the parent!
+				 
+				else {
+					 Changed for the SWT parent. Resize to max parent! 
+					newSize = new Dimension(newSize.width, clientArea.height);
+					setSize(newSize.width, newSize.height);
+					// System.out.println("resize");
+					//imp.getWindow().scResizeEvent(newSize.width, newSize.height);
+
+				}
+				adjustSourceRect(newMag, zoomTargetOX, zoomTargetOY);
+			} else {
+
+				setMagnification(newMag);
+			}
+			imp.getWindow().pack();
+			//imp.getWindow().parentComposite.layout();
+		} else { // can't enlarge window. Maximize it!
+
+			newSize = new Dimension(clientArea.width, clientArea.height);
+			setSize(newSize.width, newSize.height);
+			// System.out.println("resize");
+			//imp.getWindow().scResizeEvent(newSize.width, newSize.height);
+			adjustSourceRect(newMag, zoomTargetOX, zoomTargetOY);
+			// System.out.println("this is null");
+		}
+		repaint();
+
+		
+
+	}*/
 
 	/**
 	 * Returns the size to which the window can be enlarged, or null if it can't be

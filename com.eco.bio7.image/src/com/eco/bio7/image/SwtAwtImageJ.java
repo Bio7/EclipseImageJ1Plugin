@@ -27,6 +27,8 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
+
+import ij.IJ;
 import ij.ImageJ;
 import ij.ImagePlus;
 import ij.gui.ImageCanvas;
@@ -37,6 +39,7 @@ import ij.gui.Roi;
 import ij.gui.ScrollbarWithLabel;
 import ij.plugin.PointToolOptions;
 import ij.plugin.frame.Channels;
+import javafx.application.Platform;
 
 public class SwtAwtImageJ {
 
@@ -123,11 +126,17 @@ public class SwtAwtImageJ {
 				dis.syncExec(new Runnable() {
 
 					public void run() {
+		               
 
 						createSwingTabDisplay(title);
+						
+						
+						
                         
 					}
 				});
+				
+				
 			} else {
 				dis.syncExec(new Runnable() {
 
@@ -243,6 +252,15 @@ public class SwtAwtImageJ {
 			});
 		}*/
 		ci.setText(plus.getTitle());
+		/*Fix to display an image on MacOSX!*/
+		if (Util.getOS().equals("Mac")) {
+			Composite parent = top.getParent();
+			final Rectangle clientArea = parent.getClientArea(); // To Pixels
+			EventQueue.invokeLater(() -> {
+				frame.setSize(clientArea.width, clientArea.height);
+				frame.validate();
+			});
+		}
 
 	}
 
