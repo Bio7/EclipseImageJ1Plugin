@@ -615,6 +615,9 @@ public class HistogramWindow extends ImageWindow
 
 	/** Returns the histogram values as a ResultsTable. */
 	public ResultsTable getResultsTable() {
+		int decimalPlaces = Analyzer.getPrecision();
+		if (digits==0 && stats.binSize!=1.0)
+			digits = decimalPlaces;
 		ResultsTable rt = new ResultsTable();
 		rt.setPrecision(digits);
 		String vheading = stats.binSize == 1.0 ? "value" : "bin start";
