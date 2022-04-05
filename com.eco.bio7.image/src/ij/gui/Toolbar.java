@@ -1208,7 +1208,8 @@ public class Toolbar extends JPanel implements MouseListener, MouseMotionListene
 	public static double getForegroundValue() {
 		return foregroundValue;
 	}
-
+	/** Sets the foreground color to grayscale, where value
+	is between 0 (black) and 255 (white). */
 	public static void setForegroundValue(double value) {
 		if (value>=0) {
 			int v = (int)value;
@@ -1221,7 +1222,8 @@ public class Toolbar extends JPanel implements MouseListener, MouseMotionListene
 	public static double getBackgroundValue() {
 		return backgroundValue;
 	}
-
+	/** Sets the background color to grayscale, where value
+	is between 0 (black) and 255 (white). */
 	public static void setBackgroundValue(double value) {
 		if (value>=0) {
 			int v = (int)value;
