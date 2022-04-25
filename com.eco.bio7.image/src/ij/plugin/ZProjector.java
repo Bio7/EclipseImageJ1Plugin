@@ -31,7 +31,7 @@ public class ZProjector implements PlugIn {
     private static final int FLOAT_TYPE = 2;
     
     public static final String lutMessage =
-    	"Stacks with inverter LUTs may not project correctly.\n"
+    	"Stacks with inverting LUTs may not project correctly.\n"
     	+"To create a standard LUT, invert the stack (Edit/Invert)\n"
     	+"and invert the LUT (Image/Lookup Tables/Invert LUT)."; 
 
@@ -173,7 +173,8 @@ public class ZProjector implements PlugIn {
 
 		if (arg.equals("") && projImage!=null) {
 			long tstop = System.currentTimeMillis();
-			if (simpleComposite) IJ.run(projImage, "Grays", "");
+			if (simpleComposite && imp.getBitDepth()!=24)
+				IJ.run(projImage, "Grays", "");
 			projImage.show("ZProjector: " +IJ.d2s((tstop-tstart)/1000.0,2)+" seconds");
 		}
 
@@ -236,6 +237,7 @@ public class ZProjector implements PlugIn {
 	}
 
     private void doRGBProjection(ImageStack stack) {
+        boolean clip = method==SUM_METHOD && "true".equals(imp.getProp("ClipWhenSumming"));        	
         ImageStack[] channels = ChannelSplitter.splitRGB(stack, true);
         ImagePlus red = new ImagePlus("Red", channels[0]);
         ImagePlus green = new ImagePlus("Green", channels[1]);
@@ -267,6 +269,8 @@ public class ZProjector implements PlugIn {
         	blue2.setProcessor(b.convertToByte(false));
         }
         RGBStackMerge merge = new RGBStackMerge();
+        if (clip)
+        	merge.setScaleWhenConverting(false);
         ImageStack stack2 = merge.mergeStacks(w, h, d, red2.getStack(), green2.getStack(), blue2.getStack(), true);
         imp = saveImp;
         projImage = new ImagePlus(makeTitle(), stack2);

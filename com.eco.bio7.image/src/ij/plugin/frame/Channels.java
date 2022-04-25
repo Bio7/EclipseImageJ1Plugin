@@ -10,23 +10,23 @@ import javax.swing.JCheckBox;
 /** Displays the ImageJ "Channels" dialog. */
 public class Channels extends PlugInDialog implements PlugIn, ItemListener, ActionListener {
 
-	private static final String[] modes = {"Composite", "Color", "Grayscale", "---------", "Composite Max",
-		"Composite Min", "Composite Invert"};
+	private static final String[] modes = {"Composite", "Color", "Grayscale", "---------",
+			"Composite Max", "Composite Min", "Composite Invert"};
 	private static final int COMP=0, COLOR=1, GRAY=2, DIVIDER=3, MAX=4, MIN=5, INVERT=6;
-	private static String[] menuItems = {"Make Composite", "Convert to RGB", "Split Channels", "Merge Channels...",
+	private static String[] menuItems = {"Make Composite", "Convert to RGB Image", "Convert to RGB Stack", "Split Channels", "Merge Channels...",
 		"Edit LUT...", "Invert LUTs", "-", "Red", "Green", "Blue", "Cyan", "Magenta", "Yellow", "Grays"};
 
 	public static final String help = "<html>"
-	+"<h1>Composite Display Modes</h1>"
-	+"<font size=+1>"
-	+"<ul>"
-	+"<li> <u>Composite</u> - Converts the channels to RGB and sums. RGB values are clipped to 255, which can cause saturation in areas with overlapping bright signals.<br>"
-	+"<li> <u>Composite Max</u> - Converts the channels to RGB and uses maximum intensity projection.<br>"
-	+"<li> <u>Composite Min</u> - Inverts the LUTs (if needed), converts the channels to RGB and uses minimum intensity projection.<br>"
-	+"<li> <u>Composite Invert</u> - Inverts the LUTs (if needed), converts the channels to RGB and sums.<br>"
-	+" <br>"
-	+"The macro at http://wsr.imagej.net/macros/CompositeProjection.ijm uses the \"Invert LUTs\", \"Split Channels\", \"RGB Color\", \"Images to Stack\" and \"Z Project\" commands to attempt to duplicate these four display modes.<br>"
-	+"</font>";
+			+"<h1>Composite Display Modes</h1>"
+			+"<font size=+1>"
+			+"<ul>"
+			+"<li> <u>Composite</u> - Converts the channels to RGB and sums. RGB values are clipped at 255, which can cause saturation (e.g., the 5 channel \"Neuron\" sample image). This is the original ImageJ composite mode.<br>"
+			+"<li> <u>Composite Max</u> - Converts the channels to RGB and uses maximum intensity projection.<br>"
+			+"<li> <u>Composite Min</u> - Converts the channels to RGB and uses minimum intensity projection. This mode, and <i>Composite Invert</i>, require that the channels have inverting (white background) LUTs. Linear non-inverting LUTs that use a single primary color are automatically inverted.<br>"
+			+"<li> <u>Composite Invert</u> - Converts the channels to RGB, inverts, sums and re-inverts. When summing, RGB values are clipped at 255, which can cause saturation. Simulates (linear) absorbing image formation similar to transmitted light microscopy.<br>"
+			+" <br>"
+			+"The macro at http://wsr.imagej.net/macros/CompositeProjection.ijm uses the \"Invert LUTs\", \"RGB Stack\", \"Z Project\" and \"Invert\" commands to reproduce the four modes, using the five channel \"Neuron\" sample image.<br>"
+			+"</font>";
 
 	private static String moreLabel = "More "+'\u00bb';
 	private Choice choice;
@@ -64,6 +64,7 @@ public class Channels extends PlugInDialog implements PlugIn, ItemListener, Acti
 			choice.addItem(modes[i]);
 		choice.select(0);
 		choice.addItemListener(this);
+		if (ij!=null) choice.addKeyListener(ij);
 		add(choice, c);
 
 		CompositeImage ci = getImage();
@@ -276,8 +277,10 @@ public class Channels extends PlugInDialog implements PlugIn, ItemListener, Acti
 		if (command.equals(moreLabel)) {
 			Point bloc = moreButton.getLocation();
 			pm.show(this, bloc.x, bloc.y);
-		} else if (command.equals("Convert to RGB"))
+		} else if (command.equals("Convert to RGB Image"))
 			IJ.doCommand("Stack to RGB");
+		else if (command.equals("Convert to RGB Stack"))
+			IJ.doCommand("RGB Stack");
 		else
 			IJ.doCommand(command);
 	}
