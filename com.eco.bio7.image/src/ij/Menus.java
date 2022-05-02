@@ -1852,7 +1852,7 @@ public class Menus {
 			IJ.error(err);
 		m.installStartupMacroSet();
 		IJ.resetClassLoader();
-		IJ.runPlugIn("ij.plugin.ClassChecker", "");
+		//IJ.runPlugIn("ij.plugin.ClassChecker", "");
 		IJ.showStatus("Menus updated: " + m.nPlugins + " commands, " + m.nMacros + " macros");
 		/*Changed for Bio7!*/
 		updateBio7ImageJMenu();
