@@ -171,7 +171,10 @@ public class Plot implements Cloneable {
 	float scale = 1.0f;
 	Rectangle frame = null;							//the clip frame, do not use for image scale
 	//The following are the margin sizes actually used. They are modified for font size and also scaled for high-resolution plots
-	int leftMargin = LEFT_MARGIN, rightMargin = RIGHT_MARGIN, topMargin = TOP_MARGIN, bottomMargin = BOTTOM_MARGIN;
+	public int leftMargin = LEFT_MARGIN;
+	public int rightMargin = RIGHT_MARGIN;
+	public int topMargin = TOP_MARGIN;
+	public int bottomMargin = BOTTOM_MARGIN;
 	int frameWidth;									//width corresponding to plot range; frame.width is larger by 1
 	int frameHeight;								//height corresponding to plot range; frame.height is larger by 1
 	int preferredPlotWidth = PlotWindow.plotWidth;  //default size of plot frame (not taking 'High-Resolution' scale factor into account)
