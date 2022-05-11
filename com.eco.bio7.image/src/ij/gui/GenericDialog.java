@@ -232,7 +232,7 @@ public class GenericDialog extends Dialog implements ActionListener, TextListene
 			defaultString = ij.measure.ResultsTable.d2s(defaultValue, digits);
 		if (Double.isNaN(defaultValue))
 			defaultString = "";
-		TextField tf = new TextField(defaultString, columns);
+ 		TextField tf = newTextField(defaultString, columns);
 		if (IJ.isLinux())
 			tf.setBackground(Color.white);
 		tf.addActionListener(this);
@@ -343,7 +343,7 @@ public class GenericDialog extends Dialog implements ActionListener, TextListene
 			defaultStrings = new Vector(4);
 		}
 
-		TextField tf = new TextField(defaultText, columns);
+ 		TextField tf = newTextField(defaultText, columns);
 		if (IJ.isLinux())
 			tf.setBackground(Color.white);
 
@@ -1003,6 +1003,22 @@ public class GenericDialog extends Dialog implements ActionListener, TextListene
 		s.setUnitIncrement(1);
 		if (IJ.isMacOSX())
 			s.addKeyListener(this);
+		s.addMouseWheelListener(new MouseWheelListener() {
+			public void mouseWheelMoved(MouseWheelEvent e) {
+				Scrollbar sb = (Scrollbar)e.getSource();
+				int value = sb.getValue() + e.getWheelRotation();
+				sb.setValue(value);
+				for (int i=0; i<slider.size(); i++) {
+					if (sb==slider.elementAt(i)) {
+						int index = ((Integer)sliderIndexes.get(i)).intValue();
+						TextField tf = (TextField)numberField.elementAt(index);
+						double scale = ((Double)sliderScales.get(i)).doubleValue();
+						int digits = ((Integer)sliderDigits.get(i)).intValue();
+						tf.setText(""+IJ.d2s(sb.getValue()/scale,digits));
+					}
+				}
+			}
+		});
 
 		if (numberField == null) {
 			numberField = new Vector(5);
@@ -1014,8 +1030,8 @@ public class GenericDialog extends Dialog implements ActionListener, TextListene
 		if (columns < 1)
 			columns = 1;
 		// IJ.log("scale=" + scale + ", columns=" + columns + ", digits=" + digits);
-		TextField tf = new TextField(IJ.d2s(defaultValue / scale, digits), columns);
-		if (IJ.isLinux())
+		TextField tf = newTextField(IJ.d2s(defaultValue/scale,digits),columns);
+		//if (IJ.isLinux()) tf.setBackground(Color.white);
 			tf.setBackground(Color.white);
 		tf.addActionListener(this);
 		tf.addTextListener(this);
@@ -1055,6 +1071,13 @@ public class GenericDialog extends Dialog implements ActionListener, TextListene
 		add(panel, c);
 		if (Recorder.record || macro)
 			saveLabel(tf, label);
+	}
+	
+	private TextField newTextField(String txt, int columns) {
+		if (IJ.isLinux())
+			return new TrimmedTextField(txt,columns);
+		else
+			return new TextField(txt,columns);
 	}
 
 	/* Changed for Bio7! -> Added JPanel method! */
@@ -2166,7 +2189,28 @@ public class GenericDialog extends Dialog implements ActionListener, TextListene
 		}
 
 	}
+	
+	private class TrimmedTextField extends TextField {
 
+		public TrimmedTextField(String text, int columns) {
+			super(text, columns);
+		}
+
+		public Dimension getMinimumSize() {
+			Dimension d = super.getMinimumSize();
+			if (d!=null) {
+				d.width = d.width;
+				d.height = d.height*3/4;
+			}
+			return d;
+		}
+
+		public Dimension getPreferredSize() {
+			return getMinimumSize();
+		}
+
+	}
+	
 	/*Changed for Bio7!*/
 
 	public void componentResized(ComponentEvent e) {
