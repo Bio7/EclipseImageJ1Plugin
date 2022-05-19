@@ -315,8 +315,6 @@ public class ImageCanvas extends JPanel implements MouseListener, MouseWheelList
 	}
 
 	private void drawRoi(Roi roi, Graphics g) {
-		if (Interpreter.isBatchMode() && imp!=null && imp.getWindow()==null)
-			return;
 		if (roi == currentRoi) {
 			Color lineColor = roi.getStrokeColor();
 			Color fillColor = roi.getFillColor();
