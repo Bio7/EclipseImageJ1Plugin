@@ -238,7 +238,7 @@ public class ResultsTable implements Cloneable {
 	 * rt.addValue("n", n); rt.addValue("Sine(n)", Math.sin(n));
 	 * rt.addValue("Cos(n)", Math.cos(n)); } rt.show("Sine/Cosine Table");
 	 * 
-	 * <pre>
+	 * </pre>
 	 * 
 	 * @see #addRow
 	 * @see #addValue(String,String)
