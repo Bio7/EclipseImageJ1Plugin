@@ -1306,7 +1306,7 @@ public class ImagePlus implements ImageObserver, Measurements, Cloneable {
 		return size;
 	}
 
-	/** If this is a stack, returns the number of slices, else returns 1. */
+	/** Returns the number of stack images. */
 	public int getStackSize() {
 		if (stack == null || oneSliceStack)
 			return 1;
@@ -1373,9 +1373,11 @@ public class ImagePlus implements ImageObserver, Measurements, Cloneable {
 		dimensionsSet = true;
 	}
 
-	/** Returns 'true' if this image is a hyperstack. */
+	/** Returns 'true' if this image has more than
+	 * three dimension of more than one channel.
+	*/
 	public boolean isHyperStack() {
-		return isDisplayedHyperStack() || (openAsHyperStack && getNDimensions() > 3);
+		return getNDimensions()>3 || getNChannels()>1;
 	}
 
 	/** Returns the number of dimensions (2, 3, 4 or 5). */
@@ -3763,6 +3765,22 @@ public class ImagePlus implements ImageObserver, Measurements, Cloneable {
 	public boolean setIJMenuBar() {
 		return setIJMenuBar && Prefs.setIJMenuBar;
 	}
+	
+	/** Returns 'true' if this ImagePlus contains an ImageStack.
+	 * @see #getStackSize
+	 * @see #getNChannels
+	 * @see #getNSlices
+	 * @see #getNFrames
+	 * @see #getNDimensions	 
+    */
+    public boolean hasImageStack() {
+    	return stack!=null;
+    }
+
+	/**
+	* @deprecated
+	* Replaced by ImagePlus.hasImageStack()
+	*/
 
 	public boolean isStack() {
 		return stack != null;

@@ -129,11 +129,16 @@ public class ZProjector implements PlugIn {
     }
 
     public void run(String arg) {
-		imp = IJ.getImage();
-		if (imp==null) {
+		ImagePlus img = IJ.getImage();
+		if (img==null) {
 	    	IJ.noImage(); 
 	    	return; 
 		}
+		run2(img, arg);
+    }
+    
+    public void run2(ImagePlus img, String arg) {
+    	imp = img;
 
 		//  Make sure input image is a stack.
 		if(imp.getStackSize()==1) {
@@ -829,3 +834,5 @@ public class ZProjector implements PlugIn {
     } // end StandardDeviation
 
 }  // end ZProjection
+
+
