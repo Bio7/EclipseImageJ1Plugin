@@ -1,6 +1,12 @@
 # EclipseImageJ1Plugin
 A repository for an Eclipse ImageJ1 plugin contributed from the Bio7 project.
 
+## New in 1.53t (1.53.t26):
+
+1. Updated the ImageJ plugin to version 1.53t26
+2. Added the latest  macro templates
+3. Fixed some minor bugs 
+
 ## New in 1.53n (1.53.n7):
 
 1. Updated the ImageJ plugin to version 1.53n7
