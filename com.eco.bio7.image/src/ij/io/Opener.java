@@ -727,7 +727,7 @@ public class Opener {
 		return imp;
 	}
 	
-	ImagePlus openUsingImageIO(String path) {
+	public static ImagePlus openUsingImageIO(String path) {
 		ImagePlus imp = null;
 		BufferedImage img = null;
 		File f = new File(path);
