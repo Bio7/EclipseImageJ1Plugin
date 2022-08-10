@@ -369,6 +369,8 @@ public class PlotWindow extends ImageWindow
 		else
 			ic.requestFocus(); // have focus on the canvas, not the button, so that pressing the space bar
 		// allows panning
+		if (Prefs.autoLivePlots && bgThread==null)
+			enableLivePlot();
 		/*
 		 * Changed for Bio7!
 		 */
