@@ -1374,7 +1374,7 @@ public class ImagePlus implements ImageObserver, Measurements, Cloneable {
 	}
 
 	/** Returns 'true' if this image has more than
-	 * three dimension of more than one channel.
+	 * than three dimensions.
 	*/
 	public boolean isHyperStack() {
 		return getNDimensions()>3 || getNChannels()>1;
