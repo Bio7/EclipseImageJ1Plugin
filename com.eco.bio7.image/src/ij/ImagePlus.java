@@ -1379,15 +1379,9 @@ public class ImagePlus implements ImageObserver, Measurements, Cloneable {
 		dimensionsSet = true;
 	}
 
-<<<<<<< HEAD
 	/** Returns 'true' if this image has more than
 	 * than three dimensions.
 	*/
-=======
-	/**
-	 * Returns 'true' if this image has more than three dimension.
-	 */
->>>>>>> branch 'master' of https://github.com/Bio7/EclipseImageJ1Plugin.git
 	public boolean isHyperStack() {
 		return getNDimensions() > 3;
 	}
