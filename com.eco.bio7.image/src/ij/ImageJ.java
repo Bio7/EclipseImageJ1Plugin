@@ -97,7 +97,11 @@ public class ImageJ extends Frame implements ActionListener, MouseListener, KeyL
 	 * string.
 	 */
 	public static final String VERSION = "1.53t";
+<<<<<<< HEAD
 	public static final String BUILD = ""; //39 
+=======
+	public static final String BUILD = "38"; //*Changed for Bio7!*/
+>>>>>>> branch 'master' of https://github.com/Bio7/EclipseImageJ1Plugin.git
 	public static Color backgroundColor;
 	/** SansSerif, 12-point, plain font. */
 	public static final Font SansSerif12 = new Font("SansSerif", Font.PLAIN, 12);

@@ -159,7 +159,7 @@ public class Plot implements Cloneable {
 	private static final double RELATIVE_ARROWHEAD_SIZE = 0.2; //arrow heads have 1/5 of vector length
 	private static final int MIN_ARROWHEAD_LENGTH = 3;
 	private static final int MAX_ARROWHEAD_LENGTH = 20;
-	private static final String MULTIPLY_SYMBOL = "\u00B7"; //middot, default multiplication symbol for scientific notation. Use setOptions("msymbol=\\u00d7") for '×'
+	private static final String MULTIPLY_SYMBOL = "\u00B7"; //middot, default multiplication symbol for scientific notation. Use setOptions("msymbol=\\u00d7") for 'ï¿½'
 
 	PlotProperties pp = new PlotProperties();		//size, range, formatting etc, for easy serialization
 	PlotProperties ppSnapshot;						//copy for reverting
@@ -417,7 +417,10 @@ public class Plot implements Cloneable {
 
 	/** Sets the current limits from an array xMin, xMax, yMin, yMax
 	 *  The array may be also longer or shorter, but should not contain NaN values.
-	 *  Does not update the plot, does not save the old limits. */
+	 *  This method should be used after the plot has been displayed.
+	 *  Does not update the plot; use updateImage() thereafter.
+	 *  Does not save the previous limits, i.e., leaves the default limits (for reset via the 'R' field) untouched.
+	*/
 	public void setLimits(double[] limits) {
 		System.arraycopy(limits, 0, currentMinMax, 0, Math.min(limits.length, defaultMinMax.length));
 	}
