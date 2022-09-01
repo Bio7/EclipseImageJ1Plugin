@@ -3055,7 +3055,8 @@ public class RoiManager extends PlugInFrame implements ActionListener, ItemListe
 	public void mouseClicked (MouseEvent e) {
 		if (e.getClickCount() == 2 && !e.isConsumed()) {
 			e.consume();
-			IJ.run("ROI Manager Action");
+			if (ij.plugin.MacroInstaller.isMacroCommand("ROI Manager Action"))
+				IJ.run("ROI Manager Action");
 		}
 	}
 
