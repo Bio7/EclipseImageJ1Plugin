@@ -201,9 +201,7 @@ public class Toolbar extends JPanel implements MouseListener, MouseMotionListene
 	}
 
 	void addPopupMenus() {
-		rectPopup = new PopupMenu();
-		if (Menus.getFontSize() != 0)
-			rectPopup.setFont(Menus.getFont());
+		rectPopup = newPopupMenu();
 		rectItem = new CheckboxMenuItem("Rectangle", rectType == RECT_ROI);
 		rectItem.addItemListener(this);
 		rectPopup.add(rectItem);
@@ -215,9 +213,7 @@ public class Toolbar extends JPanel implements MouseListener, MouseMotionListene
 		rectPopup.add(rotatedRectItem);
 		add(rectPopup);
 
-		ovalPopup = new PopupMenu();
-		if (Menus.getFontSize() != 0)
-			ovalPopup.setFont(Menus.getFont());
+		ovalPopup = newPopupMenu();
 		ovalItem = new CheckboxMenuItem("Oval selections", ovalType == OVAL_ROI);
 		ovalItem.addItemListener(this);
 		ovalPopup.add(ovalItem);
@@ -229,9 +225,7 @@ public class Toolbar extends JPanel implements MouseListener, MouseMotionListene
 		ovalPopup.add(brushItem);
 		add(ovalPopup);
 
-		pointPopup = new PopupMenu();
-		if (Menus.getFontSize() != 0)
-			pointPopup.setFont(Menus.getFont());
+		pointPopup = newPopupMenu();
 		pointItem = new CheckboxMenuItem("Point Tool", !multiPointMode);
 		pointItem.addItemListener(this);
 		pointPopup.add(pointItem);
@@ -240,9 +234,7 @@ public class Toolbar extends JPanel implements MouseListener, MouseMotionListene
 		pointPopup.add(multiPointItem);
 		add(pointPopup);
 
-		linePopup = new PopupMenu();
-		if (Menus.getFontSize() != 0)
-			linePopup.setFont(Menus.getFont());
+		linePopup = newPopupMenu();
 		straightLineItem = new CheckboxMenuItem("Straight Line", lineType == LINE && !arrowMode);
 		straightLineItem.addItemListener(this);
 		linePopup.add(straightLineItem);
@@ -257,9 +249,7 @@ public class Toolbar extends JPanel implements MouseListener, MouseMotionListene
 		linePopup.add(arrowItem);
 		add(linePopup);
 
-		zoomPopup = new PopupMenu();
-		if (Menus.getFontSize() != 0)
-			zoomPopup.setFont(Menus.getFont());
+		zoomPopup = newPopupMenu();
 		addMenuItem(zoomPopup, "Reset Zoom");
 		addMenuItem(zoomPopup, "Zoom In");
 		addMenuItem(zoomPopup, "Zoom Out");
@@ -270,9 +260,7 @@ public class Toolbar extends JPanel implements MouseListener, MouseMotionListene
 		addMenuItem(zoomPopup, "Maximize");
 		add(zoomPopup);
 
-		pickerPopup = new PopupMenu();
-		if (Menus.getFontSize() != 0)
-			pickerPopup.setFont(Menus.getFont());
+		pickerPopup = newPopupMenu();
 		addMenuItem(pickerPopup, "White/Black");
 		addMenuItem(pickerPopup, "Black/White");
 		addMenuItem(pickerPopup, "Red");
@@ -288,10 +276,14 @@ public class Toolbar extends JPanel implements MouseListener, MouseMotionListene
 		addMenuItem(pickerPopup, "Color Picker...");
 		add(pickerPopup);
 
-		switchPopup = new PopupMenu();
-		if (Menus.getFontSize() != 0)
-			switchPopup.setFont(Menus.getFont());
+		switchPopup = newPopupMenu();
 		add(switchPopup);
+	}
+
+	private PopupMenu newPopupMenu() {
+		PopupMenu popup = new PopupMenu();
+		GUI.scalePopupMenu(popup);
+		return popup;
 	}
 
 	private void addMenuItem(PopupMenu menu, String command) {
@@ -900,7 +892,7 @@ public class Toolbar extends JPanel implements MouseListener, MouseMotionListene
 		case DROPPER:
 			String fg = foregroundColor.getRed() + "," + foregroundColor.getGreen() + "," + foregroundColor.getBlue();
 			String bg = backgroundColor.getRed() + "," + backgroundColor.getGreen() + "," + backgroundColor.getBlue();
-			IJ.showStatus("Color picker " +  fg + "/"+ bg + " (alt or long click for menu)");
+			IJ.showStatus("Color picker " + fg + "/" + bg + " (alt or long click for menu)");
 			return;
 		case ANGLE:
 			IJ.showStatus("Angle tool");
@@ -1130,12 +1122,14 @@ public class Toolbar extends JPanel implements MouseListener, MouseMotionListene
 		showMessage(current);
 		if (Recorder.record) {
 			String name = getName(current);
-			if (name!=null && name.equals("dropper")) disableRecording=true;
-			if (name!=null && !disableRecording) {
+			if (name != null && name.equals("dropper"))
+				disableRecording = true;
+			if (name != null && !disableRecording) {
 				IJ.wait(100); // workaround for OSX/Java 8 bug
 				Recorder.record("setTool", name);
 			}
-			if (name!=null && !name.equals("dropper")) disableRecording=false;
+			if (name != null && !name.equals("dropper"))
+				disableRecording = false;
 		}
 		if (legacyMode)
 			repaint();
@@ -1204,17 +1198,21 @@ public class Toolbar extends JPanel implements MouseListener, MouseMotionListene
 			IJ.notifyEventListeners(IJEventListener.BACKGROUND_COLOR_CHANGED);
 		}
 	}
-	
+
 	public static double getForegroundValue() {
 		return foregroundValue;
 	}
-	/** Sets the foreground color to grayscale, where value
-	is between 0 (black) and 255 (white). */
+
+	/**
+	 * Sets the foreground color to grayscale, where value is between 0 (black) and
+	 * 255 (white).
+	 */
 	public static void setForegroundValue(double value) {
-		if (value>=0) {
-			int v = (int)value;
-			if (v>255) v=255;
-			setForegroundColor(new Color(v,v,v));
+		if (value >= 0) {
+			int v = (int) value;
+			if (v > 255)
+				v = 255;
+			setForegroundColor(new Color(v, v, v));
 		}
 		foregroundValue = value;
 	}
@@ -1222,13 +1220,17 @@ public class Toolbar extends JPanel implements MouseListener, MouseMotionListene
 	public static double getBackgroundValue() {
 		return backgroundValue;
 	}
-	/** Sets the background color to grayscale, where value
-	is between 0 (black) and 255 (white). */
+
+	/**
+	 * Sets the background color to grayscale, where value is between 0 (black) and
+	 * 255 (white).
+	 */
 	public static void setBackgroundValue(double value) {
-		if (value>=0) {
-			int v = (int)value;
-			if (v>255) v=255;
-			setBackgroundColor(new Color(v,v,v));
+		if (value >= 0) {
+			int v = (int) value;
+			if (v > 255)
+				v = 255;
+			setBackgroundColor(new Color(v, v, v));
 		}
 		backgroundValue = value;
 	}
@@ -1530,7 +1532,7 @@ public class Toolbar extends JPanel implements MouseListener, MouseMotionListene
 		if (!isValidTool(newTool))
 			return;
 		//if (menus[newTool]!=null && menus[newTool].getComponentCount()>0) {
-		if (menus[newTool] != null&& menus[newTool].getItemCount()>0) {
+		if (menus[newTool] != null && menus[newTool].getItemCount() > 0) {
 			// menus[newTool].show(e.getComponent(), e.getX(), e.getY());
 			/*Changed for Bio7!*/
 			//swtPopupMenu(e, menus[newTool]);
@@ -1605,9 +1607,9 @@ public class Toolbar extends JPanel implements MouseListener, MouseMotionListene
 			default:
 			}
 		}
-		if (!isRightClick && longClickDelay>0 && !disablePopup) {
-			if (pressTimer==null)
-				pressTimer = new Timer();			
+		if (!isRightClick && longClickDelay > 0 && !disablePopup) {
+			if (pressTimer == null)
+				pressTimer = new Timer();
 			pressTimer.schedule(new TimerTask() {
 				public void run() {
 					if (pressTimer != null) {
@@ -1622,7 +1624,7 @@ public class Toolbar extends JPanel implements MouseListener, MouseMotionListene
 	}
 
 	public void mouseReleased(MouseEvent e) {
-		if (pressTimer!=null) {
+		if (pressTimer != null) {
 			pressTimer.cancel();
 			pressTimer = null;
 		}
@@ -2067,7 +2069,7 @@ public class Toolbar extends JPanel implements MouseListener, MouseMotionListene
 		String cmd = item.getActionCommand();
 		// String cmd = e.getActionCommand();
 		PopupMenu popup = (PopupMenu) item.getParent();
-		if (zoomPopup==popup) {
+		if (zoomPopup == popup) {
 			if ("Zoom In".equals(cmd))
 				IJ.runPlugIn("ij.plugin.Zoom", "in");
 			else if ("Zoom Out".equals(cmd))
@@ -2086,16 +2088,16 @@ public class Toolbar extends JPanel implements MouseListener, MouseMotionListene
 				IJ.runPlugIn("ij.plugin.Zoom", "max");
 			disableRecording = true;
 			setTool(previousTool);
-			disableRecording = false;				
+			disableRecording = false;
 			return;
 		}
 		if (pickerPopup == popup) {
 			if ("White/Black".equals(cmd)) {
 				setAndRecordForgroundColor(Color.white);
-				setAndRecordBackgroundColor(Color.black);	
+				setAndRecordBackgroundColor(Color.black);
 			} else if ("Black/White".equals(cmd)) {
 				setAndRecordForgroundColor(Color.black);
-				setAndRecordBackgroundColor(Color.white);	
+				setAndRecordBackgroundColor(Color.white);
 			} else if ("Red".equals(cmd))
 				setAndRecordForgroundColor(Color.red);
 			else if ("Green".equals(cmd))
@@ -2109,9 +2111,11 @@ public class Toolbar extends JPanel implements MouseListener, MouseMotionListene
 			else if ("Magenta".equals(cmd))
 				setAndRecordForgroundColor(Color.magenta);
 			else if ("Foreground...".equals(cmd))
-				setAndRecordForgroundColor(new ColorChooser("Select Foreground Color", foregroundColor, false).getColor());
+				setAndRecordForgroundColor(
+						new ColorChooser("Select Foreground Color", foregroundColor, false).getColor());
 			else if ("Background...".equals(cmd))
-				setAndRecordBackgroundColor(new ColorChooser("Select Background Color", backgroundColor, false).getColor());
+				setAndRecordBackgroundColor(
+						new ColorChooser("Select Background Color", backgroundColor, false).getColor());
 			else if ("Colors...".equals(cmd)) {
 				IJ.run("Colors...", "");
 				Recorder.setForegroundColor(getForegroundColor());
@@ -2135,20 +2139,20 @@ public class Toolbar extends JPanel implements MouseListener, MouseMotionListene
 		if (tools[tool] != null)
 			tools[tool].runMenuTool(names[tool], cmd);
 	}
-	
-	private void setAndRecordForgroundColor(Color color) {
-		if (color!=null) {
-    		setForegroundColor(color);
-    		Recorder.setForegroundColor(color);
-    	}
-    }
 
-    private void setAndRecordBackgroundColor(Color color) {
-    	if (color!=null) {
-    		setBackgroundColor(color);
+	private void setAndRecordForgroundColor(Color color) {
+		if (color != null) {
+			setForegroundColor(color);
+			Recorder.setForegroundColor(color);
+		}
+	}
+
+	private void setAndRecordBackgroundColor(Color color) {
+		if (color != null) {
+			setBackgroundColor(color);
 			Recorder.setBackgroundColor(color);
 		}
-    }
+	}
 
 	public Dimension getPreferredSize() {
 		return ps;
@@ -2238,8 +2242,7 @@ public class Toolbar extends JPanel implements MouseListener, MouseMotionListene
 			return;
 		if (menus[tool] == null) {
 			menus[tool] = new PopupMenu("");
-			if (Menus.getFontSize() != 0)
-				menus[tool].setFont(Menus.getFont());
+			GUI.scalePopupMenu(menus[tool]);
 			add(menus[tool]);
 		} else
 			menus[tool].removeAll();
@@ -2569,33 +2572,35 @@ public class Toolbar extends JPanel implements MouseListener, MouseMotionListene
 	public int getNumTools() {
 		return NUM_TOOLS + nExtraTools;
 	}
-	
-	/** Sets the tool menu long click delay in milliseconds
-	 * (default is 600). Set to 0 to disable long click triggering.
-	*/
-	 public static void setLongClickDelay(int delay) {
+
+	/**
+	 * Sets the tool menu long click delay in milliseconds (default is 600). Set to
+	 * 0 to disable long click triggering.
+	 */
+	public static void setLongClickDelay(int delay) {
 		longClickDelay = delay;
 	}
-	 
-		/** Sets the icon of the specified macro or plugin tool.<br>
-		 * See: Help&gt;Examples&gt;Tool&gt;Animated Icon Tool;
-		*/
-	 public static void setIcon(String toolName, String icon) {
-	 	if (instance==null)
-	 		return;
-	 	int tool = 0;
-	 	for (int i=CUSTOM1; i<instance.getNumTools(); i++) {
-	 		if (instance.names[i]!=null && instance.names[i].equals(toolName)) {
-	 			tool = i;
-	 			break;
-	 		}
-	 	}
-		if (tool>0) {
-	 		instance.icons[tool] = icon;
-	 		Graphics2D g = (Graphics2D)instance.getGraphics();
-	 		instance.setStrokeWidth(g);
-	 		instance.drawButton(g, tool);
-	 	}
+
+	/**
+	 * Sets the icon of the specified macro or plugin tool.<br>
+	 * See: Help&gt;Examples&gt;Tool&gt;Animated Icon Tool;
+	 */
+	public static void setIcon(String toolName, String icon) {
+		if (instance == null)
+			return;
+		int tool = 0;
+		for (int i = CUSTOM1; i < instance.getNumTools(); i++) {
+			if (instance.names[i] != null && instance.names[i].equals(toolName)) {
+				tool = i;
+				break;
+			}
+		}
+		if (tool > 0) {
+			instance.icons[tool] = icon;
+			Graphics2D g = (Graphics2D) instance.getGraphics();
+			instance.setStrokeWidth(g);
+			instance.drawButton(g, tool);
+		}
 	}
 
 	/* Changed for Bio7! */

@@ -37,6 +37,7 @@ public class TextWindow extends Frame implements ActionListener, FocusListener, 
 	int fontSize = (int) Prefs.get(FONT_SIZE, 5);
 	MenuBar mb;
 	private static Font font;
+	private boolean isResultsTable;
 
 	/**
 	 * Opens a new single-column text window.
@@ -106,6 +107,14 @@ public class TextWindow extends Frame implements ActionListener, FocusListener, 
 			}
 		}
 		addFocusListener(this);
+		String title2 = getTitle();
+ 		isResultsTable = title2.equals("Results");
+ 		if (!isResultsTable && title2.endsWith("(Results)")) {
+ 			isResultsTable = true;
+ 			title2 = title2.substring(0, title2.length()-9);
+ 			setTitle(title2);
+ 			textPanel.title = title2;
+ 		}
 		addMenuBar();
 		setFont();
 		WindowManager.addWindow(this);
@@ -171,7 +180,7 @@ public class TextWindow extends Frame implements ActionListener, FocusListener, 
 			mb.setFont(Menus.getFont());
 		Menu m = new Menu("File");
 		m.add(new MenuItem("Save As...", new MenuShortcut(KeyEvent.VK_S)));
-		if (getTitle().equals("Results")) {
+		if (isResultsTable) {
 			m.add(new MenuItem("Rename..."));
 			m.add(new MenuItem("Duplicate..."));
 		}
@@ -199,7 +208,7 @@ public class TextWindow extends Frame implements ActionListener, FocusListener, 
 		m.add(new MenuItem("Save Settings"));
 		m.addActionListener(this);
 		mb.add(m);
-		if (getTitle().equals("Results")) {
+		if (isResultsTable) {
 			m = new Menu("Results");
 			m.add(new MenuItem("Clear Results"));
 			m.add(new MenuItem("Summarize"));
