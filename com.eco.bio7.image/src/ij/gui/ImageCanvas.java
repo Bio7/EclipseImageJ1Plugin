@@ -2064,8 +2064,8 @@ public class ImageCanvas extends JPanel implements MouseListener, MouseWheelList
 				if (!IJ.altKeyDown() && roi.getType() == Roi.COMPOSITE && roi.getBounds().width == imp.getWidth()
 						&& roi.getBounds().height == imp.getHeight())
 					return false;
-				if (Toolbar.getToolId() == Toolbar.OVAL && Toolbar.getBrushSize() > 0)
-					Toolbar.getInstance().setTool(Toolbar.RECTANGLE);
+				//if (Toolbar.getToolId()==Toolbar.OVAL && Toolbar.getBrushSize()>0)
+				//	Toolbar.getInstance().setTool(Toolbar.RECTANGLE);
 				roi.setImage(null);
 				imp.setRoi(roi);
 				roi.handleMouseDown(sx, sy);
