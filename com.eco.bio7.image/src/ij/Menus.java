@@ -100,7 +100,6 @@ public class Menus {
 	private static boolean addSorted;
 	private static int defaultFontSize = IJ.isWindows() ? 15 : 0;
 	private static int fontSize = Prefs.getInt(Prefs.MENU_SIZE, defaultFontSize);
-	private static Font menuFont;
 	private static double scale = 1.0;
 
 	static boolean jnlp; // true when using Java WebStart
@@ -1807,17 +1806,20 @@ public class Menus {
 	 */
 	public static int getFontSize() {
 		return fontSize;
-		// return IJ.isMacintosh()?0:fontSize;
 	}
 
 	public static Font getFont() {
-		if (menuFont == null) {
-			//int size = fontSize == 0 ? 12 : fontSize;
-			//size = (int) Math.round(size * scale);
-			/*Changed for Bio7!*/
-			menuFont = Util.getOSFontToAwt();// new Font("SanSerif", Font.PLAIN, size);
-		}
-		// System.out.println("Menus.getFont: "+scale+" "+fontSize+" "+menuFont);
+		return getFont(true);
+	}
+
+	public static Font getFont(boolean checkSize) {
+		int size = fontSize==0?13:fontSize;
+		size = (int)Math.round(size*scale);
+		int size0 = size;
+		if (checkSize && IJ.isWindows() && scale>1.0 && size>17)
+			size = 17;  // Java resets size to 12 if you try to set it to 18 or greater
+		Font menuFont =  new Font("SanSerif", Font.PLAIN, size);
+		//System.out.println("getFont: "+checkSize+" "+scale+" "+size0+" "+size+" "+menuFont);
 		return menuFont;
 	}
 

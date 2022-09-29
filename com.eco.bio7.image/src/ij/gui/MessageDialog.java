@@ -30,7 +30,7 @@ public class MessageDialog {
 				messageBox.setMessage(message);
 				result = messageBox.open();
 				if (result == SWT.OK) {
-					escapePressed = true;
+					escapePressed = true; 
 				}
 			}
 		});

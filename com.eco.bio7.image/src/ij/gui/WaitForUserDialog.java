@@ -30,8 +30,7 @@ public class WaitForUserDialog extends JDialog implements ActionListener, KeyLis
 		if (text != null && text.startsWith("IJ: "))
 			text = text.substring(4);
 		label = new MultiLineLabel(text, 175);
-		if (!IJ.isLinux())
-			label.setFont(new Font("SansSerif", Font.PLAIN, 14));
+		if (!IJ.isLinux()) label.setFont(ImageJ.SansSerif14);
 		if (IJ.isMacOSX()) {
 			RoiManager rm = RoiManager.getInstance();
 			if (rm != null)

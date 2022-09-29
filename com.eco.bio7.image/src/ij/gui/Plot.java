@@ -1830,6 +1830,7 @@ public class Plot implements Cloneable {
 
 	/** Calibrated coordinates to integer pixel coordinates */
 	private int scaleX(double x) {
+		if (Double.isNaN(x)) return -1;
 		if (xMin == xMax) {
 			if (x==xMin) return xBasePxl;
 			else return x>xMin ? Integer.MAX_VALUE : Integer.MIN_VALUE;
@@ -1843,6 +1844,7 @@ public class Plot implements Cloneable {
 	/** Converts calibrated coordinates to pixel coordinates. In contrast to the image calibration, also
 	 *	works with log axes */
 	private int scaleY(double y) {
+		if (Double.isNaN(y)) return -1;
 		if (yMin == yMax) {
 			if (y==yMin) return yBasePxl;
 			else return y>yMin ? Integer.MAX_VALUE : Integer.MIN_VALUE;
@@ -3196,6 +3198,7 @@ public class Plot implements Cloneable {
 					break;
 				}
 			case PlotObject.LINE:
+				if (Double.isNaN(plotObject.x) || Double.isNaN(plotObject.y)) break;
 				ip.setClipRect(frame);
 				ip.drawLine(scaleX(plotObject.x), scaleY(plotObject.y), scaleX(plotObject.xEnd), scaleY(plotObject.yEnd));
 				ip.setClipRect(null);

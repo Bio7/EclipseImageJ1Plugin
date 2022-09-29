@@ -283,6 +283,7 @@ public class Toolbar extends JPanel implements MouseListener, MouseMotionListene
 	private PopupMenu newPopupMenu() {
 		PopupMenu popup = new PopupMenu();
 		GUI.scalePopupMenu(popup);
+		//System.out.println("newPopupMenu: "+popup.getFont());
 		return popup;
 	}
 
@@ -1182,6 +1183,7 @@ public class Toolbar extends JPanel implements MouseListener, MouseMotionListene
 				repaintTool(i); // some of this tool's icon is drawn in the
 			// foreground color
 		}
+		ColorPicker.update();
 		if (!IJ.isMacro())
 			setRoiColor(c);
 	}
@@ -1195,6 +1197,7 @@ public class Toolbar extends JPanel implements MouseListener, MouseMotionListene
 			backgroundColor = c;
 			backgroundValue = Double.NaN;
 			repaintTool(DROPPER);
+			ColorPicker.update();
 			IJ.notifyEventListeners(IJEventListener.BACKGROUND_COLOR_CHANGED);
 		}
 	}

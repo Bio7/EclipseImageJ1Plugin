@@ -986,13 +986,13 @@ public class ImageWindow extends JFrame
 		int rotation = e.getWheelRotation();
 		int amount = e.getScrollAmount();
 		boolean ctrl = (e.getModifiers() & Event.CTRL_MASK) != 0;
-		if (IJ.debugMode) {
-			IJ.log("mouseWheelMoved: " + e);
-			IJ.log("  type: " + e.getScrollType());
-			IJ.log("  ctrl: " + ctrl);
-			IJ.log("  rotation: " + rotation);
-			IJ.log("  amount: " + amount);
-		}
+		//if (IJ.debugMode) {
+				//	IJ.log("mouseWheelMoved: "+e);
+				//	IJ.log("  type: "+e.getScrollType());
+				//	IJ.log("  ctrl: "+ctrl);
+				//	IJ.log("  rotation: "+rotation);
+				//	IJ.log("  amount: "+amount);
+				//}
 		if (amount < 1)
 			amount = 1;
 		if (rotation == 0)

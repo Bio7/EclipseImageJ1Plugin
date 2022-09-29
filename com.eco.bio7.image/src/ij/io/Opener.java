@@ -311,7 +311,7 @@ public class Opener {
 		open(path);
 		if (!error)
 			Menus.addOpenRecentItem(path);
-		return error;
+		return !error;
 	}
 
 	/**

@@ -98,11 +98,13 @@ public class ImageJ extends Frame implements ActionListener, MouseListener, KeyL
 	 */
 	public static final String VERSION = "1.53u";
 	
-	public static final String BUILD = "18";
+	public static final String BUILD = "34";
 
 	public static Color backgroundColor;
 	/** SansSerif, 12-point, plain font. */
 	public static final Font SansSerif12 = new Font("SansSerif", Font.PLAIN, 12);
+	/** SansSerif, 14-point, plain font. */
+	public static final Font SansSerif14 = new Font("SansSerif", Font.PLAIN, 14);
 	/** Address of socket where Image accepts commands */
 	public static final int DEFAULT_PORT = 57294;
  
