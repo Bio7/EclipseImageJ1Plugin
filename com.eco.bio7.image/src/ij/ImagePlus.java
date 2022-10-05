@@ -2400,6 +2400,20 @@ public class ImagePlus implements ImageObserver, Measurements, Cloneable {
 			ip.resetRoi();
 		draw();
 	}
+	
+	/** Removes the spatial scaling of this image. */
+	public void removeScale() {
+		Calibration cal = getCalibration();
+		cal.pixelWidth = 1.0;
+		cal.pixelHeight = 1.0;
+		cal.pixelDepth = 1.0;
+		cal.setUnit("pixel");
+		ImageWindow win = getWindow();
+		if (win!=null)
+			win.repaint();
+	}
+
+
 
 	public boolean okToDeleteRoi() {
 		if (roi != null && (roi instanceof PointRoi) && getWindow() != null

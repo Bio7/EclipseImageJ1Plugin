@@ -101,6 +101,7 @@ public class Menus {
 	private static int defaultFontSize = IJ.isWindows() ? 15 : 0;
 	private static int fontSize = Prefs.getInt(Prefs.MENU_SIZE, defaultFontSize);
 	private static double scale = 1.0;
+	private static Font cachedFont;//Not used since we are using SWT menus!
 
 	static boolean jnlp; // true when using Java WebStart
 	public static int setMenuBarCount;
@@ -117,8 +118,8 @@ public class Menus {
 	String addMenuBar() {
 
 		scale = Prefs.getGuiScale();
-		if ((scale >= 1.5 && scale < 2.0) || (scale >= 2.5 && scale < 3.0))
-			scale = (int) Math.round(scale);
+		//if ((scale >= 1.5 && scale < 2.0) || (scale >= 2.5 && scale < 3.0))
+		//	scale = (int) Math.round(scale);
 		nPlugins = nMacros = userPluginsIndex = 0;
 		addSorted = installingJars = duplicateCommand = false;
 		error = null;
