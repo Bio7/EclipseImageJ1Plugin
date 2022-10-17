@@ -1732,7 +1732,7 @@ public class GenericDialog extends Dialog implements ActionListener, TextListene
 	}
 
 	/** Reset the counters before reading the dialog parameters */
-	void resetCounters() {
+	public void resetCounters() {
 		nfIndex = 0; // prepare for readout
 		sfIndex = 0;
 		cbIndex = 0;
