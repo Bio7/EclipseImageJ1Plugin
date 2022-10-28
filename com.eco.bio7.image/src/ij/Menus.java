@@ -99,7 +99,7 @@ public class Menus {
 	// Plugins menu
 	private static boolean addSorted;
 	private static int defaultFontSize = IJ.isWindows() ? 15 : 0;
-	private static int fontSize = Prefs.getInt(Prefs.MENU_SIZE, defaultFontSize);
+	private static int fontSize;
 	private static double scale = 1.0;
 	private static Font cachedFont;//Not used since we are using SWT menus!
 
@@ -113,6 +113,8 @@ public class Menus {
 		String title = ij != null ? ij.getTitle() : null;
 		applet = appletInstance;
 		instance = this;
+		fontSize = Prefs.getInt(Prefs.MENU_SIZE, defaultFontSize);
+	
 	}
 
 	String addMenuBar() {
@@ -271,8 +273,7 @@ public class Menus {
 		help.addSeparator();
 		addPlugInItem(help, "Dev. Resources...", "ij.plugin.BrowserLauncher(\"" + IJ.URL + "/developer/index.html\")",
 				0, false);
-		addPlugInItem(help, "Macro Functions...",
-				"ij.plugin.BrowserLauncher(\"" + IJ.URL + "/developer/macro/functions.html\")", 0, false);
+		addPlugInItem(help, "Macro Functions...", "ij.plugin.BrowserLauncher(\"https://wsr.imagej.net/developer/macro/functions.html\")", 0, false);
 		Menu examplesMenu = getExamplesMenu(ij);
 		addPlugInItem(examplesMenu, "Open as Panel", "ij.plugin.SimpleCommands(\"opencp\")", 0, false);
 		help.add(examplesMenu);
@@ -280,7 +281,7 @@ public class Menus {
 		/* Changed for Bio7! Left out ImageJ update! */
 		// addPlugInItem(help, "Update ImageJ...", "ij.plugin.ImageJ_Updater",
 		// 0, false);
-		addPlugInItem(help, "Release Notes...", "ij.plugin.BrowserLauncher(\"http://wsr.imagej.net/notes.html\")", 0, false);
+		addPlugInItem(help, "Release Notes...", "ij.plugin.BrowserLauncher(\"https://wsr.imagej.net/notes.html\")", 0, false);
 		addPlugInItem(help, "Refresh Menus", "ij.plugin.ImageJ_Updater(\"menus\")", 0, false);
 		help.addSeparator();
 		Menu aboutMenu = getMenu("Help>About Plugins", true);
