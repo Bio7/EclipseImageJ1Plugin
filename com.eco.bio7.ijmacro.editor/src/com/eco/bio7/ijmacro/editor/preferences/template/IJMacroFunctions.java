@@ -76,6 +76,7 @@ public class IJMacroFunctions {
 			"Dialog.addChoice(\"Label\",items)####Adds a popup menu to the dialog,where items is a string array containing the menu items."+linSeparator + 
 			"Dialog.addChoice(\"Label\",items,default)####Adds a popup menu,where items is a string array containing the choices and default is the default choice."+linSeparator + 
 			"Dialog.addHelp(url)####Adds a \"Help\" button that opens the specified URL in the default browser. This can be used to supply a help page for this dialog or macro. With v1.46b or later,displays an HTML formatted message if 'url' starts with \"<html>\"."+linSeparator + 
+			"Dialog.addImage(path)####Adds an image to the dialog."+
 			"Dialog.addToSameRow()####Makes the next item added appear on the same row as the previous item. May be used for addNumericField,addSlider,addChoice,addCheckbox,addStringField,addMessage,addPanel,and before the showDialog() method. In the latter case,the buttons appear to the right of the previous item. Note that addMessage uses the remaining width,so it must be the last item of a row. Requires 1.51r."+linSeparator +
 			"Dialog.setInsets(top,left,bottom)####Overrides the default insets (margins) used for the next component added to the dialog."+linSeparator+
 			"Dialog.setLocation(x,y)####Sets the screen location where this dialog will be displayed."+linSeparator+
@@ -506,6 +507,7 @@ public class IJMacroFunctions {
 			"Roi.setDefaultStrokeWidth()####Sets the default selection stroke width."+
 			"Roi.setJustification(str)####Sets the ROI 'justification' (center, right)."+
 			"Roi.setFontSize(size)####Sets the font size of the ROI."+
+			"Roi.translate(x,y)####Translates a ROI selection with the given x,y arguments."+
 			"roiManager(\"and\")####Uses the conjunction operator on the selected ROIs,or all ROIs if none are selected,to create a composite selection."+linSeparator + 			
 			"roiManager(\"add\")####Adds the current selection to the ROI Manager."+linSeparator + 			
 			"roiManager(\"add & draw\")####Outlines the current selection and adds it to the ROI Manager."+linSeparator + 
@@ -653,6 +655,7 @@ public class IJMacroFunctions {
 			"String.join(array)####Concatenates the given elements."+linSeparator + 
 			"String.pad(n,length)####Pad 'n' with leading zeros to the specified length."+linSeparator + 
 			"String.paste####Returns the contents of the clipboard."+linSeparator + 
+			"String.setFontSize()####Sets the font size of the string."+
 			"String.show(str)####Displays str in a text window."+linSeparator + 
 			"String.show(title,str)####Displays str in a text window using title as the title."+linSeparator+
 			"String.trim(string)####Eliminates leading and trailing spaces of the given string."+linSeparator+			
