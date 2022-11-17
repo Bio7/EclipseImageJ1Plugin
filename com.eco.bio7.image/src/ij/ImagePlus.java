@@ -659,7 +659,8 @@ public class ImagePlus implements ImageObserver, Measurements, Cloneable {
 			int type = bi.getType();
 			boolean rgb = type == BufferedImage.TYPE_3BYTE_BGR || type == BufferedImage.TYPE_INT_RGB
 					|| type == BufferedImage.TYPE_4BYTE_ABGR || type == BufferedImage.TYPE_BYTE_INDEXED
-					|| type == BufferedImage.TYPE_INT_ARGB || type == BufferedImage.TYPE_CUSTOM;
+					|| type == BufferedImage.TYPE_INT_ARGB || type == BufferedImage.TYPE_CUSTOM
+					|| type == BufferedImage.TYPE_INT_BGR;
 			if (IJ.debugMode)
 				IJ.log("setImage: type=" + type + ", bands=" + nBands + ", rgb=" + rgb);
 			if (nBands > 1 && !rgb) {
@@ -1379,9 +1380,9 @@ public class ImagePlus implements ImageObserver, Measurements, Cloneable {
 		dimensionsSet = true;
 	}
 
-	/** Returns 'true' if this image has more than
-	 * than three dimensions.
-	*/
+	/**
+	 * Returns 'true' if this image has more than than three dimensions.
+	 */
 	public boolean isHyperStack() {
 		return getNDimensions() > 3;
 	}
@@ -2400,7 +2401,7 @@ public class ImagePlus implements ImageObserver, Measurements, Cloneable {
 			ip.resetRoi();
 		draw();
 	}
-	
+
 	/** Removes the spatial scaling of this image. */
 	public void removeScale() {
 		Calibration cal = getCalibration();
@@ -2409,11 +2410,9 @@ public class ImagePlus implements ImageObserver, Measurements, Cloneable {
 		cal.pixelDepth = 1.0;
 		cal.setUnit("pixel");
 		ImageWindow win = getWindow();
-		if (win!=null)
+		if (win != null)
 			win.repaint();
 	}
-
-
 
 	public boolean okToDeleteRoi() {
 		if (roi != null && (roi instanceof PointRoi) && getWindow() != null
