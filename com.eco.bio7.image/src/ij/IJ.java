@@ -1240,7 +1240,12 @@ public class IJ {
 	public static boolean shiftKeyDown() {
 		return shiftDown;
 	}
-
+	
+	/* Sets the specified key "down", where 'key'
+	 * is KeyEvent.VK_CONTROL, KeyEvent.VK_META, 
+	 * KeyEvent.VK_ALT, KeyEvent.VK_SHIFT,
+	 * KeyEvent.VK_SPACE or KeyEvent.VK_ESCAPE.
+	*/
 	public static void setKeyDown(int key) {
 		switch (key) {
 		case KeyEvent.VK_CONTROL:
@@ -1271,7 +1276,12 @@ public class IJ {
 		}
 		}
 	}
-
+	
+	/* Sets the specified key "up", where 'key'
+	 * is KeyEvent.VK_CONTROL, KeyEvent.VK_META, 
+	 * KeyEvent.VK_ALT, KeyEvent.VK_SHIFT,
+	 * KeyEvent.VK_SPACE or IJ.ALL_KEYS (-1).
+	*/
 	public static void setKeyUp(int key) {
 		switch (key) {
 		case KeyEvent.VK_CONTROL:

@@ -851,7 +851,7 @@ public class ImageCanvas extends JPanel implements MouseListener, MouseWheelList
 		if (scaleToFit || IJ.altKeyDown()) {
 			fitToWindow();
 			return;
-		}
+		} 
 		if (width > imageWidth * magnification)
 			width = (int) (imageWidth * magnification);
 		if (height > imageHeight * magnification)
