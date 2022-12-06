@@ -285,6 +285,7 @@ public class Zoom implements PlugIn {
 	}
 
 	private void scaleToFit(ImagePlus imp) {
+		waitUntilActivated(imp);
 		ImageCanvas ic = imp.getCanvas();
 		if (ic == null)
 			return;
