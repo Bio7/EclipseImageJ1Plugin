@@ -841,7 +841,7 @@ public class ImageWindow extends JFrame
 
 	}
 
-	public Rectangle getMaximumBounds() {
+	public Rectangle getMaximumBounds() { 
 		Rectangle rec;
 		JPanel pan = CanvasView.getCanvas_view().getCurrent();
 		if (pan != null) {
