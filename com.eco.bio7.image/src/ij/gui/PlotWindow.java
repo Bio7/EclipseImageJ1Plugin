@@ -819,7 +819,7 @@ public class PlotWindow extends ImageWindow
 		rangeArrowsVisible = true;
 	}
 
-	void hideRangeArrows() {
+	public void hideRangeArrows() {
 		if (imp == null || rangeArrowRois == null)
 			return;
 		Overlay ovly = imp.getOverlay();

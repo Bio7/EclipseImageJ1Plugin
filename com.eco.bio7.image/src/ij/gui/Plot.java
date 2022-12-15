@@ -159,7 +159,7 @@ public class Plot implements Cloneable {
 	private static final double RELATIVE_ARROWHEAD_SIZE = 0.2; //arrow heads have 1/5 of vector length
 	private static final int MIN_ARROWHEAD_LENGTH = 3;
 	private static final int MAX_ARROWHEAD_LENGTH = 20;
-	private static final String MULTIPLY_SYMBOL = "\u00B7"; //middot, default multiplication symbol for scientific notation. Use setOptions("msymbol=\\u00d7") for '�'
+	private static final String MULTIPLY_SYMBOL = "\u00B7"; //middot, default multiplication symbol for scientific notation. Use setOptions("msymbol=\\u00d7") for '×'
 
 	PlotProperties pp = new PlotProperties();		//size, range, formatting etc, for easy serialization
 	PlotProperties ppSnapshot;						//copy for reverting
@@ -3293,13 +3293,20 @@ public class Plot implements Cloneable {
 
 	/** Draw the symbol for the data point number 'pointIndex' (pointIndex < 0 when drawing the legend) */
 	void drawShape(PlotObject plotObject, int x, int y, int shape, int size, int pointIndex) {
-		if (shape == DIAMOND) size = (int)(size*1.21);
+		if (ip==null)
+			return;
+		int lineWidth = ip.getLineWidth();
+		if (shape == DIAMOND)
+			size = (int)(size*1.21);
 		int xbase = x-sc(size/2);
 		int ybase = y-sc(size/2);
 		int xend = x+sc(size/2);
 		int yend = y+sc(size/2);
-		if (ip==null)
-			return;
+		if (lineWidth>3) {
+			int newLineWidth = 3;
+			ip.setLineWidth(newLineWidth);
+		}
+		//IJ.log("drawShape: "+size+" "+size);
 		switch(shape) {
 			case X:
 				ip.drawLine(xbase,ybase,xend,yend);
@@ -3373,6 +3380,7 @@ public class Plot implements Cloneable {
 				}
 				break;
 		}
+		ip.setLineWidth(lineWidth);
 	}
 
 	/** Fill the area of the symbols for data points (except for shape=DOT)
@@ -4338,7 +4346,12 @@ class PlotObject implements Cloneable, Serializable {
 
 	/** Size of the markers for an XY_DATA object with markers */
 	int getMarkerSize() {
-		return lineWidth<=1 ? 5 : 7;
+		if (lineWidth<=1)
+			return 5;
+		else if (lineWidth<=3)
+			return 7;
+		else
+			return (int)(lineWidth+4);
 	}
 
 	/** Sets the font. Also writes font properties for serialization. */

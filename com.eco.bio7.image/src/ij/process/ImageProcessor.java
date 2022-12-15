@@ -1940,31 +1940,7 @@ public abstract class ImageProcessor implements Cloneable {
 	public void putPixel(int x, int y, int[] iArray) {
 		putPixel(x, y, iArray[0]);
 	}
-	
-	/*
-	public int[] getRGBValue(int index, int[] rgb) {
-		if (rgb==null) rgb = new int[3];
-		if (this instanceof ColorProcessor)
-			return rgb;
-		if (rLUT1==null) {
-			if (cm==null)
-				makeDefaultColorModel();
-			baseCM = cm;
-			IndexColorModel m = (IndexColorModel)cm;
-			rLUT1 = new byte[256]; gLUT1 = new byte[256]; bLUT1 = new byte[256];
-			m.getReds(rLUT1); m.getGreens(gLUT1); m.getBlues(bLUT1);
-		}
-		int min2=(int)getMin(), max2=(int)getMax();
-		double scale = 256.0/(max2-min2+1);
-		double value = getf(index)-min2;
-		if (value<0.0) value = 0.0;
-		int v = (int)(value*scale+0.5);
-		if (v>255) v = 255;
-		rgb[0]=rLUT1[v]; rgb[1]=gLUT1[v]; rgb[2]=bLUT1[v];		
-		return rgb;
-	}
-	*/
-	
+		
 	/** Uses the current interpolation method (bilinear or bicubic)
 		to find the pixel value at real coordinates (x,y). */
 	public abstract double getInterpolatedPixel(double x, double y);
@@ -2232,6 +2208,13 @@ public abstract class ImageProcessor implements Cloneable {
 	/** Returns a new processor containing an image
 		that corresponds to the current ROI. */
 	public abstract ImageProcessor crop();
+
+	/** Sets pixels less than 'level1' or greater than
+	 * 'level2' to 0 and all other pixels to 255.
+	 * Only works with 8-bit images.
+	*/
+	public void threshold(int level1, int level2) {
+	}
 
 	/** Sets pixels less than or equal to level to 0 and all other
 		pixels to 255. Only works with 8-bit and 16-bit images. */
