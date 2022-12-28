@@ -59,8 +59,7 @@ public class HistogramPlot extends ImagePlus {
 	public void draw(ImagePlus imp, int bins, double histMin, double histMax, int yMax) {
 		boolean limitToThreshold = (Analyzer.getMeasurements() & LIMIT) != 0;
 		ImageProcessor ip = imp.getProcessor();
-		if (ip.getMinThreshold() != ImageProcessor.NO_THRESHOLD
-				&& ip.getLutUpdateMode() == ImageProcessor.NO_LUT_UPDATE)
+		if (ip.isThreshold() && ip.getLutUpdateMode()==ImageProcessor.NO_LUT_UPDATE)
 			limitToThreshold = false; // ignore invisible thresholds
 		if (imp.isRGB() && rgbMode < INTENSITY1)
 			rgbMode = INTENSITY1;
@@ -185,7 +184,7 @@ public class HistogramPlot extends ImagePlus {
 					max = stats.max;
 				} else
 					cm = ((CompositeImage) imp).getChannelLut();
-			} else if (ipSource.getMinThreshold() == ImageProcessor.NO_THRESHOLD)
+			} else if (!ipSource.isThreshold())
 				cm = ipSource.getColorModel();
 			else
 				cm = ipSource.getCurrentColorModel();
