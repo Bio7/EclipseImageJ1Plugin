@@ -154,7 +154,7 @@ public class StackStatistics extends ImageStatistics {
 		copyHistogram(nBins);
 		median = getMedian(longHistogram, (int)minThreshold, (int)maxThreshold, cal);
         IJ.showStatus("");
-        IJ.showProgress(1.0);
+        IJ.showProgress(1.0); 
     }
     
 	void sum8BitHistograms(ImagePlus imp) {
