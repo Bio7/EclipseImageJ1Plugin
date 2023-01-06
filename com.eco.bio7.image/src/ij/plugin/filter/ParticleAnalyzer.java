@@ -458,8 +458,10 @@ public class ParticleAnalyzer implements PlugInFilter, Measurements {
 		return analyze(imp, imp.getProcessor());
 	}
 
-	/** Performs particle analysis on the specified ImagePlus and
-		ImageProcessor. Returns false if there is an error. */
+	/** Performs particle analysis on the current slice
+	 * of the specified image. Returns false if there
+	 * is an error.
+	*/
 	public boolean analyze(ImagePlus imp, ImageProcessor ip) {
 		if (this.imp==null) this.imp = imp;
 		showResults = (options&SHOW_RESULTS)!=0;
