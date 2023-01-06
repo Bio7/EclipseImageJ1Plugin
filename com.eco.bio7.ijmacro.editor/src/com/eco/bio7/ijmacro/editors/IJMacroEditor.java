@@ -263,6 +263,7 @@ public class IJMacroEditor extends TextEditor implements IPropertyChangeListener
 					Control ctrl = (Control) editor.getAdapter(Control.class);
 					DropTarget dropTarget = (DropTarget) ctrl.getData(DND.DROP_TARGET_KEY);
 					DropTargetListener[] drops = dropTarget.getDropListeners();
+					/*Remove the default drag listener!*/
 					for (int i = 0; i < drops.length; i++) {
 						dropTarget.removeDropListener(drops[i]);
 					}
