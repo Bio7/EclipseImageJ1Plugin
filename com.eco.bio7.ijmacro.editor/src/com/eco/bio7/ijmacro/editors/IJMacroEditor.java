@@ -13,11 +13,14 @@
 package com.eco.bio7.ijmacro.editors;
 
 import java.awt.Frame;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
+
+import javax.swing.SwingUtilities;
 
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IResource;
@@ -56,7 +59,12 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.custom.StyledText;
+import org.eclipse.swt.dnd.DND;
+import org.eclipse.swt.dnd.DropTarget;
+import org.eclipse.swt.dnd.DropTargetEvent;
+import org.eclipse.swt.dnd.DropTargetListener;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.graphics.FontData;
@@ -70,6 +78,7 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
+import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
@@ -82,6 +91,7 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.editors.text.TextEditor;
 import org.eclipse.ui.preferences.ScopedPreferenceStore;
+import org.eclipse.ui.texteditor.AbstractDecoratedTextEditor;
 import org.eclipse.ui.texteditor.IDocumentProvider;
 import org.eclipse.ui.texteditor.ITextEditor;
 import org.eclipse.ui.texteditor.ITextEditorActionDefinitionIds;
@@ -102,10 +112,12 @@ import com.eco.bio7.ijmacro.editor.outline.IJMacroEditorLabelProvider;
 import com.eco.bio7.ijmacro.editor.outline.IJMacroEditorOutlineNode;
 import com.eco.bio7.ijmacro.editor.outline.IJMacroEditorTreeContentProvider;
 import com.eco.bio7.ijmacro.editor.toolbar.debug.DebugVariablesView;
+import com.eco.bio7.image.CanvasView;
 import com.eco.bio7.image.Util;
 
 import ij.IJ;
 import ij.WindowManager;
+import ij.gui.ImageWindow;
 import ij.macro.Debugger;
 import ij.macro.Interpreter;
 import ij.plugin.Macro_Runner;
@@ -141,8 +153,7 @@ public class IJMacroEditor extends TextEditor implements IPropertyChangeListener
 
 	public final static String EDITOR_MATCHING_BRACKETS_COLOR = "matchingBracketsColor";
 
-	final private ScopedPreferenceStore storeWorkbench = new ScopedPreferenceStore(new InstanceScope(),
-			"org.eclipse.ui.workbench");
+	final private ScopedPreferenceStore storeWorkbench = new ScopedPreferenceStore(new InstanceScope(), "org.eclipse.ui.workbench");
 
 	private InterpretImageJMacroAction interpretImageJMacroAction;
 
@@ -222,8 +233,7 @@ public class IJMacroEditor extends TextEditor implements IPropertyChangeListener
 						IDocument document = prov.getDocument(inp);
 						if (document != null) {
 
-							ITextSelection textSelection = (ITextSelection) editor.getSite().getSelectionProvider()
-									.getSelection();
+							ITextSelection textSelection = (ITextSelection) editor.getSite().getSelectionProvider().getSelection();
 							int offset = textSelection.getOffset();
 							if (store.getBoolean("MARK_WORDS")) {
 								markWords(offset, document, editor);
@@ -243,11 +253,108 @@ public class IJMacroEditor extends TextEditor implements IPropertyChangeListener
 			});
 
 		}
+		getEditorSite().getPage().addPartListener(new IPartListener() {
+
+			public void partActivated(IWorkbenchPart part) {
+
+				IEditorPart editor = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
+				if (editor instanceof IJMacroEditor) {
+					ITextEditor ed = (ITextEditor) editor;
+					Control ctrl = (Control) editor.getAdapter(Control.class);
+					DropTarget dropTarget = (DropTarget) ctrl.getData(DND.DROP_TARGET_KEY);
+					DropTargetListener[] drops = dropTarget.getDropListeners();
+					for (int i = 0; i < drops.length; i++) {
+						dropTarget.removeDropListener(drops[i]);
+					}
+					dropTarget.addDropListener(new DropTargetListener() {
+
+						@Override
+						public void dragEnter(DropTargetEvent event) {
+							// TODO Auto-generated method stub
+
+						}
+
+						@Override
+						public void dragLeave(DropTargetEvent event) {
+							// TODO Auto-generated method stub
+
+						}
+
+						@Override
+						public void dragOperationChanged(DropTargetEvent event) {
+							// TODO Auto-generated method stub
+
+						}
+
+						@Override
+						public void dragOver(DropTargetEvent event) {
+							// TODO Auto-generated method stub
+
+						}
+
+						@Override
+						public void drop(DropTargetEvent event) {
+							String[] fileNames = (String[]) event.data;
+							StringBuffer buff = new StringBuffer();
+							for (int i = 0; i < fileNames.length; i++) {
+								if (fileNames.length > 1) {
+									buff.append("path_" + (i + 1) + " = " + "\"" + fileNames[i] + "\";" + System.lineSeparator());
+								} else {
+									buff.append("path_" + (i + 1) + " = " + "\"" + fileNames[i] + "\";");
+
+								}
+
+							}
+
+							if (editor instanceof ITextEditor) {
+								IDocument doc = ed.getDocumentProvider().getDocument(editor.getEditorInput());
+								ITextSelection sel = (ITextSelection) ed.getSelectionProvider().getSelection();
+								int offset = sel.getOffset();
+								try {
+									doc.replace(offset, 0, buff.toString());
+								} catch (BadLocationException e) {
+									e.printStackTrace();
+								}
+							}
+
+						}
+
+						@Override
+						public void dropAccept(DropTargetEvent event) {
+
+						}
+
+					});
+
+				}
+
+			}
+
+			public void partBroughtToTop(IWorkbenchPart part) {
+
+			}
+
+			public void partClosed(IWorkbenchPart part) {
+
+			}
+
+			public void partDeactivated(IWorkbenchPart part) {
+				if (part instanceof CanvasView) {
+
+				}
+			}
+
+			public void partOpened(IWorkbenchPart part) {
+				if (part instanceof CanvasView) {
+
+				}
+			}
+
+		});
 	}
 
 	protected ISourceViewer createSourceViewer(Composite parent, IVerticalRuler ruler, int styles) {
-		ISourceViewer viewer = new ProjectionViewer(parent, ruler, getOverviewRuler(), isOverviewRulerVisible(),
-				styles);
+		ISourceViewer viewer = new ProjectionViewer(parent, ruler, getOverviewRuler(), isOverviewRulerVisible(), styles);
 
 		// ensure decoration support has been created and configured.
 		getSourceViewerDecorationSupport(viewer);
@@ -477,8 +584,7 @@ public class IJMacroEditor extends TextEditor implements IPropertyChangeListener
 	protected void createActions() {
 		super.createActions();
 
-		IAction action = new TextOperationAction(TemplateMessages.getResourceBundle(),
-				"Editor." + TEMPLATE_PROPOSALS + ".", //$NON-NLS-1$ //$NON-NLS-2$
+		IAction action = new TextOperationAction(TemplateMessages.getResourceBundle(), "Editor." + TEMPLATE_PROPOSALS + ".", //$NON-NLS-1$ //$NON-NLS-2$
 				this, ISourceViewer.CONTENTASSIST_PROPOSALS);
 		action.setActionDefinitionId(ITextEditorActionDefinitionIds.CONTENT_ASSIST_PROPOSALS);
 		setAction(TEMPLATE_PROPOSALS, action);
@@ -490,12 +596,10 @@ public class IJMacroEditor extends TextEditor implements IPropertyChangeListener
 		a.setActionDefinitionId(ITextEditorActionDefinitionIds.CONTENT_ASSIST_PROPOSALS);
 		setAction("ContentAssistProposal", a); //$NON-NLS-1$
 
-		setComment = new com.eco.bio7.ijmacro.editor.actions.SetComment("Add Block Comment",
-				PlatformUI.getWorkbench().getActiveWorkbenchWindow());
+		setComment = new com.eco.bio7.ijmacro.editor.actions.SetComment("Add Block Comment", PlatformUI.getWorkbench().getActiveWorkbenchWindow());
 		setAction("Add Block Comment", setComment);
 
-		unsetComment = new com.eco.bio7.ijmacro.editor.actions.UnsetComment("Remove Block Comment",
-				PlatformUI.getWorkbench().getActiveWorkbenchWindow());
+		unsetComment = new com.eco.bio7.ijmacro.editor.actions.UnsetComment("Remove Block Comment", PlatformUI.getWorkbench().getActiveWorkbenchWindow());
 		setAction("Remove Block Comment", unsetComment);
 
 		javaFormat = new com.eco.bio7.ijmacro.editor.actions.ScriptFormatterAction();
@@ -520,8 +624,7 @@ public class IJMacroEditor extends TextEditor implements IPropertyChangeListener
 
 		char[] matchChars = { '{', '}', '(', ')', '[', ']' }; // which brackets
 																// to match
-		ICharacterPairMatcher matcher = new DefaultCharacterPairMatcher(matchChars,
-				IDocumentExtension3.DEFAULT_PARTITIONING);
+		ICharacterPairMatcher matcher = new DefaultCharacterPairMatcher(matchChars, IDocumentExtension3.DEFAULT_PARTITIONING);
 		support.setCharacterPairMatcher(matcher);
 		support.setMatchingCharacterPainterPreferenceKeys(EDITOR_MATCHING_BRACKETS, EDITOR_MATCHING_BRACKETS_COLOR);
 
@@ -692,8 +795,7 @@ public class IJMacroEditor extends TextEditor implements IPropertyChangeListener
 		 */
 		// } else
 
-		Table debugWindow = updateDebugWindow(interp.getVariables(), DebugVariablesView.getDebugVariablesGrid(),
-				interp);
+		Table debugWindow = updateDebugWindow(interp.getVariables(), DebugVariablesView.getDebugVariablesGrid(), interp);
 		if (debugWindow != null) {
 			interp.updateArrayInspector();
 			// toFront();
@@ -765,6 +867,7 @@ public class IJMacroEditor extends TextEditor implements IPropertyChangeListener
 					}
 				}
 			}
+
 		});
 
 		/*
@@ -849,8 +952,7 @@ public class IJMacroEditor extends TextEditor implements IPropertyChangeListener
 
 				IResource resource = (IResource) editor.getEditorInput().getAdapter(IResource.class);
 				try {
-					resource.deleteMarkers("com.eco.bio7.ijmacroeditor.debugrulermarkarrow", false,
-							IResource.DEPTH_ZERO);
+					resource.deleteMarkers("com.eco.bio7.ijmacroeditor.debugrulermarkarrow", false, IResource.DEPTH_ZERO);
 				} catch (CoreException e1) {
 
 					e1.printStackTrace();
@@ -963,8 +1065,7 @@ public class IJMacroEditor extends TextEditor implements IPropertyChangeListener
 		 */
 	}
 
-	public int replace(IDocument doc, String word1, String word2, boolean forwardSearch, boolean caseSensitive,
-			boolean wholeWord, boolean showmessage, boolean regularExpressions) {
+	public int replace(IDocument doc, String word1, String word2, boolean forwardSearch, boolean caseSensitive, boolean wholeWord, boolean showmessage, boolean regularExpressions) {
 		int x = 0;
 		try {
 			FindReplaceDocumentAdapter fr = new FindReplaceDocumentAdapter(doc);
@@ -980,8 +1081,7 @@ public class IJMacroEditor extends TextEditor implements IPropertyChangeListener
 					return 0;
 				}
 			};
-			while ((docRegion = fr.find(docRegion.getOffset() + 1, word1, true, caseSensitive, wholeWord,
-					regularExpressions)) != null) {
+			while ((docRegion = fr.find(docRegion.getOffset() + 1, word1, true, caseSensitive, wholeWord, regularExpressions)) != null) {
 
 				try {
 					fr.replace(word2, regularExpressions);
@@ -1217,8 +1317,7 @@ public class IJMacroEditor extends TextEditor implements IPropertyChangeListener
 
 				TreeItem it = item.getItem(j);
 
-				if (((IJMacroEditorOutlineNode) it.getData()).getName()
-						.equals(((IJMacroEditorOutlineNode) expanded[i]).getName())) {
+				if (((IJMacroEditorOutlineNode) it.getData()).getName().equals(((IJMacroEditorOutlineNode) expanded[i]).getName())) {
 					contentOutlineViewer.setExpandedState(it.getData(), true);
 					/* Recursive call of the method for subnodes! */
 					walkTree(it);

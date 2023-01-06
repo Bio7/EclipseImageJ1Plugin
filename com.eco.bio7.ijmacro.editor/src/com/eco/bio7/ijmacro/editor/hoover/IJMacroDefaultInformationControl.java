@@ -358,6 +358,7 @@ public class IJMacroDefaultInformationControl extends AbstractInformationControl
 				String[] temp = finals.split("####");
 				// String parsedStr = temp[1];//.replaceAll("(.{70})", "$1\n");
 				con.append(temp[0]);
+				con.append(System.lineSeparator());
 				con.append(System.lineSeparator() + temp[1]);
 				con.append(System.lineSeparator());
 				con.append(System.lineSeparator());
