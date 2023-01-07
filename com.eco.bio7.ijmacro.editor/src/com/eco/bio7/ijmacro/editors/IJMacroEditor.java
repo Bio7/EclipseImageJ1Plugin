@@ -295,6 +295,9 @@ public class IJMacroEditor extends TextEditor implements IPropertyChangeListener
 
 						@Override
 						public void drop(DropTargetEvent event) {
+							if(event.data instanceof String[]==false) {
+								return;
+							}
 							String[] fileNames = (String[]) event.data;
 							StringBuffer buff = new StringBuffer();
 							for (int i = 0; i < fileNames.length; i++) {
