@@ -3,13 +3,11 @@ A repository for an Eclipse ImageJ1 plugin contributed from the Bio7 project.
 
 ### Installation:
 
-**Important for MacOSX : Please add the option -Dprism.order=sw in the Eclipse.ini to avoid a crash when using JavaFX!**
-
-**Important for Linux : Please add the option --launcher.GTK_version 2 (don't forget the linebreak before the version number) in the Eclipse.ini to avoid a crash when using JavaFX (JavaFX doesn't run with GTK3 on Linux)!**
-
 Add the following URL as update site: 
 
 **https://bio7.github.io/imagej/**
+
+**Please note that it is not necessary to install the javafx feature (Deprecated).**
 
 ## New in 1.54b (1.54.b5):
 
