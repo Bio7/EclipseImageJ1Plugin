@@ -1,6 +1,13 @@
 # EclipseImageJ1Plugin
 A repository for an Eclipse ImageJ1 plugin contributed from the Bio7 project.
 
+## New in 1.54b (1.54.b5):
+
+1. Updated the ImageJ plugin to version 1.54b5
+2. Added the latest  macro templates
+3. Added a new editor drag and drop function to drop external multiple files and folders as editor string filepaths.
+3. Fixed some minor bugs 
+
 ## New in 1.53t (1.53.t26):
 
 1. Updated the ImageJ plugin to version 1.53t26
