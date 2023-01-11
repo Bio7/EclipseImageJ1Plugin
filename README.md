@@ -1,6 +1,16 @@
 # EclipseImageJ1Plugin
 A repository for an Eclipse ImageJ1 plugin contributed from the Bio7 project.
 
+### Installation:
+
+**Important for MacOSX : Please add the option -Dprism.order=sw in the Eclipse.ini to avoid a crash when using JavaFX!**
+
+**Important for Linux : Please add the option --launcher.GTK_version 2 (don't forget the linebreak before the version number) in the Eclipse.ini to avoid a crash when using JavaFX (JavaFX doesn't run with GTK3 on Linux)!**
+
+Add the following URL as update site: 
+
+**https://bio7.github.io/imagej/**
+
 ## New in 1.54b (1.54.b5):
 
 1. Updated the ImageJ plugin to version 1.54b5
@@ -420,7 +430,7 @@ Uninstall the old plugins before you install from the new location!
 
 7. Improved plugin compatibility by going back to AWT in some dialogs.
 
-### Installation:
+### Information:
 
 **Important for MacOSX : Please add the option -Dprism.order=sw in the Eclipse.ini to avoid a crash when using JavaFX!**
 
