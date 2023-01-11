@@ -7,7 +7,7 @@ Add the following URL as update site:
 
 **https://bio7.github.io/imagej/**
 
-**Please note that it is not necessary to install the javafx feature (Deprecated).**
+**Please note that it is not necessary to install the javafx feature (deprecated).**
 
 ## New in 1.54b (1.54.b5):
 
