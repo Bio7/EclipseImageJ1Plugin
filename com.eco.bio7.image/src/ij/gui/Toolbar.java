@@ -1961,9 +1961,9 @@ public class Toolbar extends JPanel implements MouseListener, MouseMotionListene
 								+ "in the ImageJ/macros/toolsets folder and the\n"
 								+ "plugin tools are the ones installed in the\n" + "Plugins>Tools submenu.\n" + " \n"
 								+ "Hold the shift key down while selecting a\n" + "toolset to view its source code.\n"
-								+ " \n" + "More macro toolsets are available at\n" + "  <" + IJ.URL
+								+ " \n" + "More macro toolsets are available at\n" + "  <" + IJ.URL2
 								+ "/macros/toolsets/>\n" + " \n" + "Plugin tools can be downloaded from\n"
-								+ "the Tools section of the Plugins page at\n" + "  <" + IJ.URL + "/plugins/>\n");
+								+ "the Tools section of the Plugins page at\n" + "  <" + IJ.URL2 + "/plugins/>\n");
 				return;
 			} else if (label.endsWith("*")) {
 				// load from ij.jar
@@ -2534,7 +2534,7 @@ public class Toolbar extends JPanel implements MouseListener, MouseMotionListene
 
 	private void showSource(String name) {
 		if (IJ.shiftKeyDown()) {
-			IJ.runPlugIn("ij.plugin.BrowserLauncher", IJ.URL + "/source/ij/plugin/tool/" + name + "Tool.java");
+			IJ.runPlugIn("ij.plugin.BrowserLauncher", IJ.URL2 + "/source/ij/plugin/tool/" + name + "Tool.java");
 			IJ.setKeyUp(KeyEvent.VK_SHIFT);
 		}
 	}
