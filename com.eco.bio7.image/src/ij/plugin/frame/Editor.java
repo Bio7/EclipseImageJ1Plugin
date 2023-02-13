@@ -18,29 +18,21 @@ import ij.io.SaveDialog;
 import com.eco.bio7.image.Util;
 
 /** This is a simple TextArea based editor for editing and compiling plugins. */
-public class Editor extends PlugInFrame implements ActionListener, ItemListener, TextListener, KeyListener,
-		MouseListener, ClipboardOwner, MacroConstants, Runnable, Debugger {
+public class Editor extends PlugInFrame implements ActionListener, ItemListener, TextListener, KeyListener, MouseListener, ClipboardOwner, MacroConstants, Runnable, Debugger {
 
 	/**
 	 * ImportPackage statements added in front of scripts. Contains no newlines so
 	 * that lines numbers in error messages are not changed.
 	 */
-	public static String JavaScriptIncludes = "importPackage(Packages.ij);" + "importPackage(Packages.ij.gui);"
-			+ "importPackage(Packages.ij.process);" + "importPackage(Packages.ij.measure);"
-			+ "importPackage(Packages.ij.util);" + "importPackage(Packages.ij.macro);"
-			+ "importPackage(Packages.ij.plugin);" + "importPackage(Packages.ij.io);"
-			+ "importPackage(Packages.ij.plugin.filter);" + "importPackage(Packages.ij.plugin.frame);"
-			+ "importPackage(Packages.ij.plugin.tool);" + "importPackage(java.lang);" + "importPackage(java.awt);"
-			+ "importPackage(java.awt.image);" + "importPackage(java.awt.geom);" + "importPackage(java.util);"
-			+ "importPackage(java.io);" + "function print(s) {IJ.log(s);};";
+	public static String JavaScriptIncludes = "importPackage(Packages.ij);" + "importPackage(Packages.ij.gui);" + "importPackage(Packages.ij.process);" + "importPackage(Packages.ij.measure);"
+			+ "importPackage(Packages.ij.util);" + "importPackage(Packages.ij.macro);" + "importPackage(Packages.ij.plugin);" + "importPackage(Packages.ij.io);" + "importPackage(Packages.ij.text);"
+			+ "importPackage(Packages.ij.plugin.filter);" + "importPackage(Packages.ij.plugin.frame);" + "importPackage(Packages.ij.plugin.tool);" + "importPackage(java.lang);"
+			+ "importPackage(java.awt);" + "importPackage(java.awt.image);" + "importPackage(java.awt.geom);" + "importPackage(java.util);" + "importPackage(java.io);"
+			+ "function print(s) {IJ.log(s);};";
 
-	private static String JS_EXAMPLES = "img = IJ.openImage(\"http://imagej.net/images/blobs.gif\")\n"
-			+ "img = IJ.createImage(\"Untitled\", \"16-bit ramp\", 500, 500, 1)\n" + "img.show()\n"
-			+ "ip = img.getProcessor()\n" + "ip.getStats()\n" + "IJ.setAutoThreshold(img, \"IsoData\")\n"
-			+ "IJ.run(img, \"Analyze Particles...\", \"show=Overlay display clear\")\n" + "ip.invert()\n"
-			+ "ip.blurGaussian(5)\n" + "ip.get(10,10)\n" + "ip.set(10,10,222)\n"
-			+ "(To run, move cursor to end of a line and press 'enter'.\n"
-			+ "Visible images are automatically updated.)\n";
+	private static String JS_EXAMPLES = "img = IJ.openImage(\"http://imagej.net/images/blobs.gif\")\n" + "img = IJ.createImage(\"Untitled\", \"16-bit ramp\", 500, 500, 1)\n" + "img.show()\n"
+			+ "ip = img.getProcessor()\n" + "ip.getStats()\n" + "IJ.setAutoThreshold(img, \"IsoData\")\n" + "IJ.run(img, \"Analyze Particles...\", \"show=Overlay display clear\")\n" + "ip.invert()\n"
+			+ "ip.blurGaussian(5)\n" + "ip.get(10,10)\n" + "ip.set(10,10,222)\n" + "(To run, move cursor to end of a line and press 'enter'.\n" + "Visible images are automatically updated.)\n";
 
 	public static final int MAX_SIZE = 28000, XINC = 10, YINC = 18;
 	public static final int MONOSPACED = 1, MENU_BAR = 2, RUN_BAR = 4, INSTALL_BUTTON = 8;
@@ -139,8 +131,8 @@ public class Editor extends PlugInFrame implements ActionListener, ItemListener,
 		ta = new TextArea(rows, columns);
 		ta.addTextListener(this);
 		ta.addKeyListener(this);
-		//if (IJ.isLinux()) ta.setBackground(Color.white);
-		/*Changed for Bio7!*/
+		// if (IJ.isLinux()) ta.setBackground(Color.white);
+		/* Changed for Bio7! */
 		ta.setBackground(Util.getSWTBackgroundToAWT());
 		ta.setForeground(Util.getSWTForegroundToAWT());
 		addKeyListener(IJ.getInstance()); // ImageJ handles keyboard shortcuts
@@ -273,8 +265,7 @@ public class Editor extends PlugInFrame implements ActionListener, ItemListener,
 		ta.setCaretPosition(0);
 		setWindowTitle(name);
 		boolean macroExtension = name.endsWith(".txt") || name.endsWith(".ijm");
-		if (macroExtension || name.endsWith(".js") || name.endsWith(".bsh") || name.endsWith(".py")
-				|| name.indexOf(".") == -1) {
+		if (macroExtension || name.endsWith(".js") || name.endsWith(".bsh") || name.endsWith(".py") || name.indexOf(".") == -1) {
 			macrosMenu = new Menu("Macros");
 			macrosMenu.add(new MenuItem("Run Macro", new MenuShortcut(KeyEvent.VK_R)));
 			macrosMenu.add(new MenuItem("Evaluate Line", new MenuShortcut(KeyEvent.VK_Y)));
@@ -394,7 +385,7 @@ public class Editor extends PlugInFrame implements ActionListener, ItemListener,
 			}
 			r.close();
 			if (ta != null && ta.getText().length() > 0) {
-				ta.setText(""); //delete previous contents (if any)
+				ta.setText(""); // delete previous contents (if any)
 				eventCount = 0;
 			}
 			create(name, new String(sb));
@@ -912,8 +903,7 @@ public class Editor extends PlugInFrame implements ActionListener, ItemListener,
 			enterInteractiveMode();
 		else if (what.equals("Assign to Repeat Cmd"))
 			assignToRepeatCommand();
-		else if (what.endsWith(".ijm") || what.endsWith(".java") || what.endsWith(".js") || what.endsWith(".bsh")
-				|| what.endsWith(".py"))
+		else if (what.endsWith(".ijm") || what.endsWith(".java") || what.endsWith(".js") || what.endsWith(".bsh") || what.endsWith(".py"))
 			openExample(what);
 		else {
 			if (altKeyDown) {
@@ -970,7 +960,7 @@ public class Editor extends PlugInFrame implements ActionListener, ItemListener,
 		String selText = ta.getSelectedText().replace("\n", " ");
 		String[] selectedWords = Tools.split(selText, "/,(,[\"\'&+");
 		if (selectedWords.length == 1 && selectedWords[0].length() > 0)
-			url += "#" + selectedWords[0];//append selection as hash tag
+			url += "#" + selectedWords[0];// append selection as hash tag
 		IJ.runPlugIn("ij.plugin.BrowserLauncher", IJ.URL2 + url);
 	}
 
@@ -1032,7 +1022,8 @@ public class Editor extends PlugInFrame implements ActionListener, ItemListener,
 
 	public void textValueChanged(TextEvent e) {
 		String text = ta.getText();
-		//if (undo2==null || text.length()!=undo2.length()+1 || text.charAt(text.length()-1)=='\n')
+		// if (undo2==null || text.length()!=undo2.length()+1 ||
+		// text.charAt(text.length()-1)=='\n')
 		int length = 0;
 		if (!performingUndo) {
 			for (int i = 0; i < undoBuffer.size(); i++)
@@ -1208,8 +1199,7 @@ public class Editor extends PlugInFrame implements ActionListener, ItemListener,
 		if (interactiveMode)
 			return;
 		String title = getTitle();
-		if (ta != null && ta.getText().length() > 400
-				&& !(title.startsWith("Untitled") || title.startsWith(INTERACTIVE_NAME))) {
+		if (ta != null && ta.getText().length() > 400 && !(title.startsWith("Untitled") || title.startsWith(INTERACTIVE_NAME))) {
 			GenericDialog gd = new GenericDialog("Enter Interactive Mode");
 			gd.addMessage("Enter mode that supports interactive\nediting and running of macros and scripts?");
 			gd.setOKLabel("Enter");
@@ -1290,7 +1280,7 @@ public class Editor extends PlugInFrame implements ActionListener, ItemListener,
 			if (IJ.isMacOSX()) {
 				remove(mb);
 			}
-			//setVisible(false);
+			// setVisible(false);
 			dispose();
 			WindowManager.removeWindow(this);
 			nWindows--;
@@ -1350,8 +1340,7 @@ public class Editor extends PlugInFrame implements ActionListener, ItemListener,
 	/** Changes a plugins class name to reflect a new file name. */
 	public void updateClassName(String oldName, String newName) {
 		if (newName.indexOf("_") < 0)
-			IJ.showMessage("Plugin Editor", "Plugins without an underscore in their name will not\n"
-					+ "be automatically installed when ImageJ is restarted.");
+			IJ.showMessage("Plugin Editor", "Plugins without an underscore in their name will not\n" + "be automatically installed when ImageJ is restarted.");
 		if (oldName.equals(newName) || !oldName.endsWith(".java") || !newName.endsWith(".java"))
 			return;
 		oldName = oldName.substring(0, oldName.length() - 5);
@@ -1360,8 +1349,7 @@ public class Editor extends PlugInFrame implements ActionListener, ItemListener,
 		int index = text1.indexOf("public class " + oldName);
 		if (index < 0)
 			return;
-		String text2 = text1.substring(0, index + 13) + newName
-				+ text1.substring(index + 13 + oldName.length(), text1.length());
+		String text2 = text1.substring(0, index + 13) + newName + text1.substring(index + 13 + oldName.length(), text1.length());
 		ta.setText(text2);
 	}
 
@@ -1449,8 +1437,8 @@ public class Editor extends PlugInFrame implements ActionListener, ItemListener,
 		lineNumber = n;
 	}
 
-	//extracts  characters  "({[]})" as string and removes inner pairs
-	private void balance() { //modified: N.Vischer
+	// extracts characters "({[]})" as string and removes inner pairs
+	private void balance() { // modified: N.Vischer
 		String text = ta.getText();
 		char[] chars = new char[text.length()];
 		chars = text.toCharArray();
@@ -1458,8 +1446,7 @@ public class Editor extends PlugInFrame implements ActionListener, ItemListener,
 		maskQuotes(chars);
 		int position = ta.getCaretPosition();
 		if (position == 0) {
-			IJ.error("Balance",
-					"This command locates the pair of brackets, curly braces or\nparentheses that surround the insertion point.");
+			IJ.error("Balance", "This command locates the pair of brackets, curly braces or\nparentheses that surround the insertion point.");
 			return;
 		}
 		int start = -1;
@@ -1469,7 +1456,7 @@ public class Editor extends PlugInFrame implements ActionListener, ItemListener,
 			char ch = chars[i];
 			if ("({[]})".indexOf(ch) >= 0) {
 				leftBows = ch + leftBows;
-				leftBows = leftBows.replace("[]", "");//skip nested pairs
+				leftBows = leftBows.replace("[]", "");// skip nested pairs
 				leftBows = leftBows.replace("()", "");
 				leftBows = leftBows.replace("{}", "");
 				if (leftBows.equals("[") || leftBows.equals("{") || leftBows.equals("(")) {
@@ -1483,7 +1470,7 @@ public class Editor extends PlugInFrame implements ActionListener, ItemListener,
 			char ch = chars[i];
 			if ("({[]})".indexOf(ch) >= 0) {
 				rightBows += ch;
-				rightBows = rightBows.replace("[]", "");//skip nested pairs
+				rightBows = rightBows.replace("[]", "");// skip nested pairs
 				rightBows = rightBows.replace("()", "");
 				rightBows = rightBows.replace("{}", "");
 				String pair = leftBows + rightBows;
@@ -1526,10 +1513,10 @@ public class Editor extends PlugInFrame implements ActionListener, ItemListener,
 	// replaces contents of single and double quotes with blanks - N. Vischer
 	private void maskQuotes(char[] chars) {
 		int n = chars.length;
-		char quote = '\'';//single quote
+		char quote = '\'';// single quote
 		for (int loop = 1; loop <= 2; loop++) {
 			if (loop == 2)
-				quote = '"';//double quote
+				quote = '"';// double quote
 			boolean inQuotes = false;
 			int startMask = 0;
 			int stopMask = 0;
@@ -1553,7 +1540,7 @@ public class Editor extends PlugInFrame implements ActionListener, ItemListener,
 		}
 	}
 
-	//replaces contents of comments with blanks
+	// replaces contents of comments with blanks
 	private void rmaskComments(char[] chars) {
 		int n = chars.length;
 		boolean inSlashSlashComment = false;
@@ -1675,8 +1662,7 @@ public class Editor extends PlugInFrame implements ActionListener, ItemListener,
 	void saveSettings() {
 		Prefs.set(FONT_SIZE, fontSizeIndex);
 		Prefs.set(FONT_MONO, monospaced.getState());
-		IJ.showStatus(
-				"Font settings saved (size=" + sizes[fontSizeIndex] + ", monospaced=" + monospaced.getState() + ")");
+		IJ.showStatus("Font settings saved (size=" + sizes[fontSizeIndex] + ", monospaced=" + monospaced.getState() + ")");
 	}
 
 	void setFont() {
@@ -1756,7 +1742,7 @@ public class Editor extends PlugInFrame implements ActionListener, ItemListener,
 				break;
 			}
 		}
-		//IJ.log("debug: "+debugStart+"  "+debugEnd+"  "+len+"  "+count);
+		// IJ.log("debug: "+debugStart+" "+debugEnd+" "+len+" "+count);
 		if (debugStart == 1)
 			debugStart = 0;
 		if ((debugStart == 0 || debugStart == len) && debugEnd == len)

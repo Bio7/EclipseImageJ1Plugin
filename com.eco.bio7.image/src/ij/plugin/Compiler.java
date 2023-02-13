@@ -32,15 +32,14 @@ public class Compiler implements PlugIn, FilenameFilter {
 			+"be located in either plugins/jars or plugins/lib.\n \n"
 			+"The javac command line will be displayed in\n"
 			+"the Log window if ImageJ is in debug mode.";
-	private static final int TARGET14 = 0, TARGET15 = 1, TARGET16 = 2, TARGET17 = 3, TARGET18 = 4, TARGET19 = 5, TARGET110 = 6, TARGET111 = 7, TARGET112 = 8, TARGET113 = 9, TARGET114 = 10,TARGET115 = 11;
-	private static final String[] targets = { "1.4", "1.5", "1.6", "1.7", "1.8", "1.9", "10", "11", "12", "13","14","15" };
+	
 	private static final String TARGET_KEY = "javac.target";
 	private static CompilerTool compilerTool;
 	private static String dir, name;
 	private static Editor errors;
 	private static boolean generateDebuggingInfo;
-	private static int target = (int) Prefs.get(TARGET_KEY, TARGET113);
 	private static boolean checkForUpdateDone;
+	private static int target = (int)Prefs.get(TARGET_KEY, 8);	
 
 	public void run(String arg) {
 		if (arg.equals("edit"))
@@ -153,9 +152,9 @@ public class Compiler implements PlugIn, FilenameFilter {
 			options.addElement("-g");
 		validateTarget();
 		options.addElement("-source");
-		options.addElement(targets[target]);
+		options.addElement(getTargetAsString());
 		options.addElement("-target");
-		options.addElement(targets[target]);
+		options.addElement(getTargetAsString());
 		options.addElement("-Xlint:unchecked");
 		options.addElement("-deprecation");
 		options.addElement("-classpath");
@@ -299,7 +298,7 @@ public class Compiler implements PlugIn, FilenameFilter {
 	public void showDialog() {
 		validateTarget();
 		GenericDialog gd = new GenericDialog("Compile and Run");
-		gd.addChoice("Target: ", targets, targets[target]);
+		gd.addNumericField("Target: ", target, 0, 3, "");
 		gd.setInsets(15, 5, 0);
 		gd.addCheckbox("Generate debugging info (javac -g)", generateDebuggingInfo);
 		gd.addHelp(IJ.URL2 + "/docs/menus/edit.html#compiler");
@@ -308,35 +307,27 @@ public class Compiler implements PlugIn, FilenameFilter {
 		gd.showDialog();
 		if (gd.wasCanceled())
 			return;
-		target = gd.getNextChoiceIndex();
+		target = (int)gd.getNextNumber();	
 		generateDebuggingInfo = gd.getNextBoolean();
 		validateTarget();
 	}
 
 	void validateTarget() {
-		if (target == TARGET19)
-			target = TARGET19;
-		if (target == TARGET110)
-			target = TARGET110;
-		if (target >= TARGET111)
-			target = TARGET111;
-		if (target >= TARGET112)
-			target = TARGET112;
-		if (target >= TARGET113)
-			target = TARGET113;
-		if (target >= TARGET114)
-			target = TARGET114;
-		if (target >= TARGET115)
-			target = TARGET115;
-		if (target < TARGET16)
-			target = TARGET16;
-		if (target > TARGET16 && IJ.javaVersion() < 7)
-			target = TARGET16;
-		if (target > TARGET17 && IJ.javaVersion() < 8)
-			target = TARGET17;
-		if (target > TARGET18 && IJ.javaVersion() < 9)
-			target = TARGET18;
+		if (target==4 || target==5) //Java 8 or 9
+			target = 8;
+		if (target<6)
+			target = 6;
+		if (target>IJ.javaVersion())
+			target = IJ.javaVersion();
 		Prefs.set(TARGET_KEY, target);
+	}
+	private static String getTargetAsString() {
+		if (target<8)
+			return "1.6";
+		else if (target==8)
+			return "1.8";
+		else
+			return ""+target;
 	}
 
 }
