@@ -181,7 +181,7 @@ public class DragAndDrop implements PlugIn, DropTargetListener, Runnable {
 					else
 						openDirectory(f, path);
 				} else {
-					if (openAsVirtualStack && (path.endsWith(".tif")||path.endsWith(".TIF")))
+					if (openAsVirtualStack && (path.endsWith(".tif")||path.endsWith(".TIF")||path.endsWith(".tiff")))
 						(new FileInfoVirtualStack()).run(path);
 					else if (openAsVirtualStack && (path.endsWith(".avi")||path.endsWith(".AVI")))
 						IJ.run("AVI...", "open=["+path+"] use");
@@ -195,7 +195,7 @@ public class DragAndDrop implements PlugIn, DropTargetListener, Runnable {
 					}
 					OpenDialog.setLastDirectory(f.getParent()+File.separator);
 					OpenDialog.setLastName(f.getName());
- 					OpenDialog.setDefaultDirectory(f.getParent());
+					OpenDialog.setDefaultDirectory(f.getParent());
 				}
 			} else {
 				IJ.log("File not found: " + path);
