@@ -3209,12 +3209,15 @@ public class ImagePlus implements ImageObserver, Measurements, Cloneable {
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 			antialiasRendering?RenderingHints.VALUE_ANTIALIAS_ON:RenderingHints.VALUE_ANTIALIAS_OFF);
 		g.drawImage(getImage(), 0, 0, null);
-		ic2.paint(g);
+		/* Changed for Bio7! */
+		ic2.paintComponent(g);
 		imp2.flatteningCanvas = null;
-		ImagePlus imp3 = new ImagePlus("Flat_"+getTitle(), new ColorProcessor(bi));
+		ImagePlus imp3 = new ImagePlus("Flat_" + getTitle(), new ColorProcessor(bi));
 		imp3.copyScale(this);
 		imp3.setProperty("Info", getProperty("Info"));
-		imp3.setProperties(getPropertiesAsArray());
+		String[] props = getPropertiesAsArray();
+		if (props != null)
+			imp3.setProperties(props);
 		return imp3;
 	}
 
