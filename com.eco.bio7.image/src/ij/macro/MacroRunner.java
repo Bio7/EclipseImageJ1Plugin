@@ -1,20 +1,12 @@
 package ij.macro;
-
 import ij.*;
 import ij.text.*;
 import ij.util.*;
 import ij.gui.ImageCanvas;
 import java.io.*;
-
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.jobs.IJobChangeEvent;
-import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.core.runtime.jobs.JobChangeAdapter;
-
 import java.awt.*;
 import ij.plugin.frame.Editor;
+																																																																																																																																																					   
 
 /** This class runs macros in a separate thread. */
 public class MacroRunner implements Runnable {
@@ -26,6 +18,7 @@ public class MacroRunner implements Runnable {
 	private Thread thread;
 	private String argument;
 	private Editor editor;
+	private int lineNumberOffset;
 
 	/** Create a MacroRunner. */
 	public MacroRunner() {
@@ -33,18 +26,9 @@ public class MacroRunner implements Runnable {
 
 	/** Create a new object that interprets macro source in a separate thread. */
 	public MacroRunner(String macro) {
-		this(macro, (Editor) null);
-	}
-
-	/**
-	 * Create a new object that interprets macro source in debug mode if 'editor' is
-	 * not null.
-	 */
-	public MacroRunner(String macro, Editor editor) {
 		this.macro = macro;
-		this.editor = editor;
-		thread = new Thread(this, "Macro$");
-		thread.setPriority(Math.max(thread.getPriority() - 2, Thread.MIN_PRIORITY));
+		thread = new Thread(this, "Macro$"); 
+		thread.setPriority(Math.max(thread.getPriority()-2, Thread.MIN_PRIORITY));
 		thread.start();
 	}
 
@@ -52,75 +36,60 @@ public class MacroRunner implements Runnable {
 	public MacroRunner(String macro, String argument) {
 		this.macro = macro;
 		this.argument = argument;
-		thread = new Thread(this, "Macro$");
-		thread.setPriority(Math.max(thread.getPriority() - 2, Thread.MIN_PRIORITY));
+		thread = new Thread(this, "Macro$"); 
+		thread.setPriority(Math.max(thread.getPriority()-2, Thread.MIN_PRIORITY));
 		thread.start();
 	}
 
 	/** Interprets a macro file in a separate thread. */
 	public MacroRunner(File file) {
-		int size = (int) file.length();
-		if (size <= 0)
+		int size = (int)file.length();
+		if (size<=0)
 			return;
 		try {
 			StringBuffer sb = new StringBuffer(5000);
 			BufferedReader r = new BufferedReader(new FileReader(file));
 			while (true) {
-				String s = r.readLine();
-				if (s == null)
+				String s=r.readLine();
+				if (s==null)
 					break;
 				else
-					sb.append(s + "\n");
+					sb.append(s+"\n");
 			}
 			r.close();
 			macro = new String(sb);
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			IJ.error(e.getMessage());
 			return;
 		}
-		//thread = new Thread(this, "Macro$"); 
-		//thread.setPriority(Math.max(thread.getPriority()-2, Thread.MIN_PRIORITY));
-		//thread.start();
-		//Changed for Bio7!
-		Job job = new Job("Execute MacroRunner...") {
-			@Override
-			protected IStatus run(IProgressMonitor monitor) {
-				monitor.beginTask("Opening...", IProgressMonitor.UNKNOWN);
-				MacroRunner.this.run();
-
-				monitor.done();
-				return Status.OK_STATUS;
-			}
-
-		};
-		job.addJobChangeListener(new JobChangeAdapter() {
-			public void done(IJobChangeEvent event) {
-				if (event.getResult().isOK()) {
-
-				} else {
-
-				}
-			}
-		});
-		// job.setUser(true);
-		job.schedule();
+		thread = new Thread(this, "Macro$"); 
+		thread.setPriority(Math.max(thread.getPriority()-2, Thread.MIN_PRIORITY));
+		thread.start();
 	}
 
 	/** Runs a tokenized macro in a separate thread. */
 	public MacroRunner(Program pgm, int address, String name) {
-		this(pgm, address, name, (String) null);
+		this(pgm, address, name, (String)null);
 	}
 
-	/**
-	 * Runs a tokenized macro in a separate thread, passing a string argument.
-	 */
+	/** Runs a tokenized macro in a separate thread,
+		passing a string argument. */
 	public MacroRunner(Program pgm, int address, String name, String argument) {
 		this.pgm = pgm;
 		this.address = address;
 		this.name = name;
 		this.argument = argument;
-		thread = new Thread(this, name + "_Macro$");
-		thread.setPriority(Math.max(thread.getPriority() - 2, Thread.MIN_PRIORITY));
+		thread = new Thread(this, name+"_Macro$");
+		thread.setPriority(Math.max(thread.getPriority()-2, Thread.MIN_PRIORITY));
+		thread.start();
+	}
+
+	/** Runs the specified macro code. */
+	public void run(String macro) {
+		this.macro = macro;
+		thread = new Thread(this, "Macro$"); 
+		thread.setPriority(Math.max(thread.getPriority()-2, Thread.MIN_PRIORITY));
 		thread.start();
 	}
 
@@ -130,8 +99,8 @@ public class MacroRunner implements Runnable {
 		this.address = address;
 		this.name = name;
 		this.editor = editor;
-		thread = new Thread(this, name + "_Macro$");
-		thread.setPriority(Math.max(thread.getPriority() - 2, Thread.MIN_PRIORITY));
+		thread = new Thread(this, name+"_Macro$");
+		thread.setPriority(Math.max(thread.getPriority()-2, Thread.MIN_PRIORITY));
 		thread.start();
 	}
 
@@ -143,12 +112,12 @@ public class MacroRunner implements Runnable {
 		if (pgm.queueCommands)
 			run();
 		else {
-			thread = new Thread(this, name + "_Macro$");
-			thread.setPriority(Math.max(thread.getPriority() - 2, Thread.MIN_PRIORITY));
+			thread = new Thread(this, name+"_Macro$");
+			thread.setPriority(Math.max(thread.getPriority()-2, Thread.MIN_PRIORITY));
 			thread.start();
 		}
 	}
-
+	
 	/** Runs a tokenized macro on the current thread. */
 	public void run(Program pgm, int address, String name) {
 		this.pgm = pgm;
@@ -161,47 +130,53 @@ public class MacroRunner implements Runnable {
 	public Thread getThread() {
 		return thread;
 	}
+	
+	/** Use 'editor' to run the macro in debug mode. */
+	public void setEditor(Editor editor) {
+		this.editor = editor;
+	}
 
 	/** Used to run the macro code in 'macro' on a separate thread. */
 	public void run() {
 		Interpreter interp = new Interpreter();
 		interp.argument = argument;
-		if (editor != null)
+		if (editor!=null)
 			interp.setDebugger(editor);
 		try {
-			if (pgm == null)
+			if (pgm==null)
 				interp.run(macro);
 			else {
 				if ("Popup Menu".equals(name)) {
 					PopupMenu popup = Menus.getPopupMenu();
-					if (popup != null) {
+					if (popup!=null) {
 						ImagePlus imp = null;
 						Object parent = popup.getParent();
 						if (parent instanceof ImageCanvas)
-							imp = ((ImageCanvas) parent).getImage();
-						if (imp != null)
+							imp = ((ImageCanvas)parent).getImage();
+						if (imp!=null)
 							WindowManager.setTempCurrentImage(Thread.currentThread(), imp);
 					}
 				}
 				interp.runMacro(pgm, address, name);
 			}
-		} catch (Throwable e) {
+		} catch(Throwable e) {
 			interp.abortMacro();
 			IJ.showStatus("");
 			IJ.showProgress(1.0);
 			ImagePlus imp = WindowManager.getCurrentImage();
-			if (imp != null)
+			if (imp!=null)
 				imp.unlock();
 			String msg = e.getMessage();
-			if (e instanceof RuntimeException && msg != null && e.getMessage().equals(Macro.MACRO_CANCELED)) {
+			if (e instanceof RuntimeException && msg!=null && e.getMessage().equals(Macro.MACRO_CANCELED)) {
 				interp.error(null);
 				return;
 			}
 			IJ.handleException(e);
 		} finally {
-			if (thread != null)
+			if (thread!=null)
 				WindowManager.setTempCurrentImage(null);
 		}
 	}
 
 }
+

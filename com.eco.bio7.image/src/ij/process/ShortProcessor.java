@@ -267,7 +267,7 @@ public class ShortProcessor extends ImageProcessor {
 	public void setMinAndMax(double minimum, double maximum) {
 		if (minimum==0.0 && maximum==0.0) {
 			resetMinAndMax();
-			return;
+			return; 
 		}
 		min = (int)Math.round(minimum);
 		max = (int)Math.round(maximum);
