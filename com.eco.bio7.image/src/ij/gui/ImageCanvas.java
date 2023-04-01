@@ -2222,7 +2222,7 @@ public class ImageCanvas extends JPanel implements MouseListener, MouseWheelList
 
 	public void repaintOverlay() {
 		labelRects = null;
-		repaint();
+		repaint(); 
 	}
 
 	/**

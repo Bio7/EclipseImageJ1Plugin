@@ -300,6 +300,8 @@ public class ParticleAnalyzer implements PlugInFilter, Measurements {
 				inSituShow = true;
 			if (mOptions.contains("record"))
 				recordStarts = true;
+			if (mOptions.contains("four"))
+				wandMode = Wand.FOUR_CONNECTED;
 			staticMinSize = 0.0; staticMaxSize = DEFAULT_MAX_SIZE;
 			staticMinCircularity=0.0; staticMaxCircularity=1.0;
 			staticShowChoice = NOTHING;
@@ -421,6 +423,8 @@ public class ParticleAnalyzer implements PlugInFilter, Measurements {
 		options |= SHOW_PROGRESS;
 		if ((options&DISPLAY_SUMMARY)!=0)
 			Analyzer.setMeasurements(Analyzer.getMeasurements()|AREA);
+		if (wandMode==Wand.FOUR_CONNECTED)
+			options |= INCLUDE_HOLES;
 		return true;
 	}
 	
@@ -452,16 +456,16 @@ public class ParticleAnalyzer implements PlugInFilter, Measurements {
 		return true;
 	}
 
-	/** Performs particle analysis on the specified image. Returns
-		false if there is an error. */
-	public boolean analyze(ImagePlus imp) {
-		return analyze(imp, imp.getProcessor());
-	}
-
 	/** Performs particle analysis on the current slice
 	 * of the specified image. Returns false if there
 	 * is an error.
 	*/
+	public boolean analyze(ImagePlus imp) {
+		return analyze(imp, imp.getProcessor());
+	}
+
+	/** Performs particle analysis on the specified ImagePlus and
+		ImageProcessor. Returns false if there is an error. */
 	public boolean analyze(ImagePlus imp, ImageProcessor ip) {
 		if (this.imp==null) this.imp = imp;
 		showResults = (options&SHOW_RESULTS)!=0;
