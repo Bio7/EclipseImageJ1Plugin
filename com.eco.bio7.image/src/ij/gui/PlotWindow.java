@@ -534,7 +534,7 @@ public class PlotWindow extends ImageWindow
 		// String label = e.getActionCommand();
 		Object b = e.getSource();
 		if (b == live) {
-			toggleLiveProfiling();
+			toggleLivePlot();
 		} else if (b == data) {
 			enableDisableMenuItems();
 			Component c = (Component) b;
@@ -994,18 +994,25 @@ public class PlotWindow extends ImageWindow
 		prefs.put(OPTIONS, Integer.toString(options));
 	}
 
-	private void toggleLiveProfiling() {
-		boolean liveMode = bgThread != null;
-		if (liveMode)
-			disableLivePlot();
-		else
+	/** Enables or disables live plotting.
+	 *  Does nothing if the plot has no PlotMaker (then there is no 'live' button). */
+	public void enableLivePlot(boolean b) {
+		if (plot==null || plot.getPlotMaker()==null || live == null)
+			return;
+		if (b && bgThread == null)
 			enableLivePlot();
+		else if (!b && bgThread != null)
+			disableLivePlot();
 	}
 
-	/*
-	 * Enable live plotting. This requires that the PlotWindow has been initialized
-	 * with a Plot having a PlotMaker
-	 */
+	private void toggleLivePlot() {
+		boolean liveMode = bgThread != null;
+		enableLivePlot(!liveMode);
+	}
+
+	/** Enables live plotting.
+	 *  This requires that the PlotWindow has been initialized with a Plot having a PlotMaker.
+	 *  Live plotting runs in a background thread. */
 	private void enableLivePlot() {
 		if (plotMaker == null)
 			plotMaker = plot != null ? plot.getPlotMaker() : null;
@@ -1028,7 +1035,8 @@ public class PlotWindow extends ImageWindow
 		live.setFont(new Font(font.getName(), Font.BOLD, font.getSize()));
 		live.setForeground(Color.red);
 	}
-
+	
+	/** Disables live plotting (when currently active) */
 	private void disableLivePlot() {
 		if (IJ.debugMode)
 			IJ.log("PlotWindow.disableLivePlot: " + srcImp);

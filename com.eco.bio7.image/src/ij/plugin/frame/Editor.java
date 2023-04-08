@@ -1132,7 +1132,7 @@ public class Editor extends PlugInFrame implements ActionListener, ItemListener,
 
 	public void keyReleased(KeyEvent e) {
 		int pos = ta.getCaretPosition();
-		showLinePos();
+		//showLinePos();
 		if (insertSpaces && pos > 0 && e.getKeyCode() == KeyEvent.VK_TAB) {
 			String spaces = " ";
 			for (int i = 1; i < tabInc; i++)
