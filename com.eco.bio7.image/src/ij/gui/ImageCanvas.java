@@ -467,7 +467,7 @@ public class ImageCanvas extends JPanel implements MouseListener, MouseWheelList
 		ImagePlus imp2 = roi.getImage();
 		roi.setImage(imp);
 		Color saveColor = roi.getStrokeColor();
-		if (saveColor == null)
+		if (saveColor==null && roi.getFillColor()==null)
 			roi.setStrokeColor(defaultColor);
 		if (roi.getStroke() == null)
 			((Graphics2D) g).setStroke(Roi.onePixelWide);
