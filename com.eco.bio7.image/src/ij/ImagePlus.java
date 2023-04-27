@@ -404,7 +404,7 @@ public class ImagePlus implements ImageObserver, Measurements, Cloneable {
 	 * <pre>
 	 * luts = imp.getLuts();<br>
 	 * for (i=0; i<luts.length; i++)<br>
-	 *    IJ.log((i+1)+‚Äú: ‚Äú+luts[i].min+‚Äù-‚Äù+luts[i].max);<br>
+	 *    IJ.log((i+1)+ì: ì+luts[i].min+î-î+luts[i].max);<br>
 	 * </pre>
 	*/
 	public LUT[] getLuts() {
@@ -2778,8 +2778,10 @@ public class ImagePlus implements ImageObserver, Measurements, Cloneable {
     */
 	public void mouseMoved(int x, int y) {
 		Roi roi2 = getRoi();
-		if (ij!=null && !IJ.statusBarProtected() && (roi2==null || roi2.getState()==Roi.NORMAL))
-			ij.showStatus(getLocationAsString(x,y) + getValueAsString(x,y));
+		if (ij!=null && !IJ.statusBarProtected() && (roi2==null || roi2.getState()==Roi.NORMAL)) {
+			String title = IJ.altKeyDown()?" ("+getTitle()+")":"";
+			ij.showStatus(getLocationAsString(x,y) + getValueAsString(x,y)+title);
+		}
 	}
 
     /** Redisplays the (x,y) coordinates and pixel value (which may
