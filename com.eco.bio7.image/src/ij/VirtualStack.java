@@ -107,10 +107,10 @@ public class VirtualStack extends ImageStack {
 
 	/** Deletes the specified slice, where {@literal 1<=n<=nslices}. */
 	public void deleteSlice(int n) {
+		if (nSlices==0)
+			return;
 		if (n<1 || n>nSlices)
 			throw new IllegalArgumentException("Argument out of range: "+n);
-		if (nSlices<1)
-			return;
 		for (int i=n; i<nSlices; i++)
 			names[i-1] = names[i];
 		names[nSlices-1] = null;
@@ -332,6 +332,7 @@ public class VirtualStack extends ImageStack {
 		//IJ.log("translate: "+n+" "+n2+" "+getSize()+" "+(indexes!=null?indexes.length:null));
 		return n2;
 	}
+	
 	/** Reduces the number of slices in this stack by a factor. */
 	public void reduce(int factor) {
 		if (factor<2 || nSlices/factor<1 || names==null)
@@ -347,5 +348,6 @@ public class VirtualStack extends ImageStack {
 			imp.updateAndRepaintWindow();
 		}
 	}
-	
+
 } 
+

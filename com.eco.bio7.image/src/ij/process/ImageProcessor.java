@@ -1426,7 +1426,7 @@ public abstract class ImageProcessor implements Cloneable {
 		int h =  fontMetrics.getHeight();
 		if (w<=0 || h<=0) return;
 		Image bi = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
-		Graphics g = bi.getGraphics();
+		Graphics2D g = (Graphics2D)bi.getGraphics();
 		FontMetrics metrics = g.getFontMetrics(font);
 		int fontHeight = metrics.getHeight();
 		int descent = metrics.getDescent();
@@ -1461,9 +1461,11 @@ public abstract class ImageProcessor implements Cloneable {
 		g.drawString(s, 0, h-descent);
 		g.dispose();
 		ImageProcessor ip = new ColorProcessor(bi);
+		//ij.IJ.log("drawString2: "+antialiasedText+" "+s);
+		//if (!antialiasedText && font.getSize()==8)
+		//new ij.ImagePlus("ip",ip).show();
 		ImageProcessor textMask = ip.convertToByte(false);
 		byte[] mpixels = (byte[])textMask.getPixels();
-		//new ij.ImagePlus("textmask",textMask).show();
 		textMask.invert();
 		if (cxx<width && cy-h<height) {
 			setMask(textMask);

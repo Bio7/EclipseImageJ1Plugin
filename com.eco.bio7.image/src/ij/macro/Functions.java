@@ -3182,7 +3182,7 @@ public class Functions implements MacroConstants, Measurements {
 				String styles = getLastString().toLowerCase();
 				if (styles.contains("bold")) style += Font.BOLD;
 				if (styles.contains("italic")) style += Font.ITALIC;
-				if (styles.contains("non-anti")) antialiasedText = false;
+				if (styles.contains("non-")||styles.contains("no-")) antialiasedText = false;
 				if (styles.contains("nonscal")) nonScalableText = true;
 			} else
 				interp.getRightParen();
@@ -8243,7 +8243,7 @@ public class Functions implements MacroConstants, Measurements {
 				break;
 			case COLOR:
 				if (name.equals("foreground") || name.equals("background")
-				|| name.equals("toString"))
+				|| name.equals("toString") || name.equals("wavelengthToColor"))
 					isString = true;
 				break;
 		}
@@ -8340,6 +8340,9 @@ public class Functions implements MacroConstants, Measurements {
 		} else if (name.equals("getLut")) {
 			getLut();
 			return null;
+		} else if (name.equals("wavelengthToColor")) {
+			Color c = Colors.wavelengthToColor(getArg());
+			return new Variable(Colors.colorToString(c));
 		} else
 			interp.error("Unrecognized Color function");
 		return null;
