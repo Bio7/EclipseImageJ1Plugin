@@ -110,22 +110,27 @@ public class Editor extends PlugInFrame implements ActionListener, ItemListener,
 		super("Editor");
 		WindowManager.addWindow(this);
 		addMenuBar(options);
-		boolean addRunBar = (options&RUN_BAR)!=0;	
+		boolean addRunBar = (options&RUN_BAR)!=0;
+		ImageJ ij = IJ.getInstance();		
 		if (addRunBar) {
 			Panel panel = new Panel(new FlowLayout(FlowLayout.LEFT, 0, 0));
+			panel.addKeyListener(ij);
 			runButton = new Button("Run");
 			runButton.addActionListener(this);
+			runButton.addKeyListener(ij);
 			panel.setFont(new Font("SansSerif", Font.PLAIN, sizes[fontSizeIndex]));
 			panel.add(runButton);
 			if ((options & INSTALL_BUTTON) != 0) {
 				installButton = new Button("Install");
 				installButton.addActionListener(this);
+				installButton.addKeyListener(ij);
 				panel.add(installButton);
 			}
 			language = new Choice();
 			for (int i = 0; i < languages.length; i++)
 				language.addItem(languages[i]);
 			language.addItemListener(this);
+			language.addKeyListener(ij);
 			panel.add(language);
 			add("North", panel);
 		}
@@ -136,7 +141,7 @@ public class Editor extends PlugInFrame implements ActionListener, ItemListener,
 		/* Changed for Bio7! */
 		ta.setBackground(Util.getSWTBackgroundToAWT());
 		ta.setForeground(Util.getSWTForegroundToAWT());
-		addKeyListener(IJ.getInstance()); // ImageJ handles keyboard shortcuts
+		addKeyListener(ij);  // ImageJ handles keyboard shortcuts
 		ta.addMouseListener(this); // ImageJ handles keyboard shortcuts
 		add(ta);
 		pack();

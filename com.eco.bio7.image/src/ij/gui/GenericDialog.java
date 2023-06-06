@@ -1760,6 +1760,7 @@ public class GenericDialog extends Dialog implements ActionListener, TextListene
 			setup();
 			if (centerDialog)
 				GUI.centerOnImageJScreen(this);
+			resetCounters();
 			setVisible(true); //except for NonBlockingGenericDialog, returns after 'dispose' by OK or Cancel
 		}
 	}

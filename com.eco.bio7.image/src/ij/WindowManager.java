@@ -61,7 +61,7 @@ public class WindowManager {
 		activations.add(win);
 		Menus.updateMenus();
 		if (Recorder.record && !IJ.isMacro())
-			Recorder.record("selectWindow", win.getImagePlus().getTitle());
+			Recorder.record("selectImage", win.getImagePlus().getTitle());
 	}
 
 	/** Returns the active ImageWindow. */
