@@ -49,8 +49,7 @@ import java.awt.dnd.*;
  * when the dialog is displayed. For example, change the checkbox labels "Show
  * Quality" and "Show Residue" to "Show_Quality" and "Show_Residue".
  */
-public class GenericDialog extends Dialog implements ActionListener, TextListener, FocusListener, ItemListener,
-		KeyListener, AdjustmentListener, WindowListener, ComponentListener {
+public class GenericDialog extends Dialog implements ActionListener, TextListener, FocusListener, ItemListener, KeyListener, AdjustmentListener, WindowListener, ComponentListener {
 
 	protected Vector numberField, stringField, checkbox, choice, slider, radioButtonGroups;
 	protected TextArea textArea1, textArea2;
@@ -122,8 +121,9 @@ public class GenericDialog extends Dialog implements ActionListener, TextListene
 			setForeground(SystemColor.controlText);
 			setBackground(SystemColor.control);
 		}
-		//if (IJ.isMacOSX() && System.getProperty("java.vendor").contains("Azul"))
-		//	setForeground(Color.black);  // work around bug on Azul Java 8 on Apple Silicon
+		// if (IJ.isMacOSX() && System.getProperty("java.vendor").contains("Azul"))
+		// setForeground(Color.black); // work around bug on Azul Java 8 on Apple
+		// Silicon
 		GridBagLayout grid = new GridBagLayout();
 		c = new GridBagConstraints();
 		setLayout(grid);
@@ -232,7 +232,7 @@ public class GenericDialog extends Dialog implements ActionListener, TextListene
 			defaultString = ij.measure.ResultsTable.d2s(defaultValue, digits);
 		if (Double.isNaN(defaultValue))
 			defaultString = "";
- 		TextField tf = newTextField(defaultString, columns);
+		TextField tf = newTextField(defaultString, columns);
 		if (IJ.isLinux())
 			tf.setBackground(Color.white);
 		tf.addActionListener(this);
@@ -343,7 +343,7 @@ public class GenericDialog extends Dialog implements ActionListener, TextListene
 			defaultStrings = new Vector(4);
 		}
 
- 		TextField tf = newTextField(defaultText, columns);
+		TextField tf = newTextField(defaultText, columns);
 		if (IJ.isLinux())
 			tf.setBackground(Color.white);
 
@@ -375,12 +375,15 @@ public class GenericDialog extends Dialog implements ActionListener, TextListene
 	/**
 	 * Adds a directory text field and "Browse" button, where the field width is
 	 * determined by the length of 'defaultPath', with a minimum of 25 columns. Use
-	 * getNextString to retrieve * directory path. Based on the addDirectoryField()
-	 * method in Fiji's GenericDialogPlus class.
+	 * getNextString to retrieve the directory path. Call
+	 * OpenDialog.setDefaultDirectory() to set the default directory used when the
+	 * user clicks on "Browse". Based on the addDirectoryField() method in Fiji's
+	 * GenericDialogPlus class. * @see ij.io.OpenDialog#setDefaultDirectory(String)
 	 */
 	public void addDirectoryField(String label, String defaultPath) {
 		int columns = defaultPath != null ? Math.max(defaultPath.length(), 25) : 25;
-		if (columns>50) columns=50;
+		if (columns > 50)
+			columns = 50;
 		addDirectoryField(label, defaultPath, columns);
 	}
 
@@ -482,16 +485,16 @@ public class GenericDialog extends Dialog implements ActionListener, TextListene
 
 	public ImagePlus getNextImage() {
 		int index = getNextChoiceIndex();
-		return index<0 ? null :  WindowManager.getImage(windowIDs[index]);
+		return index < 0 ? null : WindowManager.getImage(windowIDs[index]);
 	}
 
 	/**
 	 * Adds a group of choices to the dialog with menu items taken from the
 	 * <code>enum</code> class of the specified default item (enum constant). The
-	 * default item is automatically set. 
-	 * Calls the original (string-based)
-	 * {@link GenericDialog#addChoice(String, String[], String)} method.
-	 * Usage example:
+	 * default item is automatically set. Calls the original (string-based)
+	 * {@link GenericDialog#addChoice(String, String[], String)} method. Usage
+	 * example:
+	 * 
 	 * <pre>
 	 * import ij.process.AutoThresholder.Method;
 	 * ...
@@ -504,6 +507,7 @@ public class GenericDialog extends Dialog implements ActionListener, TextListene
 	 * ...
 	 * method = gd.getNextEnumChoice(Method.class);
 	 * </pre>
+	 * 
 	 * @param <E>         the generic enum type containing the items to chose from
 	 * @param label       the label displayed for this choice group
 	 * @param defaultItem the menu item initially selected
@@ -520,7 +524,7 @@ public class GenericDialog extends Dialog implements ActionListener, TextListene
 		}
 		this.addChoice(label, items, defaultItem.name());
 	}
-	
+
 	/**
 	 * Adds a group of choices to the dialog with menu items taken from the supplied
 	 * array of <code>enum</code> elements. This allows to present only a subset of
@@ -529,6 +533,7 @@ public class GenericDialog extends Dialog implements ActionListener, TextListene
 	 * replaced by the first element of the enum array. Calls the original
 	 * (string-based) {@link GenericDialog#addChoice(String, String[], String)}
 	 * method. Usage example:
+	 * 
 	 * <pre>
 	 * import ij.process.AutoThresholder.Method;
 	 * ...
@@ -543,17 +548,18 @@ public class GenericDialog extends Dialog implements ActionListener, TextListene
 	 * method = gd.getNextEnumChoice(Method.class);
 	 * </pre>
 	 * 
-	 * @param <E> the generic enum type containing the items to choose from
-	 * @param label the label displayed for this choice group
-	 * @param enumArray an array of enum items (of type E)
-	 * @param defaultItem the menu item initially selected (of type E, may be {@code null})
+	 * @param <E>         the generic enum type containing the items to choose from
+	 * @param label       the label displayed for this choice group
+	 * @param enumArray   an array of enum items (of type E)
+	 * @param defaultItem the menu item initially selected (of type E, may be
+	 *                    {@code null})
 	 * 
 	 * @see #addEnumChoice(String, Enum)
 	 * @see #getNextEnumChoice(Class)
 	 */
 	public <E extends Enum<E>> void addEnumChoice(String label, E[] enumArray, E defaultItem) {
 		String[] items = new String[enumArray.length];
-		boolean contained = false;	// to check if defaultItem is contained in enumArray
+		boolean contained = false; // to check if defaultItem is contained in enumArray
 		for (int i = 0; i < enumArray.length; i++) {
 			if (enumArray[i] == defaultItem) {
 				contained = true;
@@ -917,7 +923,7 @@ public class GenericDialog extends Dialog implements ActionListener, TextListene
 		textArea1 = new TextArea(text1, rows, columns, scrollbars);
 		if (IJ.isLinux())
 			textArea1.setBackground(Color.white);
-		/*Changed for Bio7!*/
+		/* Changed for Bio7! */
 		if (Util.isThemeBlack()) {
 			textArea1.setBackground(Util.getSWTBackgroundToAWT());
 			textArea1.setForeground(Util.getSWTForegroundToAWT());
@@ -933,7 +939,7 @@ public class GenericDialog extends Dialog implements ActionListener, TextListene
 			if (IJ.isLinux())
 				textArea2.setBackground(Color.white);
 
-			/*Changed for Bio7!*/
+			/* Changed for Bio7! */
 			if (Util.isThemeBlack()) {
 				textArea2.setBackground(Util.getSWTBackgroundToAWT());
 				textArea2.setForeground(Util.getSWTForegroundToAWT());
@@ -969,8 +975,7 @@ public class GenericDialog extends Dialog implements ActionListener, TextListene
 			defaultValue = maxValue;
 		int digits = 0;
 		double scale = 1.0;
-		if ((maxValue - minValue) <= 5.0
-				&& (minValue != (int) minValue || maxValue != (int) maxValue || defaultValue != (int) defaultValue)) {
+		if ((maxValue - minValue) <= 5.0 && (minValue != (int) minValue || maxValue != (int) maxValue || defaultValue != (int) defaultValue)) {
 			scale = 50.0;
 			minValue *= scale;
 			maxValue *= scale;
@@ -1024,8 +1029,7 @@ public class GenericDialog extends Dialog implements ActionListener, TextListene
 		return digits;
 	}
 
-	private void addSlider(String label, double minValue, double maxValue, double defaultValue, double scale,
-			int digits) {
+	private void addSlider(String label, double minValue, double maxValue, double defaultValue, double scale, int digits) {
 		int columns = 4 + digits - 2;
 		if (columns < 4)
 			columns = 4;
@@ -1067,16 +1071,16 @@ public class GenericDialog extends Dialog implements ActionListener, TextListene
 			s.addKeyListener(this);
 		s.addMouseWheelListener(new MouseWheelListener() {
 			public void mouseWheelMoved(MouseWheelEvent e) {
-				Scrollbar sb = (Scrollbar)e.getSource();
+				Scrollbar sb = (Scrollbar) e.getSource();
 				int value = sb.getValue() + e.getWheelRotation();
 				sb.setValue(value);
-				for (int i=0; i<slider.size(); i++) {
-					if (sb==slider.elementAt(i)) {
-						int index = ((Integer)sliderIndexes.get(i)).intValue();
-						TextField tf = (TextField)numberField.elementAt(index);
-						double scale = ((Double)sliderScales.get(i)).doubleValue();
-						int digits = ((Integer)sliderDigits.get(i)).intValue();
-						tf.setText(""+IJ.d2s(sb.getValue()/scale,digits));
+				for (int i = 0; i < slider.size(); i++) {
+					if (sb == slider.elementAt(i)) {
+						int index = ((Integer) sliderIndexes.get(i)).intValue();
+						TextField tf = (TextField) numberField.elementAt(index);
+						double scale = ((Double) sliderScales.get(i)).doubleValue();
+						int digits = ((Integer) sliderDigits.get(i)).intValue();
+						tf.setText("" + IJ.d2s(sb.getValue() / scale, digits));
 					}
 				}
 			}
@@ -1092,9 +1096,9 @@ public class GenericDialog extends Dialog implements ActionListener, TextListene
 		if (columns < 1)
 			columns = 1;
 		// IJ.log("scale=" + scale + ", columns=" + columns + ", digits=" + digits);
-		TextField tf = newTextField(IJ.d2s(defaultValue/scale,digits),columns);
-		//if (IJ.isLinux()) tf.setBackground(Color.white);
-			tf.setBackground(Color.white);
+		TextField tf = newTextField(IJ.d2s(defaultValue / scale, digits), columns);
+		// if (IJ.isLinux()) tf.setBackground(Color.white);
+		tf.setBackground(Color.white);
 		tf.addActionListener(this);
 		tf.addTextListener(this);
 		tf.addFocusListener(this);
@@ -1134,12 +1138,12 @@ public class GenericDialog extends Dialog implements ActionListener, TextListene
 		if (Recorder.record || macro)
 			saveLabel(tf, label);
 	}
-	
+
 	private TextField newTextField(String txt, int columns) {
 		if (IJ.isLinux())
-			return new TrimmedTextField(txt,columns);
+			return new TrimmedTextField(txt, columns);
 		else
-			return new TextField(txt,columns);
+			return new TextField(txt, columns);
 	}
 
 	/* Changed for Bio7! -> Added JPanel method! */
@@ -1203,7 +1207,7 @@ public class GenericDialog extends Dialog implements ActionListener, TextListene
 
 	/** Adds an image to the dialog. */
 	public void addImage(ImagePlus image) {
-		if (image==null)
+		if (image == null)
 			return;
 		ImagePanel imagePanel = new ImagePanel(image);
 		addPanel(imagePanel);
@@ -1375,10 +1379,8 @@ public class GenericDialog extends Dialog implements ActionListener, TextListene
 					errorMessage = "\"" + theText + "\" is an invalid number";
 					value = Double.NaN;
 					if (macro) {
-						IJ.error("Macro Error",
-								"Numeric value expected in run() function\n \n" + "   Dialog box title: \"" + getTitle()
-										+ "\"\n" + "   Key: \"" + label.toLowerCase(Locale.US) + "\"\n"
-										+ "   Value or variable name: \"" + theText + "\"");
+						IJ.error("Macro Error", "Numeric value expected in run() function\n \n" + "   Dialog box title: \"" + getTitle() + "\"\n" + "   Key: \"" + label.toLowerCase(Locale.US) + "\"\n"
+								+ "   Value or variable name: \"" + theText + "\"");
 					}
 				}
 			}
@@ -1415,7 +1417,7 @@ public class GenericDialog extends Dialog implements ActionListener, TextListene
 		}
 	}
 
-	/*Bio7 extra method!*/
+	/* Bio7 extra method! */
 	private void recordCheckboxOption(JCheckBox cb) {
 		String label = (String) labels.get((Object) cb);
 		if (label != null) {
@@ -1475,11 +1477,10 @@ public class GenericDialog extends Dialog implements ActionListener, TextListene
 		TextField tf = (TextField) (stringField.elementAt(sfIndex));
 		theText = tf.getText();
 		String label = labels != null ? (String) labels.get((Object) tf) : "";
-		boolean numberExpected = theText!=null && theText.length()>0
-				&& (Character.isDigit(theText.charAt(0))||theText.startsWith("-"));
+		boolean numberExpected = theText != null && theText.length() > 0 && (Character.isDigit(theText.charAt(0)) || theText.startsWith("-"));
 		if (macro) {
 			theText = Macro.getValue(macroOptions, label, theText);
-			if (theText!=null && (theText.startsWith("&")||numberExpected||label.toLowerCase(Locale.US).startsWith(theText))) {
+			if (theText != null && (theText.startsWith("&") || numberExpected || label.toLowerCase(Locale.US).startsWith(theText))) {
 				// Is the value a macro variable?
 				if (theText.startsWith("&"))
 					theText = theText.substring(1);
@@ -1491,8 +1492,7 @@ public class GenericDialog extends Dialog implements ActionListener, TextListene
 		}
 		if (recorderOn && !label.equals("")) {
 			String s = theText;
-			if (s != null && s.length() >= 3 && Character.isLetter(s.charAt(0)) && s.charAt(1) == ':'
-					&& s.charAt(2) == '\\')
+			if (s != null && s.length() >= 3 && Character.isLetter(s.charAt(0)) && s.charAt(1) == ':' && s.charAt(2) == '\\')
 				s = s.replaceAll("\\\\", "/"); // replace "\" with "/" in Windows file paths
 			s = Recorder.fixString(s);
 			if (!smartRecording || !s.equals((String) defaultStrings.elementAt(sfIndex)))
@@ -1508,7 +1508,7 @@ public class GenericDialog extends Dialog implements ActionListener, TextListene
 	public boolean getNextBoolean() {
 		if (checkbox == null)
 			return false;
-		/*Bio7 extra check for JCheckBox!*/
+		/* Bio7 extra check for JCheckBox! */
 		if (checkbox.elementAt(cbIndex) instanceof JCheckBox) {
 			JCheckBox cb = (JCheckBox) (checkbox.elementAt(cbIndex));
 			if (recorderOn)
@@ -1754,14 +1754,13 @@ public class GenericDialog extends Dialog implements ActionListener, TextListene
 				setFont(font.deriveFont((float) (font.getSize() * Prefs.getGuiScale())));
 			}
 			pack();
-			if (okay != null && numberField == null && stringField == null && checkbox == null && choice == null
-					&& slider == null && radioButtonGroups == null && textArea1 == null)
+			if (okay != null && numberField == null && stringField == null && checkbox == null && choice == null && slider == null && radioButtonGroups == null && textArea1 == null)
 				okay.requestFocusInWindow();
 			setup();
 			if (centerDialog)
 				GUI.centerOnImageJScreen(this);
 			resetCounters();
-			setVisible(true); //except for NonBlockingGenericDialog, returns after 'dispose' by OK or Cancel
+			setVisible(true); // except for NonBlockingGenericDialog, returns after 'dispose' by OK or Cancel
 		}
 	}
 
@@ -1776,11 +1775,10 @@ public class GenericDialog extends Dialog implements ActionListener, TextListene
 		if (!wasCanceled && dialogListeners != null && dialogListeners.size() > 0) {
 			try {
 				resetCounters();
-				((DialogListener)dialogListeners.elementAt(0)).dialogItemChanged(this,null);
-			} catch (Exception err) {	// for exceptions, don't cover the input by a window
-				IJ.beep();				// but show them at in the "Log"
-				IJ.log("ERROR: "+err+"\nin DialogListener of "+dialogListeners.elementAt(0)+
-				"\nat "+(err.getStackTrace()[0])+"\nfrom "+(err.getStackTrace()[1]));
+				((DialogListener) dialogListeners.elementAt(0)).dialogItemChanged(this, null);
+			} catch (Exception err) { // for exceptions, don't cover the input by a window
+				IJ.beep(); // but show them at in the "Log"
+				IJ.log("ERROR: " + err + "\nin DialogListener of " + dialogListeners.elementAt(0) + "\nat " + (err.getStackTrace()[0]) + "\nfrom " + (err.getStackTrace()[1]));
 			}
 			recorderOn = false;
 		}
@@ -1789,9 +1787,7 @@ public class GenericDialog extends Dialog implements ActionListener, TextListene
 
 	@Override
 	public void setFont(Font font) {
-		super.setFont(!fontSizeSet && Prefs.getGuiScale() != 1.0 && font != null
-				? font.deriveFont((float) (font.getSize() * Prefs.getGuiScale()))
-				: font);
+		super.setFont(!fontSizeSet && Prefs.getGuiScale() != 1.0 && font != null ? font.deriveFont((float) (font.getSize() * Prefs.getGuiScale())) : font);
 		fontSizeSet = true;
 	}
 
@@ -1881,7 +1877,7 @@ public class GenericDialog extends Dialog implements ActionListener, TextListene
 		if (previewCheckbox != null) {
 			previewCheckbox.setLabel(isRunning ? previewRunning : previewLabel);
 			if (IJ.isMacOSX())
-				repaint(); //workaround OSX 10.4 refresh bug
+				repaint(); // workaround OSX 10.4 refresh bug
 		}
 	}
 
@@ -1993,8 +1989,7 @@ public class GenericDialog extends Dialog implements ActionListener, TextListene
 			wasCanceled = true;
 			dispose();
 			IJ.resetEscape();
-		} else if (keyCode == KeyEvent.VK_W
-				&& (e.getModifiers() & Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()) != 0) {
+		} else if (keyCode == KeyEvent.VK_W && (e.getModifiers() & Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()) != 0) {
 			wasCanceled = true;
 			dispose();
 		}
@@ -2065,7 +2060,7 @@ public class GenericDialog extends Dialog implements ActionListener, TextListene
 					everythingOk = false; // disable further listeners if false (invalid parameters) returned
 			} catch (Exception err) { // for exceptions, don't cover the input by a window but
 				IJ.beep(); // show them at in the "Log"
-				IJ.log("ERROR: " + err + "\nin DialogListener of " + dialogListeners.elementAt(i) + "\nat "+(err.getStackTrace()[0])+"\nfrom "+(err.getStackTrace()[1]));
+				IJ.log("ERROR: " + err + "\nin DialogListener of " + dialogListeners.elementAt(i) + "\nat " + (err.getStackTrace()[0]) + "\nfrom " + (err.getStackTrace()[1]));
 			}
 		}
 		resetCounters();
@@ -2127,7 +2122,7 @@ public class GenericDialog extends Dialog implements ActionListener, TextListene
 			if (this instanceof NonBlockingGenericDialog)
 				new HTMLDialog(title, helpURL, false); // non blocking
 			else
-				new HTMLDialog(this, title, helpURL); //modal
+				new HTMLDialog(this, title, helpURL); // modal
 		} else {
 			String macro = "call('ij.plugin.BrowserLauncher.open', '" + helpURL + "');";
 			new MacroRunner(macro); // open on separate thread using BrowserLauncher
@@ -2240,21 +2235,24 @@ public class GenericDialog extends Dialog implements ActionListener, TextListene
 
 		public void actionPerformed(ActionEvent e) {
 			String path = null;
-			if (mode.equals("dir")) {
+			if (mode.equals("dir"))
 				path = IJ.getDir("Select a Folder");
-			} else {
+			else {
 				OpenDialog od = new OpenDialog("Select a File", null);
 				String directory = od.getDirectory();
 				String name = od.getFileName();
 				if (name != null)
 					path = directory + name;
 			}
-			if (path != null)
+			if (path != null) {
+				if (IJ.isWindows())
+					path = path.replaceAll("\\\\", "/"); // replace "\" with "/"
 				this.textField.setText(path);
+			}
 		}
 
 	}
-	
+
 	private class TrimmedTextField extends TextField {
 
 		public TrimmedTextField(String text, int columns) {
@@ -2263,9 +2261,9 @@ public class GenericDialog extends Dialog implements ActionListener, TextListene
 
 		public Dimension getMinimumSize() {
 			Dimension d = super.getMinimumSize();
-			if (d!=null) {
+			if (d != null) {
 				d.width = d.width;
-				d.height = d.height*3/4;
+				d.height = d.height * 3 / 4;
 			}
 			return d;
 		}
@@ -2275,8 +2273,8 @@ public class GenericDialog extends Dialog implements ActionListener, TextListene
 		}
 
 	}
-	
-	/*Changed for Bio7!*/
+
+	/* Changed for Bio7! */
 
 	public void componentResized(ComponentEvent e) {
 		// TODO Auto-generated method stub

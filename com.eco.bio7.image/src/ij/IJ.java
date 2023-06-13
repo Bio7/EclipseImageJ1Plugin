@@ -2127,8 +2127,10 @@ public class IJ {
 		else if (title2.equals("cwd"))
 			dir = System.getProperty("user.dir");
 		else {
+			String defaultDir = OpenDialog.getDefaultDirectory();
 			DirectoryChooser dc = new DirectoryChooser(title);
 			dir = dc.getDirectory();
+			OpenDialog.setDefaultDirectory(defaultDir);
 			if (dir == null)
 				Macro.abort();
 

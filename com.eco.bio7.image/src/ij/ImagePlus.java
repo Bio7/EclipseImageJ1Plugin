@@ -404,7 +404,7 @@ public class ImagePlus implements ImageObserver, Measurements, Cloneable {
 	 * <pre>
 	 * luts = imp.getLuts();<br>
 	 * for (i=0; i<luts.length; i++)<br>
-	 *    IJ.log((i+1)+“: “+luts[i].min+”-”+luts[i].max);<br>
+	 *    IJ.log((i+1)+ï¿½: ï¿½+luts[i].min+ï¿½-ï¿½+luts[i].max);<br>
 	 * </pre>
 	*/
 	public LUT[] getLuts() {
@@ -633,7 +633,7 @@ public class ImagePlus implements ImageObserver, Measurements, Cloneable {
 				ImageStack biStack = new ImageStack(bi.getWidth(), bi.getHeight());			
 				for (int b=0; b<nBands; b++)
 					biStack.addSlice(convertToImageProcessor(bi, b));
-				setImage(new ImagePlus("", biStack));
+				setImage(new ImagePlus(getTitle(), biStack));
 				return;
 			}			
 			if (bi.getType()==BufferedImage.TYPE_USHORT_GRAY) {
@@ -672,7 +672,7 @@ public class ImagePlus implements ImageObserver, Measurements, Cloneable {
 	}
 	
 	/**
-	 * Extract pixels as an an ImageProcessor from a single band of a BufferedImage.
+	 * Extract pixels as an ImageProcessor from a single band of a BufferedImage.
 	 * @param img
 	 * @param band
 	 * @return
