@@ -1,31 +1,24 @@
 package ij.gui;
 import java.awt.*;
-
-import javax.swing.JPanel;
-
 import ij.*;
 
 /** This class is used by GenericDialog to add images to dialogs. */
-public class ImagePanel extends JPanel {
+public class ImagePanel extends Panel {
 	private ImagePlus img;
-	private int width, height;
 	 
-	ImagePanel(ImagePlus img) {
+	public ImagePanel(ImagePlus img) {
 		this.img = img;
-		width = img.getWidth();
-		height = img.getHeight();
 	}
 
 	public Dimension getPreferredSize() {
-		return new Dimension(width, height);
+		return new Dimension(img.getWidth(), img.getHeight());
 	}
 
 	public Dimension getMinimumSize() {
-		return new Dimension(width, height);
+		return new Dimension(img.getWidth(), img.getHeight());
 	}
 
-	public void paintComponent(Graphics g) {
-		super.paintComponent(g);
+	public void paint(Graphics g) {
 		g.drawImage(img.getProcessor().createImage(), 0, 0, null);
 	}
 

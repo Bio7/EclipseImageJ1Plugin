@@ -27,7 +27,7 @@ public class Editor extends PlugInFrame implements ActionListener, ItemListener,
 	public static String JavaScriptIncludes = "importPackage(Packages.ij);" + "importPackage(Packages.ij.gui);" + "importPackage(Packages.ij.process);" + "importPackage(Packages.ij.measure);"
 			+ "importPackage(Packages.ij.util);" + "importPackage(Packages.ij.macro);" + "importPackage(Packages.ij.plugin);" + "importPackage(Packages.ij.io);" + "importPackage(Packages.ij.text);"
 			+ "importPackage(Packages.ij.plugin.filter);" + "importPackage(Packages.ij.plugin.frame);" + "importPackage(Packages.ij.plugin.tool);" + "importPackage(java.lang);"
-			+ "importPackage(java.awt);" + "importPackage(java.awt.image);" + "importPackage(java.awt.geom);" + "importPackage(java.util);" + "importPackage(java.io);"
+			+ "importPackage(java.awt);" + "importPackage(java.awt.image);" + "importPackage(java.awt.geom);"+ "importPackage(java.awt.event);" + "importPackage(java.util);" + "importPackage(java.io);"
 			+ "function print(s) {IJ.log(s);};";
 
 	private static String JS_EXAMPLES = "img = IJ.openImage(\"http://imagej.net/images/blobs.gif\")\n" + "img = IJ.createImage(\"Untitled\", \"16-bit ramp\", 500, 500, 1)\n" + "img.show()\n"
@@ -489,7 +489,7 @@ public class Editor extends PlugInFrame implements ActionListener, ItemListener,
 		else
 			text = ta.getSelectedText();
 		Interpreter.abort(); // abort any currently running macro
-		if (checkForCurlyQuotes && text.contains("\u201D")) {
+		if (checkForCurlyQuotes) {
 			// replace curly quotes with standard quotes
 			text = text.replaceAll("\u201C", "\"");
 			text = text.replaceAll("\u201D", "\"");
