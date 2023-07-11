@@ -96,8 +96,13 @@ public class ImageJ extends Frame implements ActionListener, MouseListener, KeyL
 	 * Plugins should call IJ.getVersion() or IJ.getFullVersion() to get the version
 	 * string.
 	 */
+<<<<<<< HEAD
 	public static final String VERSION = "1.54g";
 	public static final String BUILD = "4";
+=======
+	public static final String VERSION = "1.54f";
+	public static final String BUILD = ""; //34
+>>>>>>> branch 'master' of https://github.com/Bio7/EclipseImageJ1Plugin.git
 	public static Color backgroundColor;
 	/** SansSerif, 12-point, plain font. */
 	public static final Font SansSerif12 = new Font("SansSerif", Font.PLAIN, 12);
