@@ -618,7 +618,7 @@ public class Prefs {
 		antialiasedTools = (options & ANTIALIASED_TOOLS) != 0;
 		intelByteOrder = (options & INTEL_BYTE_ORDER) != 0;
 		noBorder = (options & NO_BORDER) != 0;
-		showAllSliceOnly = (options & SHOW_ALL_SLICE_ONLY) != 0;
+		//showAllSliceOnly = (options & SHOW_ALL_SLICE_ONLY) != 0;
 		copyColumnHeaders = (options & COPY_HEADERS) != 0;
 		noRowNumbers = (options & NO_ROW_NUMBERS) != 0;
 		moveToMisc = (options & MOVE_TO_MISC) != 0;

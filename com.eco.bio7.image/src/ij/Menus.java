@@ -742,7 +742,7 @@ public class Menus {
 		// ".txt",
 		// ".ijm" or
 		// ".bsh"
-		command.trim();
+		command = command.trim();
 		if (pluginsTable.get(command) != null) // duplicate command?
 			command = command + " Macro";
 		MenuItem item = new MenuItem(command);
@@ -1275,7 +1275,7 @@ public class Menus {
 			command = className.substring(slashIndex + 1);
 		}
 		command = command.replace('_', ' ');
-		command.trim();
+		command = command.trim();
 		boolean itemExists = (pluginsTable.get(command) != null);
 		if (force && itemExists)
 			return;
