@@ -424,7 +424,7 @@ public class ImageWindow extends JFrame
 	 * / 2.0); if (extraHeight < 0) extraHeight = 0; insets = new Insets(insets.top
 	 * + textGap + extraHeight, insets.left + extraWidth, insets.bottom +
 	 * extraHeight, insets.right + extraWidth); return insets; }
-	 */
+	 */ 
 
 	/** Draws the subtitle. */
 	public void drawInfo(Graphics g) {
