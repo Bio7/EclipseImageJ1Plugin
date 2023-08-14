@@ -27,8 +27,8 @@ public class Editor extends PlugInFrame implements ActionListener, ItemListener,
 	public static String JavaScriptIncludes = "importPackage(Packages.ij);" + "importPackage(Packages.ij.gui);" + "importPackage(Packages.ij.process);" + "importPackage(Packages.ij.measure);"
 			+ "importPackage(Packages.ij.util);" + "importPackage(Packages.ij.macro);" + "importPackage(Packages.ij.plugin);" + "importPackage(Packages.ij.io);" + "importPackage(Packages.ij.text);"
 			+ "importPackage(Packages.ij.plugin.filter);" + "importPackage(Packages.ij.plugin.frame);" + "importPackage(Packages.ij.plugin.tool);" + "importPackage(java.lang);"
-			+ "importPackage(java.awt);" + "importPackage(java.awt.image);" + "importPackage(java.awt.geom);"+ "importPackage(java.awt.event);" + "importPackage(java.util);" + "importPackage(java.io);"
-			+ "function print(s) {IJ.log(s);};";
+			+ "importPackage(java.awt);" + "importPackage(java.awt.image);" + "importPackage(java.awt.geom);" + "importPackage(java.awt.event);" + "importPackage(java.util);"
+			+ "importPackage(java.io);" + "function print(s) {IJ.log(s);};";
 
 	private static String JS_EXAMPLES = "img = IJ.openImage(\"http://imagej.net/images/blobs.gif\")\n" + "img = IJ.createImage(\"Untitled\", \"16-bit ramp\", 500, 500, 1)\n" + "img.show()\n"
 			+ "ip = img.getProcessor()\n" + "ip.getStats()\n" + "IJ.setAutoThreshold(img, \"IsoData\")\n" + "IJ.run(img, \"Analyze Particles...\", \"show=Overlay display clear\")\n" + "ip.invert()\n"
@@ -110,8 +110,8 @@ public class Editor extends PlugInFrame implements ActionListener, ItemListener,
 		super("Editor");
 		WindowManager.addWindow(this);
 		addMenuBar(options);
-		boolean addRunBar = (options&RUN_BAR)!=0;
-		ImageJ ij = IJ.getInstance();		
+		boolean addRunBar = (options & RUN_BAR) != 0;
+		ImageJ ij = IJ.getInstance();
 		if (addRunBar) {
 			Panel panel = new Panel(new FlowLayout(FlowLayout.LEFT, 0, 0));
 			panel.addKeyListener(ij);
@@ -141,7 +141,7 @@ public class Editor extends PlugInFrame implements ActionListener, ItemListener,
 		/* Changed for Bio7! */
 		ta.setBackground(Util.getSWTBackgroundToAWT());
 		ta.setForeground(Util.getSWTForegroundToAWT());
-		addKeyListener(ij);  // ImageJ handles keyboard shortcuts
+		addKeyListener(ij); // ImageJ handles keyboard shortcuts
 		ta.addMouseListener(this); // ImageJ handles keyboard shortcuts
 		add(ta);
 		pack();
@@ -167,8 +167,7 @@ public class Editor extends PlugInFrame implements ActionListener, ItemListener,
 	void addMenuBar(int options) {
 		mb = new MenuBar();
 		if (Menus.getFontSize() != 0)
-			;
-		mb.setFont(Menus.getFont());
+			mb.setFont(Menus.getFont());
 		Menu m = new Menu("File");
 		m.add(new MenuItem("New...", new MenuShortcut(KeyEvent.VK_N, true)));
 		m.add(new MenuItem("Open...", new MenuShortcut(KeyEvent.VK_O)));
@@ -504,43 +503,42 @@ public class Editor extends PlugInFrame implements ActionListener, ItemListener,
 			changes = true;
 			checkForCurlyQuotes = false;
 		}
-		currentMacroEditor = this;				
-		text = doInclude(text);		
+		currentMacroEditor = this;
+		text = doInclude(text);
 		MacroRunner mr = new MacroRunner();
 		if (debug)
 			mr.setEditor(this);
 		mr.run(text);
 	}
+
 	/** Process optional #include statment at begining of macro. */
 	public static String doInclude(String code) {
-		if (code.startsWith("#include ")||code.startsWith("// include ")) {
+		if (code.startsWith("#include ") || code.startsWith("// include ")) {
 			if (IJ.isWindows())
 				code = code.replaceAll("\r\n", "\n");
-			int offset = code.startsWith("#include ")?9:11;
+			int offset = code.startsWith("#include ") ? 9 : 11;
 			int eol = code.indexOf("\n");
 			String path = code.substring(offset, eol);
 			boolean isURL = path.startsWith("http://") || path.startsWith("https://");
 			if (!isURL) {
-				boolean fullPath = path.startsWith("/") || path.startsWith("\\") || path.indexOf(":\\")==1 || path.indexOf(":/")==1;
+				boolean fullPath = path.startsWith("/") || path.startsWith("\\") || path.indexOf(":\\") == 1 || path.indexOf(":/") == 1;
 				if (!fullPath) {
 					String macrosDir = Menus.getMacrosPath();
-					if (macrosDir!=null)
+					if (macrosDir != null)
 						path = Menus.getMacrosPath() + path;
 				}
 				File f = new File(path);
 				if (!f.exists())
-					IJ.error("Include file not found:\n"+path);
+					IJ.error("Include file not found:\n" + path);
 			}
-			code = code.substring(eol+1,code.length());
+			code = code.substring(eol + 1, code.length());
 			if (isURL)
-				code = "//\n"+code + IJ.openUrlAsString(path);
+				code = "//\n" + code + IJ.openUrlAsString(path);
 			else
-				code = "//\n"+code + IJ.openAsString(path);
+				code = "//\n" + code + IJ.openAsString(path);
 		}
 		return code;
 	}
-
-
 
 	void evaluateMacro() {
 		String title = getTitle();
@@ -1137,7 +1135,7 @@ public class Editor extends PlugInFrame implements ActionListener, ItemListener,
 
 	public void keyReleased(KeyEvent e) {
 		int pos = ta.getCaretPosition();
-		//showLinePos();
+		// showLinePos();
 		if (insertSpaces && pos > 0 && e.getKeyCode() == KeyEvent.VK_TAB) {
 			String spaces = " ";
 			for (int i = 1; i < tabInc; i++)
@@ -1440,7 +1438,7 @@ public class Editor extends PlugInFrame implements ActionListener, ItemListener,
 			IJ.beep();
 			return;
 		}
-		ta.select(index, index+s.length());
+		ta.select(index, index + s.length());
 	}
 
 	boolean isWholeWordMatch(String text, String word, int index) {
