@@ -354,7 +354,7 @@ public class AVI_Reader extends VirtualStack implements PlugIn {
 	public static ImagePlus openVirtual(String path) {
 		return open(path, true);
 	}
-	
+
 	/** Opens an AVI file, where 'options' can contain
 	 * 'virtual' (open as virtual stack),
 	 * 'convert' (convert color images to grayscale) or
@@ -451,12 +451,16 @@ public class AVI_Reader extends VirtualStack implements PlugIn {
 			closeFile(rFile);
 		}
 		if (pixels == null) return null; //failed
+		ImageProcessor ip = null;
 		if (pixels instanceof byte[])
-			return new ByteProcessor(dwWidth, biHeight, (byte[])pixels, cm);
+			ip = new ByteProcessor(dwWidth, biHeight, (byte[])pixels, cm);
 		else if (pixels instanceof short[])
-			return new ShortProcessor(dwWidth, biHeight, (short[])pixels, cm);
+			ip = new ShortProcessor(dwWidth, biHeight, (short[])pixels, cm);
 		else
-			return new ColorProcessor(dwWidth, biHeight, (int[])pixels);
+			ip = new ColorProcessor(dwWidth, biHeight, (int[])pixels);
+		if (ip!=null)
+			ip.setSliceNumber(n);
+		return ip;
 	}
 
 	/** Returns the image width of the virtual stack */

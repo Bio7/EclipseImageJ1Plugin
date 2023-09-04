@@ -72,7 +72,6 @@ public class ImageWindow extends JFrame
 	private static Point nextLocation;
 	public static long setMenuBarTime;
 	private int textGap = centerOnScreen ? 0 : TEXT_GAP;
-	private Point initialLoc;
 	private int screenHeight, screenWidth;
 	public SwtAwtImageJ swtAwtMain;// Changed for Bio7!
 	public boolean running2;
@@ -297,7 +296,7 @@ public class ImageWindow extends JFrame
 		int width = imp.getWidth();
 		int height = imp.getHeight();
 
-		// load prefernces file location
+		// load preferences file location
 		Point loc = Prefs.getLocation(LOC_KEY);
 		Rectangle bounds = null;
 		if (loc != null) {
@@ -383,10 +382,8 @@ public class ImageWindow extends JFrame
 			validate();
 		} else
 			pack();
-		if (!updating) {
+		if (!updating)
 			setLocation(x, y);
-			initialLoc = new Point(x, y);
-		}
 	}
 
 	Rectangle getMaxWindow(int xloc, int yloc) {
@@ -704,7 +701,7 @@ public class ImageWindow extends JFrame
 			yloc = 0;
 		}
 		Point currentLoc = getLocation();
-		if (initialLoc != null && !currentLoc.equals(initialLoc) && !IJ.isMacro()) {
+		if (!IJ.isMacro()) {
 			Prefs.saveLocation(LOC_KEY, currentLoc);
 			xbase = -1;
 		}
@@ -1078,10 +1075,6 @@ public class ImageWindow extends JFrame
 	 */
 	public void setLocationAndSize(int x, int y, int width, int height) {
 		/*Changed for Bio7 for detached views only!*/
-		// setBounds(x, y, width, height);
-		// getCanvas().fitToWindow();
-		initialLoc = null;
-		// pack();
 		String idValue = Integer.toString(getImagePlus().getID());
 		IJTabs.setSecondaryViewShellLocAndSize(idValue, new org.eclipse.swt.graphics.Rectangle(x, y, width, height));
 	}
@@ -1089,7 +1082,6 @@ public class ImageWindow extends JFrame
 	@Override
 	public void setLocation(int x, int y) {
 		super.setLocation(x, y);
-		initialLoc = null;
 	}
 
 	public void setSliderHeight(int height) {
