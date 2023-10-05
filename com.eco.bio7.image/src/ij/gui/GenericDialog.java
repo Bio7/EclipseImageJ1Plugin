@@ -1401,6 +1401,8 @@ public class GenericDialog extends Dialog implements ActionListener, TextListene
 	}
 
 	private void recordOption(Object component, String value) {
+		if (labels==null)
+			return;
 		String label = (String) labels.get(component);
 		if (value.equals(""))
 			value = "[]";
