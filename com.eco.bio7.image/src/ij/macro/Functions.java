@@ -2346,8 +2346,15 @@ public class Functions implements MacroConstants, Measurements {
 		Variable yvar = getLastArrayVariable();
 		float[] xvalues = new float[0];
 		float[] yvalues = new float[0];
-		IJ.wait(100); //https://forum.image.sc/t/plot-getvalues-returns-odd-results/72673
 		ImagePlus imp = getImage();
+		long maxDelay = 100; //https://forum.image.sc/t/plot-getvalues-returns-odd-results
+		long t0 = System.currentTimeMillis();
+		while ((System.currentTimeMillis()-t0)<maxDelay) {
+			if (imp.getProperty("XValues")!=null || imp.getTitle().startsWith("Plot of"))
+				break;
+			IJ.wait(5);
+			imp = getImage();
+		}
 		ImageWindow win = imp.getWindow();
 		if (imp.getProperty("XValues")!=null) {
 			xvalues = (float[])imp.getProperty("XValues");
@@ -4103,6 +4110,14 @@ public class Functions implements MacroConstants, Measurements {
 				gd.addToSameRow();
 			} else if (name.equals("setLocation")) {
 				gd.setLocation((int)getFirstArg(), (int)getLastArg());
+			} else if (name.equals("getLocation")) {
+				Variable v1 = getFirstVariable();
+				Variable v2 = getLastVariable();
+				Point loc = gd.getLocation();
+				int x = loc.x;
+				int y = loc.y;
+				v1.setValue(x);
+				v2.setValue(y);
 			} else if (name.equals("show")) {
 				interp.getParens();
 				gd.showDialog();
@@ -4136,7 +4151,7 @@ public class Functions implements MacroConstants, Measurements {
 		}
 		return null;
 	}
-
+	
 	void addCheckboxGroup(GenericDialog gd) {
 		int rows = (int)getFirstArg();
 		int columns = (int)getNextArg();
@@ -8092,8 +8107,7 @@ public class Functions implements MacroConstants, Measurements {
 		} else if (name.equals("getIndex")) {
 			return new Variable(rm.getIndex(getStringArg()));
 		} else if (name.equals("setPosition")) {
-			int position = (int)getArg();
-			rm.setPosition(position);
+			setRoiManagerPosition(rm);
 			return null;
 		} else if (name.equals("multiCrop")) {
 			rm.multiCrop(getFirstString(),getLastString());
@@ -8115,6 +8129,18 @@ public class Functions implements MacroConstants, Measurements {
 		} else
 			interp.error("Unrecognized RoiManager function");
 		return null;
+	}
+	
+	private void setRoiManagerPosition(RoiManager rm) {
+		int channel = (int)getFirstArg();
+		if (interp.nextToken()==')') {
+			interp.getRightParen();
+			rm.setPosition(channel);
+			return;
+		}
+		int slice = (int)getNextArg();
+		int frame = (int)getLastArg();
+		rm.setPosition(channel, slice, frame);
 	}
 
 	private Variable doProperty() {

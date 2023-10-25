@@ -14,14 +14,14 @@ public class HistogramPlot extends ImagePlus {
 	static final int HIST_HEIGHT = (int) (SCALE * 128);
 	static final int XMARGIN = (int) (20 * SCALE);
 	static final int YMARGIN = (int) (10 * SCALE);
-	/*Changed for Bio7! Correction for the width else no plot is drawn!*/
+	/* Changed for Bio7! Correction for the width else no plot is drawn! */
 	static final int WIN_WIDTH = HIST_WIDTH + (int) (41 * SCALE);
 
 	static final int WIN_HEIGHT = HIST_HEIGHT + (int) (118 * SCALE);
 	static final int BAR_HEIGHT = (int) (SCALE * 12);
 	static final int INTENSITY1 = 0, INTENSITY2 = 1, RGB = 2, RED = 3, GREEN = 4, BLUE = 5;
- 	static final Color frameColor = new Color(30,60,120);
- 	
+	static final Color frameColor = new Color(30, 60, 120);
+
 	int rgbMode = -1;
 	ImageStatistics stats;
 	boolean stackHistogram;
@@ -29,7 +29,7 @@ public class HistogramPlot extends ImagePlus {
 	long[] histogram;
 	LookUpTable lut;
 	int decimalPlaces;
-	int digits; 
+	int digits;
 	long newMaxCount;
 	boolean logScale;
 	int yMax;
@@ -59,7 +59,7 @@ public class HistogramPlot extends ImagePlus {
 	public void draw(ImagePlus imp, int bins, double histMin, double histMax, int yMax) {
 		boolean limitToThreshold = (Analyzer.getMeasurements() & LIMIT) != 0;
 		ImageProcessor ip = imp.getProcessor();
-		if (ip.isThreshold() && ip.getLutUpdateMode()==ImageProcessor.NO_LUT_UPDATE)
+		if (ip.isThreshold() && ip.getLutUpdateMode() == ImageProcessor.NO_LUT_UPDATE)
 			limitToThreshold = false; // ignore invisible thresholds
 		if (imp.isRGB() && rgbMode < INTENSITY1)
 			rgbMode = INTENSITY1;
@@ -73,8 +73,7 @@ public class HistogramPlot extends ImagePlus {
 		} else if (rgbMode == RGB)
 			stats = RGBHistogram(imp, bins, histMin, histMax);
 		else
-			stats = imp.getStatistics(AREA + MEAN + MODE + MIN_MAX + (limitToThreshold ? LIMIT : 0), bins, histMin,
-					histMax);
+			stats = imp.getStatistics(AREA + MEAN + MODE + MIN_MAX + (limitToThreshold ? LIMIT : 0), bins, histMin, histMax);
 		draw(imp, stats);
 	}
 
@@ -153,8 +152,7 @@ public class HistogramPlot extends ImagePlus {
 		srcImageID = imp.getID();
 	}
 
-	void drawAlignedColorBar(ImagePlus imp, double xMin, double xMax, ImageProcessor ip, int x, int y, int width,
-			int height) {
+	void drawAlignedColorBar(ImagePlus imp, double xMin, double xMax, ImageProcessor ip, int x, int y, int width, int height) {
 		ImageProcessor ipSource = imp.getProcessor();
 		float[] pixels = null;
 		ImageProcessor ipRamp = null;
@@ -253,7 +251,7 @@ public class HistogramPlot extends ImagePlus {
 			}
 		}
 		ip.setColor(frameColor);
-		ip.drawRect(frame.x-1, frame.y, frame.width+2, frame.height+1);
+		ip.drawRect(frame.x - 1, frame.y, frame.width + 2, frame.height + 1);
 		ip.setColor(Color.black);
 	}
 
@@ -395,10 +393,17 @@ public class HistogramPlot extends ImagePlus {
 
 	@Override
 	public void show() {
-		if (IJ.isMacro() && Interpreter.isBatchMode())
-			super.show();
-		else
-			new HistogramWindow(this, WindowManager.getImage(srcImageID));
+		HistogramWindow hw = new HistogramWindow(this, WindowManager.getImage(srcImageID));
+		try {
+			ResultsTable rt = hw.getResultsTable();
+			int col = rt.getColumnIndex("value");
+			float[] xvalues = rt.getColumn(col);
+			col = rt.getColumnIndex("count");
+			float[] yvalues = rt.getColumn(col);
+			setProperty("XValues", xvalues); // Allows values to be retrieved by
+			setProperty("YValues", yvalues); // by Plot.getValues() macro function
+		} catch (Exception e) {
+		}
 	}
 
 }

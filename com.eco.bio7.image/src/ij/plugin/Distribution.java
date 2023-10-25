@@ -6,13 +6,10 @@ import ij.process.*;
 import ij.plugin.PlugIn;
 import ij.measure.*;
 import ij.util.Tools;
-
 import java.util.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.Vector;
-
-import javax.swing.JCheckBox;
 
 /**
  * This plugin implements the Analyze/Distribution command. It reads the data
@@ -25,7 +22,7 @@ public class Distribution implements PlugIn, TextListener {
 	static boolean autoBinning = true;
 	static int nBins = 10;
 	static String range = "0-0";
-	JCheckBox checkbox;
+	Checkbox checkbox;
 	TextField nBinsField, rangeField;
 	String defaultNBins, defaultRange;
 
@@ -43,7 +40,7 @@ public class Distribution implements PlugIn, TextListener {
 			return;
 		int count = rt.size();
 		String head = rt.getColumnHeadings();
-		//IJ.log(head);
+		// IJ.log(head);
 
 		StringTokenizer t = new StringTokenizer(head, "\t");
 		int tokens = t.countTokens() - 1;
@@ -72,8 +69,7 @@ public class Distribution implements PlugIn, TextListener {
 			rangeField = (TextField) v.elementAt(0);
 			rangeField.addTextListener(this);
 		}
-
-		checkbox = (JCheckBox) (gd.getCheckboxes().elementAt(0));
+		checkbox = (Checkbox) (gd.getCheckboxes().elementAt(0));
 		gd.showDialog();
 		if (gd.wasCanceled())
 			return;
@@ -107,8 +103,9 @@ public class Distribution implements PlugIn, TextListener {
 		float[] pars = new float[11];
 		stats(count, data, pars);
 		if (autoBinning) {
-			//sd = 7, min = 3, max = 4
-			// use Scott's method (1979 Biometrika, 66:605-610) for optimal binning: 3.49*sd*N^-1/3
+			// sd = 7, min = 3, max = 4
+			// use Scott's method (1979 Biometrika, 66:605-610) for optimal binning:
+			// 3.49*sd*N^-1/3
 			float binWidth = (float) (3.49 * pars[7] * (float) Math.pow((float) count, -1.0 / 3.0));
 			nBins = (int) Math.floor(((pars[4] - pars[3]) / binWidth) + .5);
 			if (nBins < 2)
@@ -124,7 +121,18 @@ public class Distribution implements PlugIn, TextListener {
 				maxCount = stats.histogram[i];
 		}
 		stats.histYMax = maxCount;
-		new HistogramWindow(parameter + " Distribution", imp, stats);
+		HistogramWindow hw = new HistogramWindow(parameter + " Distribution", imp, stats);
+		try {
+			ResultsTable rt2 = hw.getResultsTable();
+			int col = rt2.getColumnIndex("bin start");
+			float[] xvalues = rt2.getColumn(col);
+			col = rt2.getColumnIndex("count");
+			float[] yvalues = rt2.getColumn(col);
+			ImagePlus img = hw.getImagePlus();
+			img.setProperty("XValues", xvalues); // Allows values to be retrieved by
+			img.setProperty("YValues", yvalues); // by Plot.getValues() macro function
+		} catch (Exception e) {
+		}
 	}
 
 	int getIndex(String[] strings) {
@@ -137,20 +145,19 @@ public class Distribution implements PlugIn, TextListener {
 
 	public void textValueChanged(TextEvent e) {
 		if (!defaultNBins.equals(nBinsField.getText()))
-			checkbox.setSelected(false);
+			checkbox.setState(false);
 		if (!defaultRange.equals(rangeField.getText()))
-			checkbox.setSelected(false);
+			checkbox.setState(false);
 	}
 
 	void stats(int nc, float[] data, float[] pars) {
 		// ("\tPoints\tEdges_n\tGraph_Length\tMin\tMax\tMean\tAvDev\tSDev\tVar\tSkew\tKurt");
 		int i;
-		float s = 0, min = Float.MAX_VALUE, max = -Float.MAX_VALUE, totl = 0, ave = 0, adev = 0, sdev = 0, var = 0,
-				skew = 0, kurt = 0, p;
+		float s = 0, min = Float.MAX_VALUE, max = -Float.MAX_VALUE, totl = 0, ave = 0, adev = 0, sdev = 0, var = 0, skew = 0, kurt = 0, p;
 
 		for (i = 0; i < nc; i++) {
 			totl += data[i];
-			//tot& = tot& + 1
+			// tot& = tot& + 1
 			if (data[i] < min)
 				min = data[i];
 			if (data[i] > max)
