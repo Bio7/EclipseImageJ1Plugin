@@ -80,6 +80,7 @@ public class IJMacroFunctions {
 			"Dialog.addToSameRow()####Makes the next item added appear on the same row as the previous item. May be used for addNumericField,addSlider,addChoice,addCheckbox,addStringField,addMessage,addPanel,and before the showDialog() method. In the latter case,the buttons appear to the right of the previous item. Note that addMessage uses the remaining width,so it must be the last item of a row. Requires 1.51r."+linSeparator +
 			"Dialog.setInsets(top,left,bottom)####Overrides the default insets (margins) used for the next component added to the dialog."+linSeparator+
 			"Dialog.setLocation(x,y)####Sets the screen location where this dialog will be displayed."+linSeparator+
+			"Dialog.getLocation(x,y)####Gets the screen location where this dialog will be displayed."+linSeparator+
 			"Dialog.show()####Displays the dialog and waits until the user clicks \"OK\" or \"Cancel\". The macro terminates if the user clicks \"Cancel\"."+linSeparator + 
 			"Dialog.getString()####Returns a string containing the contents of the next text field."+linSeparator + 
 			"Dialog.getNumber()####Returns the contents of the next numeric field."+linSeparator + 
@@ -487,6 +488,7 @@ public class IJMacroFunctions {
 			"Roi.setGroup(group)####Sets the group (a positive number) of the current selection. Zero sets the group to \"none\". See also: RoiManager.selectGroup and RoiManager.setGroup. Requires 1.52t."+linSeparator +
 			"Roi.setGroupNames(String)####Sets the group names from a comma-delimeted string. Requires 1.53b."+linSeparator + 
 			"Roi.setPosition(slice)####Sets the current ROI to the given slice."+linSeparator + 
+			"RoiManager.setPosition(c,z,t)####Sets the position of the different image channels."+linSeparator +
 			"Roi.setProperty(key,value)####Adds the specified key and value pair to the selection properties. Assumes a value of \"1\" (true) if there is only one argument."+linSeparator + 
 			"Roi.getProperties####Returns all selection properties or an empty string if the selection does not have properties."+linSeparator + 
 			"Roi.getSplineAnchors(x,y)####Returns the x and y coordinates of the anchor points of a spline fitted selection."+linSeparator + 
