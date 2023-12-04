@@ -1088,6 +1088,7 @@ public class Editor extends PlugInFrame implements ActionListener, ItemListener,
 	}
 
 	public void keyPressed(KeyEvent e) {
+		//IJ.setKeyDown(e.getKeyCode());
 	}
 
 	public void mousePressed(MouseEvent e) {

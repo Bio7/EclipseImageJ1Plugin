@@ -159,7 +159,7 @@ public class Plot implements Cloneable {
 	private static final double RELATIVE_ARROWHEAD_SIZE = 0.2; //arrow heads have 1/5 of vector length
 	private static final int MIN_ARROWHEAD_LENGTH = 3;
 	private static final int MAX_ARROWHEAD_LENGTH = 20;
-	private static final String MULTIPLY_SYMBOL = "\u00B7"; //middot, default multiplication symbol for scientific notation. Use setOptions("msymbol=\\u00d7") for 'Ã—'
+	private static final String MULTIPLY_SYMBOL = "\u00B7"; //middot, default multiplication symbol for scientific notation. Use setOptions("msymbol=\\u00d7") for '×'
 
 	PlotProperties pp = new PlotProperties();		//size, range, formatting etc, for easy serialization
 	PlotProperties ppSnapshot;						//copy for reverting
@@ -212,8 +212,8 @@ public class Plot implements Cloneable {
 	private static double SEPARATED_BAR_WIDTH=0.5;  // for plots with separate bars (e.g. categories), fraction of space, 0.1-1.0
 	double[] steps;                                 // x & y interval between numbers, major ticks & grid lines, remembered for redrawing the grid
 	private int objectToReplace = -1;               // index in allPlotObjects, for replace
-	private Point2D.Double textLoc;                 // remembers position of previous addLabel call (replaces text if at the same position)
-	private int textIndex;                          // remembers index of previous addLabel call (for replacing if at the same position)
+	//private Point2D.Double textLoc;                 // remembers position of previous addLabel call (replaces text if at the same position)
+	//private int textIndex;                          // remembers index of previous addLabel call (for replacing if at the same position)
 
 	/** Constructs a new Plot with the default options.
 	 * Use add(shape,xvalues,yvalues) to add curves.
@@ -730,7 +730,7 @@ public class Plot implements Cloneable {
 	}
 
 	/** Replaces the specified plot object (curve or set of points).
-		 Equivalent to add() if there are no plot objects. */
+	 *	Equivalent to add() if there are no plot objects. */
 	public void replace(int index, String type, double[] xvalues, double[] yvalues) {
 		if (index>=0 && index<allPlotObjects.size()) {
 			objectToReplace = allPlotObjects.size()>0?index:-1;
@@ -757,7 +757,9 @@ public class Plot implements Cloneable {
 	 * @param yValues	the y coordinates (must not be null)
 	 * @param yErrorBars error bars in y, may be null
 	 * @param shape		CIRCLE, X, BOX, TRIANGLE, CROSS, DIAMOND, DOT, LINE, CONNECTED_CIRCLES
-	 * @param label		Label for this curve or set of points, used for a legend and for listing the plots
+	 * @param label		Label for this curve or set of points, used for a legend and for listing the plots.
+	 *  For shape type CUSTOM, the 'label' String should contain the macro code as in "Custom Plot Symbols"
+	 *  example macro and in add(String, double[], double[]) (without the 'code:')
 	 */
 	public void addPoints(float[] xValues, float[] yValues, float[] yErrorBars, int shape, String label) {
 		if (xValues==null || xValues.length==0) {
@@ -917,13 +919,18 @@ public class Plot implements Cloneable {
 	 *  the lower right corner. Uses the justification specified by setJustification().
 	 *  When called with the same position as the previous addLabel call, the text of that previous call is replaced */
 	public void addLabel(double x, double y, String label) {
-		if (textLoc!=null && x==textLoc.getX() && y==textLoc.getY())
-			allPlotObjects.set(textIndex, new PlotObject(label, x, y, currentJustification, currentFont, currentColor, PlotObject.NORMALIZED_LABEL));
-		else {
-			allPlotObjects.add(new PlotObject(label, x, y, currentJustification, currentFont, currentColor, PlotObject.NORMALIZED_LABEL));
-			textLoc = new Point2D.Double(x,y);
-			textIndex = allPlotObjects.size()-1;
+		for (int i=allPlotObjects.size()-1; i>=0; i--) {
+			PlotObject plotObject = allPlotObjects.get(i);
+			if (plotObject.type == PlotObject.NORMALIZED_LABEL) {		//result of previous addLabel
+				if (plotObject.x == x && plotObject.y == y) {
+					allPlotObjects.set(i, new PlotObject(label, x, y, currentJustification,
+							currentFont, currentColor, PlotObject.NORMALIZED_LABEL));
+					return;
+				}
+				break;
+			}
 		}
+		allPlotObjects.add(new PlotObject(label, x, y, currentJustification, currentFont, currentColor, PlotObject.NORMALIZED_LABEL));
 	}
 
 	/* Draws text at the specified location, using the coordinate system defined
@@ -1301,7 +1308,8 @@ public class Plot implements Cloneable {
 	}
 
 	/** Gets an array with human-readable designations of the PlotObjects with types fitting the mask
-	 *  (i.e., 'mask' should be a bitwise or of the types desired) */
+	 *  (i.e., 'mask' should be a bitwise or of the types desired: XY_DATA = 1, ARROWS = 2, LINE = 4,
+	 *   NORMALIZED_LINE = 8, DOTTED_LINE = 16, LABEL = 32, NORMALIZED_LABEL = 64, LEGEND = 128) */
 	String[] getPlotObjectDesignations(int mask, boolean includeHidden) {
 		int nObjects = getNumPlotObjects(mask, includeHidden);
 		String[] names = new String[nObjects];
@@ -1670,10 +1678,12 @@ public class Plot implements Cloneable {
 		stack.addPlot(this);
 		IJ.showStatus("addToPlotStack: "+stack.size());
 		allPlotObjects.clear();
-		textLoc = null;
 	}
 
-	public void appendToStack() { addToStack(); }
+	/** Alias for addToStack(). */
+	public void appendToStack() {
+		addToStack();
+	}
 
 	/** Returns the virtual stack created by addToStack(). */
 	public PlotVirtualStack getStack() {
