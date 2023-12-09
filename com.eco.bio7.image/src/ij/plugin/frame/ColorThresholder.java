@@ -1269,9 +1269,9 @@ public class ColorThresholder extends PlugInFrame implements PlugIn, Measurement
 
 	// Restores the original pixel data
 	void reset(ImagePlus imp) {
-		if (IJ.debugMode) IJ.log("ColorThresholder.reset");
 		ImageProcessor ip = imp.getProcessor();
 		ImagePlus originalImage = (ImagePlus)imp.getProperty("OriginalImage");
+		if (IJ.debugMode) IJ.log("ColorThresholder.reset: "+originalImage+" "+imp);
 		if (originalImage==null) {
 			originalImage = imp.createImagePlus();
 			originalImage.setTitle(imp.getTitle()+" (Original)");
