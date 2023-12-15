@@ -77,6 +77,8 @@ public class IJMacroFunctions {
 			"Dialog.addChoice(\"Label\",items,default)####Adds a popup menu,where items is a string array containing the choices and default is the default choice."+linSeparator + 
 			"Dialog.addHelp(url)####Adds a \"Help\" button that opens the specified URL in the default browser. This can be used to supply a help page for this dialog or macro. With v1.46b or later,displays an HTML formatted message if 'url' starts with \"<html>\"."+linSeparator + 
 			"Dialog.addImage(path)####Adds an image to the dialog."+
+			"Dialog.enableYesNoCancel####Creates a Non-blocking YesNoCancel dialog."+
+			"Dialog.getYesNoCancel####Get the selection of a YesNoCancel dialog."+
 			"Dialog.addToSameRow()####Makes the next item added appear on the same row as the previous item. May be used for addNumericField,addSlider,addChoice,addCheckbox,addStringField,addMessage,addPanel,and before the showDialog() method. In the latter case,the buttons appear to the right of the previous item. Note that addMessage uses the remaining width,so it must be the last item of a row. Requires 1.51r."+linSeparator +
 			"Dialog.setInsets(top,left,bottom)####Overrides the default insets (margins) used for the next component added to the dialog."+linSeparator+
 			"Dialog.setLocation(x,y)####Sets the screen location where this dialog will be displayed."+linSeparator+
