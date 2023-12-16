@@ -27,7 +27,10 @@ public class YesNoCancelDialog {
 	}
 
 	public YesNoCancelDialog(Frame parent, String title, String msg, String yesLabel, String noLabel) {
-
+		//if (msg.contains("[NON_BLOCKING]")) {
+				//	setModal(false);
+				//	msg = msg.replace("[NON_BLOCKING]", "");
+				//}
 		Display dis = Util.getDisplay();
 		dis.syncExec(new Runnable() {
 
