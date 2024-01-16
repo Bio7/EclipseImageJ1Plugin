@@ -1706,6 +1706,7 @@ public class IJ {
 			}
 		} else
 			ip.setAutoThreshold(ImageProcessor.ISODATA2, ImageProcessor.RED_LUT);
+		ThresholdAdjuster.setMethod(method);
 		imp.updateAndDraw();
 	}
 

@@ -75,7 +75,7 @@ public class Orthogonal_Views implements PlugIn, MouseListener, MouseMotionListe
 			}
 		}
 		if (!isStack) {
- 			IJ.error("Orthogonal Views", "This command requires a stack, or a hyperstack with Z>1.");
+			IJ.error("Orthogonal Views", "This command requires a stack, or a hyperstack with Z>1.");
 			return;
 		}
 		yz_image = WindowManager.getImage(yzID);
@@ -943,6 +943,11 @@ public class Orthogonal_Views implements PlugIn, MouseListener, MouseMotionListe
  	public static void stop() {
 		if (instance!=null)
 			instance.dispose();
+	}
+
+ 	public static void start() {
+		if (instance==null)
+			IJ.run("Orthogonal Views");
 	}
 
 	public static synchronized boolean isOrthoViewsImage(ImagePlus imp) {

@@ -837,7 +837,7 @@ public class ContrastAdjuster extends PlugInDialog implements Runnable,
 			i++;
 			count = histogram[i];
 			if (count>limit) count = 0;
-			found = count> threshold;
+			found = count>threshold;
 		} while (!found && i<255);
 		int hmin = i;
 		i = 256;

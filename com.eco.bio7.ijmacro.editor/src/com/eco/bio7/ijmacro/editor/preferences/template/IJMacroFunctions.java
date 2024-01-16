@@ -59,6 +59,8 @@ public class IJMacroFunctions {
 			"Color.toArray(color)####Converts a color (e.g., \"red\" or \"#ff0000\") to a three element array."+linSeparator +
 			"Color.toString(r,g,b)####Converts an r,g,b color to a string."+linSeparator +
 			"d2s(n,decimalPlaces)####Converts the number n into a string using the specified number of decimal places. Note that d2s stands for \"double to string\". This function will probably be replaced by one with a better name."+linSeparator +
+			"Dialog.addFile(label,path,columns)####Adds a filepath to the file dialog."+linSeparator + 
+			"Dialog.addDirectory(label,path,columns)####Adds a directory path to the directory dialog."+linSeparator + 	
 			"Dialog.create(\"Title\")####Creates a dialog box with the specified title. Call Dialog.addString(),Dialog.addNumber(),etc. to add components to the dialog. Call Dialog.show() to display the dialog and Dialog.getString(),Dialog.getNumber(),etc. to retrieve the values entered by the user. Refer to the DialogDemo macro for an example."+linSeparator+
 			"Dialog.addFile(label,defaultPath)####Adds a file field and \"Browse\" button. The field width is determined by the length of 'defaultPath', with a minimum of 25 columns. Use Dialog getString to retrieve the file path. Requires 1.53d.####"+linSeparator + 
 			"Dialog.addImageChoice(label)####Adds a popup menu that lists the currently open images. Use Dialog getImageChoice() to retrieve the title of the selected image. Requires 1.53d.####"+linSeparator + 
