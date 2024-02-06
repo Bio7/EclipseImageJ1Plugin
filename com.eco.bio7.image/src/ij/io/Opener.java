@@ -839,7 +839,7 @@ public class Opener {
 	 */
 	public static void convertGrayJpegTo8Bits(ImagePlus imp) {
 		ImageProcessor ip = imp.getProcessor();
-		if (ip.getBitDepth() == 24 && ip.isGrayscale()) {
+		if (!Prefs.openGrayscaleJpegsAsRGB && ip.getBitDepth()==24 && ip.isGrayscale()) {
 			IJ.showStatus("Converting to 8-bit grayscale");
 			new ImageConverter(imp).convertToGray8();
 		}

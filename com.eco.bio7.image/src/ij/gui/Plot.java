@@ -159,7 +159,7 @@ public class Plot implements Cloneable {
 	private static final double RELATIVE_ARROWHEAD_SIZE = 0.2; //arrow heads have 1/5 of vector length
 	private static final int MIN_ARROWHEAD_LENGTH = 3;
 	private static final int MAX_ARROWHEAD_LENGTH = 20;
-	private static final String MULTIPLY_SYMBOL = "\u00B7"; //middot, default multiplication symbol for scientific notation. Use setOptions("msymbol=\\u00d7") for '×'
+	private static final String MULTIPLY_SYMBOL = "\u00B7"; //middot, default multiplication symbol for scientific notation. Use setOptions("msymbol=\\u00d7") for 'Ã—'
 
 	PlotProperties pp = new PlotProperties();		//size, range, formatting etc, for easy serialization
 	PlotProperties ppSnapshot;						//copy for reverting
@@ -1839,31 +1839,31 @@ public class Plot implements Cloneable {
 			return yBasePxl-(y-yMin)*yScale;
 	}
 
-	/** Calibrated coordinates to integer pixel coordinates */
+	/** Converts calibrated coordinates to integer pixel coordinates. */
 	private int scaleX(double x) {
-		if (Double.isNaN(x)) return -1;
-		if (xMin == xMax) {
-			if (x==xMin) return xBasePxl;
-			else return x>xMin ? Integer.MAX_VALUE : Integer.MIN_VALUE;
-		}
-		if (logXAxis)
-			return xBasePxl+(int)Math.round((Math.log10(x)-xMin)*xScale);
-		else
-			return xBasePxl+(int)Math.round((x-xMin)*xScale);
+		double xPxl = scaleXtoPxl(x);
+		return pxlToInt(xPxl);
 	}
 
-	/** Converts calibrated coordinates to pixel coordinates. In contrast to the image calibration, also
-	 *	works with log axes */
+	/** Converts calibrated coordinates to integer pixel coordinates. */
 	private int scaleY(double y) {
-		if (Double.isNaN(y)) return -1;
-		if (yMin == yMax) {
-			if (y==yMin) return yBasePxl;
-			else return y>yMin ? Integer.MAX_VALUE : Integer.MIN_VALUE;
-		}
-		if (logYAxis)
-			return yBasePxl-(int)Math.round((Math.log10(y)-yMin)*yScale);
+		double yPxl = scaleYtoPxl(y);
+		return pxlToInt(yPxl);
+	}
+
+	/** Converts a double-precision pixel coordinate value 'v' to integer,
+	 *  with overflow handling: Limits are +/-Integer.MAX_VALUE/2.
+	 *  This ensures that the difference between two points is in the range
+	 *  that can be handled by ImageProcessor.moveTo.
+	 *  NaN values are converted to -Integer.MAX_VALUE (negative).
+	 **/
+	private int pxlToInt(double v) {
+		if (Double.isNaN(v))
+			return -Integer.MAX_VALUE;
+		else if (v > -Integer.MAX_VALUE/2 && v < Integer.MAX_VALUE/2)
+			return (int)Math.round(v);
 		else
-			return yBasePxl-(int)Math.round((y-yMin)*yScale);
+			return v > 0 ? Integer.MAX_VALUE/2 : -Integer.MAX_VALUE/2;
 	}
 
 	/** Converts calibrated coordinates to pixel coordinates. In contrast to the image calibration, also
@@ -2050,12 +2050,10 @@ public class Plot implements Cloneable {
 
 		for (int i=0; i<currentMinMax.length; i+=2) {  //for x and y direction
 			boolean logAxis = hasFlag(i==0 ? X_LOG_NUMBERS : Y_LOG_NUMBERS);
-			//don't zoom in too much (otherwise float conversion to int pixels may be wrong)
+			//don't zoom in too much (otherwise finite float precision becomes an issue)
 			double range = currentMinMax[i+1]-currentMinMax[i];
 			double mid = 0.5*(currentMinMax[i+1]+currentMinMax[i]);
 			double relativeRange = Math.abs(range/mid);
-			if (!logAxis)
-				relativeRange = Math.min(relativeRange, Math.abs(range/(defaultMinMax[i+1]-defaultMinMax[i])));
 			if (range != 0 && relativeRange<1e-4) {
 				currentMinMax[i+1] = mid + 0.5*range*1e-4/relativeRange;
 				currentMinMax[i] = mid - 0.5*range*1e-4/relativeRange;
@@ -2285,7 +2283,7 @@ public class Plot implements Cloneable {
 				v1 -= errorBars[i];
 				v2 += errorBars[i];
 			}
-			if (v1 < allMinAndMax[minIndex]) {
+			if (v1 < allMinAndMax[minIndex] && !Double.isInfinite(v1)) {
 				allMinAndMax[minIndex] = v1;
 				nMinEqual = 1;
 				enlargeRange[minIndex] = suggestedEnlarge;
@@ -2293,7 +2291,7 @@ public class Plot implements Cloneable {
 					enlargeRange[minIndex] = USUALLY_ENLARGE;
 			} else if (v1 == allMinAndMax[minIndex])
 				nMinEqual++;
-			if (v2 > allMinAndMax[maxIndex]) {
+			if (v2 > allMinAndMax[maxIndex] && !Double.isInfinite(v1)) {
 				allMinAndMax[maxIndex] = v2;
 				nMaxEqual = 1;
 				enlargeRange[maxIndex] = suggestedEnlarge;
@@ -3552,7 +3550,7 @@ public class Plot implements Cloneable {
 			}
 		}
 	}
-	
+
 	/** Returns only indexed and sorted plot objects, if at least one label is indexed like "1__MyLabel" */
 	Vector<PlotObject> getIndexedPlotObjects(){
 		boolean withIndex = false;
