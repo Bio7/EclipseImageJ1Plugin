@@ -1185,6 +1185,9 @@ public class Toolbar extends JPanel implements MouseListener, MouseMotionListene
 		ColorPicker.update();
 		if (!IJ.isMacro())
 			setRoiColor(c);
+		ImagePlus imp = WindowManager.getCurrentImage();
+		if (imp!=null)
+			imp.getProcessor().setFillValueSet(false);
 	}
 
 	public static Color getBackgroundColor() {
