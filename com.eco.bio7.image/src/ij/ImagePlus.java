@@ -404,7 +404,7 @@ public class ImagePlus implements ImageObserver, Measurements, Cloneable {
 	 * <pre>
 	 * luts = imp.getLuts();<br>
 	 * for (i=0; i<luts.length; i++)<br>
-	 *    IJ.log((i+1)+�: �+luts[i].min+�-�+luts[i].max);<br>
+	 *    IJ.log((i+1)+“: “+luts[i].min+”-”+luts[i].max);<br>
 	 * </pre>
 	*/
 	public LUT[] getLuts() {
@@ -843,15 +843,13 @@ public class ImagePlus implements ImageObserver, Measurements, Cloneable {
     	if (currentSlice<1) setCurrentSlice(1);
     	boolean resetCurrentSlice = currentSlice>newStackSize;
     	if (resetCurrentSlice) setCurrentSlice(newStackSize);
-    	ImageProcessor ip = newStack.getProcessor(currentSlice);
-    	if (newStack.isVirtual()) // work around bug with cached virtual stacks
-    		ip = ip.duplicate();
-    	boolean dimensionsChanged = width>0 && height>0 && (width!=ip.getWidth()||height!=ip.getHeight());
+    	ImageProcessor newIP = newStack.getProcessor(currentSlice);
+    	boolean dimensionsChanged = width>0 && height>0 && (width!=newIP.getWidth()||height!=newIP.getHeight());
     	if (this.stack==null)
     	    newStack.viewers(+1);
     	this.stack = newStack;
     	oneSliceStack = false;
-    	setProcessor2(title, ip, newStack);
+    	setProcessor2(title, newIP, newStack);
 		if (bitDepth1!=0 && bitDepth1!=getBitDepth())
 			compositeChanges = true;
 		if (compositeChanges && (this instanceof CompositeImage)) {
@@ -3063,7 +3061,7 @@ public class ImagePlus implements ImageObserver, Measurements, Cloneable {
 						case SAVED:
 							//listener.imageSaved(imp);
 							if (listener instanceof ImageListenerAdapter)
-	                               ((ImageListenerAdapter)listener).imageSaved(imp);
+                               ((ImageListenerAdapter)listener).imageSaved(imp);
 							break;
 					}
 				}
@@ -3235,15 +3233,12 @@ public class ImagePlus implements ImageObserver, Measurements, Cloneable {
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 			antialiasRendering?RenderingHints.VALUE_ANTIALIAS_ON:RenderingHints.VALUE_ANTIALIAS_OFF);
 		g.drawImage(getImage(), 0, 0, null);
-		/* Changed for Bio7! */
-		ic2.paintComponent(g);
+		ic2.paint(g);
 		imp2.flatteningCanvas = null;
-		ImagePlus imp3 = new ImagePlus("Flat_" + getTitle(), new ColorProcessor(bi));
+		ImagePlus imp3 = new ImagePlus("Flat_"+getTitle(), new ColorProcessor(bi));
 		imp3.copyScale(this);
 		imp3.setProperty("Info", getProperty("Info"));
-		String[] props = getPropertiesAsArray();
-		if (props != null)
-			imp3.setProperties(props);
+		imp3.setProperties(getPropertiesAsArray());
 		return imp3;
 	}
 
