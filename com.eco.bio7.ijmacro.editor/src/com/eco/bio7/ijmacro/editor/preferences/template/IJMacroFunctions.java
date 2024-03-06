@@ -753,7 +753,5 @@ public class IJMacroFunctions {
 			"wait(n)####Delays (sleeps) for n milliseconds."+linSeparator + 
 			"waitForUser(string)####Halts the macro and displays string in a dialog box. The macro proceeds when the user clicks \"OK\". Unlike showMessage,the dialog box is not modal,so the user can,for example,create a selection or adjust the threshold while the dialog is open. To display a multi-line message,add newline characters (\"\\n\") to string. This function is based on Michael Schmid's Wait_For_User plugin. Example: WaitForUserDemo. Requires v1.39r."+linSeparator + 
 			"waitForUser(title,message)####This is a two argument version of waitForUser,where title is the dialog box title and message is the text dispayed in the dialog."+linSeparator + 
-			"waitForUser####This is a no argument version of waitForUser that displays \"Click OK to continue\" in the dialog box.";
-	        
-			
+			"waitForUser####This is a no argument version of waitForUser that displays \"Click OK to continue\" in the dialog box.";			
 }
