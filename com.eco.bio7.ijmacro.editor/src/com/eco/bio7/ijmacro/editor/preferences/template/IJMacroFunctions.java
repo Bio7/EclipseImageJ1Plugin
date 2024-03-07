@@ -1,7 +1,9 @@
 package com.eco.bio7.ijmacro.editor.preferences.template;
 
 public class IJMacroFunctions {
+	
 	public static String linSeparator=System.lineSeparator();
+	
 	public static String functions=""+
 			"abs(n)####Returns the absolute value of n."+linSeparator +			
 			"acos(n)####Returns the inverse cosine (in radians) of n."+linSeparator +
