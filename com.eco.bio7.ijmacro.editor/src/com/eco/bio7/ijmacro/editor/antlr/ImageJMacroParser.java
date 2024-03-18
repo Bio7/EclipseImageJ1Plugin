@@ -1,4 +1,4 @@
-// Generated from ImageJMacro.g4 by ANTLR 4.10.1
+// Generated from ImageJMacro.g4 by ANTLR 4.13.1
 package com.eco.bio7.ijmacro.editor.antlr;
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
@@ -9,9 +9,9 @@ import java.util.List;
 import java.util.Iterator;
 import java.util.ArrayList;
 
-@SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast"})
+@SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast", "CheckReturnValue"})
 public class ImageJMacroParser extends Parser {
-	static { RuntimeMetaData.checkVersion("4.10.1", RuntimeMetaData.VERSION); }
+	static { RuntimeMetaData.checkVersion("4.13.1", RuntimeMetaData.VERSION); }
 
 	protected static final DFA[] _decisionToDFA;
 	protected static final PredictionContextCache _sharedContextCache =
@@ -198,6 +198,7 @@ public class ImageJMacroParser extends Parser {
 		_interp = new ParserATNSimulator(this,_ATN,_decisionToDFA,_sharedContextCache);
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class ProgramContext extends ParserRuleContext {
 		public TerminalNode EOF() { return getToken(ImageJMacroParser.EOF, 0); }
 		public SourceElementsContext sourceElements() {
@@ -248,6 +249,7 @@ public class ImageJMacroParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class SourceElementsContext extends ParserRuleContext {
 		public List<SourceElementContext> sourceElement() {
 			return getRuleContexts(SourceElementContext.class);
@@ -309,6 +311,7 @@ public class ImageJMacroParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class SourceElementContext extends ParserRuleContext {
 		public StatementContext statement() {
 			return getRuleContext(StatementContext.class,0);
@@ -364,6 +367,7 @@ public class ImageJMacroParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class StatementContext extends ParserRuleContext {
 		public StatementContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -375,6 +379,7 @@ public class ImageJMacroParser extends Parser {
 			super.copyFrom(ctx);
 		}
 	}
+	@SuppressWarnings("CheckReturnValue")
 	public static class IterationStatementsContext extends StatementContext {
 		public IterationStatementContext iterationStatement() {
 			return getRuleContext(IterationStatementContext.class,0);
@@ -389,6 +394,7 @@ public class ImageJMacroParser extends Parser {
 			if ( listener instanceof ImageJMacroListener ) ((ImageJMacroListener)listener).exitIterationStatements(this);
 		}
 	}
+	@SuppressWarnings("CheckReturnValue")
 	public static class ReturnStatementsContext extends StatementContext {
 		public ReturnStatementContext returnStatement() {
 			return getRuleContext(ReturnStatementContext.class,0);
@@ -403,6 +409,7 @@ public class ImageJMacroParser extends Parser {
 			if ( listener instanceof ImageJMacroListener ) ((ImageJMacroListener)listener).exitReturnStatements(this);
 		}
 	}
+	@SuppressWarnings("CheckReturnValue")
 	public static class VarStatementsContext extends StatementContext {
 		public VariableStatementContext variableStatement() {
 			return getRuleContext(VariableStatementContext.class,0);
@@ -417,6 +424,7 @@ public class ImageJMacroParser extends Parser {
 			if ( listener instanceof ImageJMacroListener ) ((ImageJMacroListener)listener).exitVarStatements(this);
 		}
 	}
+	@SuppressWarnings("CheckReturnValue")
 	public static class BlockStatementsContext extends StatementContext {
 		public BlockContext block() {
 			return getRuleContext(BlockContext.class,0);
@@ -431,6 +439,7 @@ public class ImageJMacroParser extends Parser {
 			if ( listener instanceof ImageJMacroListener ) ((ImageJMacroListener)listener).exitBlockStatements(this);
 		}
 	}
+	@SuppressWarnings("CheckReturnValue")
 	public static class EmptyStatementsContext extends StatementContext {
 		public EmptyStatementContext emptyStatement() {
 			return getRuleContext(EmptyStatementContext.class,0);
@@ -445,6 +454,7 @@ public class ImageJMacroParser extends Parser {
 			if ( listener instanceof ImageJMacroListener ) ((ImageJMacroListener)listener).exitEmptyStatements(this);
 		}
 	}
+	@SuppressWarnings("CheckReturnValue")
 	public static class BreakStatementsContext extends StatementContext {
 		public BreakStatementContext breakStatement() {
 			return getRuleContext(BreakStatementContext.class,0);
@@ -459,6 +469,7 @@ public class ImageJMacroParser extends Parser {
 			if ( listener instanceof ImageJMacroListener ) ((ImageJMacroListener)listener).exitBreakStatements(this);
 		}
 	}
+	@SuppressWarnings("CheckReturnValue")
 	public static class IfStatementsContext extends StatementContext {
 		public IfStatementContext ifStatement() {
 			return getRuleContext(IfStatementContext.class,0);
@@ -473,6 +484,7 @@ public class ImageJMacroParser extends Parser {
 			if ( listener instanceof ImageJMacroListener ) ((ImageJMacroListener)listener).exitIfStatements(this);
 		}
 	}
+	@SuppressWarnings("CheckReturnValue")
 	public static class ExpressionStatementsContext extends StatementContext {
 		public ExpressionStatementContext expressionStatement() {
 			return getRuleContext(ExpressionStatementContext.class,0);
@@ -487,6 +499,7 @@ public class ImageJMacroParser extends Parser {
 			if ( listener instanceof ImageJMacroListener ) ((ImageJMacroListener)listener).exitExpressionStatements(this);
 		}
 	}
+	@SuppressWarnings("CheckReturnValue")
 	public static class FuncStatementsContext extends StatementContext {
 		public FunctionDeclarationContext functionDeclaration() {
 			return getRuleContext(FunctionDeclarationContext.class,0);
@@ -501,6 +514,7 @@ public class ImageJMacroParser extends Parser {
 			if ( listener instanceof ImageJMacroListener ) ((ImageJMacroListener)listener).exitFuncStatements(this);
 		}
 	}
+	@SuppressWarnings("CheckReturnValue")
 	public static class LabelledStatementsContext extends StatementContext {
 		public LabelledStatementContext labelledStatement() {
 			return getRuleContext(LabelledStatementContext.class,0);
@@ -616,6 +630,7 @@ public class ImageJMacroParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class BlockContext extends ParserRuleContext {
 		public TerminalNode OpenBrace() { return getToken(ImageJMacroParser.OpenBrace, 0); }
 		public TerminalNode CloseBrace() { return getToken(ImageJMacroParser.CloseBrace, 0); }
@@ -669,6 +684,7 @@ public class ImageJMacroParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class StatementListContext extends ParserRuleContext {
 		public List<StatementContext> statement() {
 			return getRuleContexts(StatementContext.class);
@@ -730,6 +746,7 @@ public class ImageJMacroParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class VariableStatementContext extends ParserRuleContext {
 		public VariableStatementContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -741,6 +758,7 @@ public class ImageJMacroParser extends Parser {
 			super.copyFrom(ctx);
 		}
 	}
+	@SuppressWarnings("CheckReturnValue")
 	public static class VarDeclarationStatementContext extends VariableStatementContext {
 		public TerminalNode Var() { return getToken(ImageJMacroParser.Var, 0); }
 		public VariableDeclarationListContext variableDeclarationList() {
@@ -786,6 +804,7 @@ public class ImageJMacroParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class VariableDeclarationListContext extends ParserRuleContext {
 		public List<VariableDeclarationContext> variableDeclaration() {
 			return getRuleContexts(VariableDeclarationContext.class);
@@ -851,6 +870,7 @@ public class ImageJMacroParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class VariableDeclarationContext extends ParserRuleContext {
 		public VariableDeclarationContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -862,6 +882,7 @@ public class ImageJMacroParser extends Parser {
 			super.copyFrom(ctx);
 		}
 	}
+	@SuppressWarnings("CheckReturnValue")
 	public static class VariableDeclarationStatementContext extends VariableDeclarationContext {
 		public TerminalNode Identifier() { return getToken(ImageJMacroParser.Identifier, 0); }
 		public InitialiserContext initialiser() {
@@ -910,6 +931,7 @@ public class ImageJMacroParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class InitialiserContext extends ParserRuleContext {
 		public TerminalNode Assign() { return getToken(ImageJMacroParser.Assign, 0); }
 		public SingleExpressionContext singleExpression() {
@@ -952,6 +974,7 @@ public class ImageJMacroParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class EmptyStatementContext extends ParserRuleContext {
 		public TerminalNode SemiColon() { return getToken(ImageJMacroParser.SemiColon, 0); }
 		public EmptyStatementContext(ParserRuleContext parent, int invokingState) {
@@ -989,6 +1012,7 @@ public class ImageJMacroParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class ExpressionStatementContext extends ParserRuleContext {
 		public ExpressionSequenceContext expressionSequence() {
 			return getRuleContext(ExpressionSequenceContext.class,0);
@@ -1035,6 +1059,7 @@ public class ImageJMacroParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class IfStatementContext extends ParserRuleContext {
 		public TerminalNode If() { return getToken(ImageJMacroParser.If, 0); }
 		public TerminalNode OpenParen() { return getToken(ImageJMacroParser.OpenParen, 0); }
@@ -1104,6 +1129,7 @@ public class ImageJMacroParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class IterationStatementContext extends ParserRuleContext {
 		public IterationStatementContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -1115,6 +1141,7 @@ public class ImageJMacroParser extends Parser {
 			super.copyFrom(ctx);
 		}
 	}
+	@SuppressWarnings("CheckReturnValue")
 	public static class DoStatementContext extends IterationStatementContext {
 		public TerminalNode Do() { return getToken(ImageJMacroParser.Do, 0); }
 		public StatementContext statement() {
@@ -1139,6 +1166,7 @@ public class ImageJMacroParser extends Parser {
 			if ( listener instanceof ImageJMacroListener ) ((ImageJMacroListener)listener).exitDoStatement(this);
 		}
 	}
+	@SuppressWarnings("CheckReturnValue")
 	public static class ForVarStatementContext extends IterationStatementContext {
 		public TerminalNode For() { return getToken(ImageJMacroParser.For, 0); }
 		public TerminalNode OpenParen() { return getToken(ImageJMacroParser.OpenParen, 0); }
@@ -1170,6 +1198,7 @@ public class ImageJMacroParser extends Parser {
 			if ( listener instanceof ImageJMacroListener ) ((ImageJMacroListener)listener).exitForVarStatement(this);
 		}
 	}
+	@SuppressWarnings("CheckReturnValue")
 	public static class WhileStatementContext extends IterationStatementContext {
 		public TerminalNode While() { return getToken(ImageJMacroParser.While, 0); }
 		public TerminalNode OpenParen() { return getToken(ImageJMacroParser.OpenParen, 0); }
@@ -1190,6 +1219,7 @@ public class ImageJMacroParser extends Parser {
 			if ( listener instanceof ImageJMacroListener ) ((ImageJMacroListener)listener).exitWhileStatement(this);
 		}
 	}
+	@SuppressWarnings("CheckReturnValue")
 	public static class ForStatementContext extends IterationStatementContext {
 		public TerminalNode For() { return getToken(ImageJMacroParser.For, 0); }
 		public TerminalNode OpenParen() { return getToken(ImageJMacroParser.OpenParen, 0); }
@@ -1273,7 +1303,7 @@ public class ImageJMacroParser extends Parser {
 				setState(162);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
-				if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << RegularExpressionLiteral) | (1L << OpenBracket) | (1L << OpenParen) | (1L << PlusPlus) | (1L << MinusMinus) | (1L << Plus) | (1L << Minus) | (1L << BitNot) | (1L << Not) | (1L << BooleanLiteral) | (1L << DecimalLiteral) | (1L << HexIntegerLiteral) | (1L << OctalIntegerLiteral) | (1L << Macro) | (1L << Function) | (1L << Identifier) | (1L << StringLiteral))) != 0)) {
+				if ((((_la) & ~0x3f) == 0 && ((1L << _la) & 900856264920072360L) != 0)) {
 					{
 					setState(161);
 					expressionSequence();
@@ -1285,7 +1315,7 @@ public class ImageJMacroParser extends Parser {
 				setState(166);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
-				if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << RegularExpressionLiteral) | (1L << OpenBracket) | (1L << OpenParen) | (1L << PlusPlus) | (1L << MinusMinus) | (1L << Plus) | (1L << Minus) | (1L << BitNot) | (1L << Not) | (1L << BooleanLiteral) | (1L << DecimalLiteral) | (1L << HexIntegerLiteral) | (1L << OctalIntegerLiteral) | (1L << Macro) | (1L << Function) | (1L << Identifier) | (1L << StringLiteral))) != 0)) {
+				if ((((_la) & ~0x3f) == 0 && ((1L << _la) & 900856264920072360L) != 0)) {
 					{
 					setState(165);
 					expressionSequence();
@@ -1297,7 +1327,7 @@ public class ImageJMacroParser extends Parser {
 				setState(170);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
-				if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << RegularExpressionLiteral) | (1L << OpenBracket) | (1L << OpenParen) | (1L << PlusPlus) | (1L << MinusMinus) | (1L << Plus) | (1L << Minus) | (1L << BitNot) | (1L << Not) | (1L << BooleanLiteral) | (1L << DecimalLiteral) | (1L << HexIntegerLiteral) | (1L << OctalIntegerLiteral) | (1L << Macro) | (1L << Function) | (1L << Identifier) | (1L << StringLiteral))) != 0)) {
+				if ((((_la) & ~0x3f) == 0 && ((1L << _la) & 900856264920072360L) != 0)) {
 					{
 					setState(169);
 					expressionSequence();
@@ -1327,7 +1357,7 @@ public class ImageJMacroParser extends Parser {
 				setState(180);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
-				if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << RegularExpressionLiteral) | (1L << OpenBracket) | (1L << OpenParen) | (1L << PlusPlus) | (1L << MinusMinus) | (1L << Plus) | (1L << Minus) | (1L << BitNot) | (1L << Not) | (1L << BooleanLiteral) | (1L << DecimalLiteral) | (1L << HexIntegerLiteral) | (1L << OctalIntegerLiteral) | (1L << Macro) | (1L << Function) | (1L << Identifier) | (1L << StringLiteral))) != 0)) {
+				if ((((_la) & ~0x3f) == 0 && ((1L << _la) & 900856264920072360L) != 0)) {
 					{
 					setState(179);
 					expressionSequence();
@@ -1339,7 +1369,7 @@ public class ImageJMacroParser extends Parser {
 				setState(184);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
-				if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << RegularExpressionLiteral) | (1L << OpenBracket) | (1L << OpenParen) | (1L << PlusPlus) | (1L << MinusMinus) | (1L << Plus) | (1L << Minus) | (1L << BitNot) | (1L << Not) | (1L << BooleanLiteral) | (1L << DecimalLiteral) | (1L << HexIntegerLiteral) | (1L << OctalIntegerLiteral) | (1L << Macro) | (1L << Function) | (1L << Identifier) | (1L << StringLiteral))) != 0)) {
+				if ((((_la) & ~0x3f) == 0 && ((1L << _la) & 900856264920072360L) != 0)) {
 					{
 					setState(183);
 					expressionSequence();
@@ -1365,6 +1395,7 @@ public class ImageJMacroParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class BreakStatementContext extends ParserRuleContext {
 		public TerminalNode Break() { return getToken(ImageJMacroParser.Break, 0); }
 		public EosContext eos() {
@@ -1420,6 +1451,7 @@ public class ImageJMacroParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class ReturnStatementContext extends ParserRuleContext {
 		public TerminalNode Return() { return getToken(ImageJMacroParser.Return, 0); }
 		public EosContext eos() {
@@ -1477,6 +1509,7 @@ public class ImageJMacroParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class LabelledStatementContext extends ParserRuleContext {
 		public TerminalNode Identifier() { return getToken(ImageJMacroParser.Identifier, 0); }
 		public StatementContext statement() {
@@ -1521,6 +1554,7 @@ public class ImageJMacroParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class FunctionDeclarationContext extends ParserRuleContext {
 		public TerminalNode Function() { return getToken(ImageJMacroParser.Function, 0); }
 		public TerminalNode Identifier() { return getToken(ImageJMacroParser.Identifier, 0); }
@@ -1592,6 +1626,7 @@ public class ImageJMacroParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class FormalParameterListContext extends ParserRuleContext {
 		public List<TerminalNode> Identifier() { return getTokens(ImageJMacroParser.Identifier); }
 		public TerminalNode Identifier(int i) {
@@ -1653,6 +1688,7 @@ public class ImageJMacroParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class FunctionBodyContext extends ParserRuleContext {
 		public SourceElementsContext sourceElements() {
 			return getRuleContext(SourceElementsContext.class,0);
@@ -1700,6 +1736,7 @@ public class ImageJMacroParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class MacroBodyContext extends ParserRuleContext {
 		public SourceElementsContext sourceElements() {
 			return getRuleContext(SourceElementsContext.class,0);
@@ -1747,6 +1784,7 @@ public class ImageJMacroParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class ArrayLiteralContext extends ParserRuleContext {
 		public TerminalNode OpenBracket() { return getToken(ImageJMacroParser.OpenBracket, 0); }
 		public TerminalNode CloseBracket() { return getToken(ImageJMacroParser.CloseBracket, 0); }
@@ -1825,6 +1863,7 @@ public class ImageJMacroParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class ElementListContext extends ParserRuleContext {
 		public List<SingleExpressionContext> singleExpression() {
 			return getRuleContexts(SingleExpressionContext.class);
@@ -1917,6 +1956,7 @@ public class ImageJMacroParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class ElisionContext extends ParserRuleContext {
 		public List<TerminalNode> Comma() { return getTokens(ImageJMacroParser.Comma); }
 		public TerminalNode Comma(int i) {
@@ -1970,6 +2010,7 @@ public class ImageJMacroParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class PropertySetParameterListContext extends ParserRuleContext {
 		public TerminalNode Identifier() { return getToken(ImageJMacroParser.Identifier, 0); }
 		public PropertySetParameterListContext(ParserRuleContext parent, int invokingState) {
@@ -2007,6 +2048,7 @@ public class ImageJMacroParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class ArgumentsContext extends ParserRuleContext {
 		public TerminalNode OpenParen() { return getToken(ImageJMacroParser.OpenParen, 0); }
 		public TerminalNode CloseParen() { return getToken(ImageJMacroParser.CloseParen, 0); }
@@ -2039,7 +2081,7 @@ public class ImageJMacroParser extends Parser {
 			setState(269);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << RegularExpressionLiteral) | (1L << OpenBracket) | (1L << OpenParen) | (1L << PlusPlus) | (1L << MinusMinus) | (1L << Plus) | (1L << Minus) | (1L << BitNot) | (1L << Not) | (1L << BooleanLiteral) | (1L << DecimalLiteral) | (1L << HexIntegerLiteral) | (1L << OctalIntegerLiteral) | (1L << Macro) | (1L << Function) | (1L << Identifier) | (1L << StringLiteral))) != 0)) {
+			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & 900856264920072360L) != 0)) {
 				{
 				setState(268);
 				argumentList();
@@ -2061,6 +2103,7 @@ public class ImageJMacroParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class ArgumentListContext extends ParserRuleContext {
 		public List<SingleExpressionContext> singleExpression() {
 			return getRuleContexts(SingleExpressionContext.class);
@@ -2124,6 +2167,7 @@ public class ImageJMacroParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class ExpressionSequenceContext extends ParserRuleContext {
 		public List<SingleExpressionContext> singleExpression() {
 			return getRuleContexts(SingleExpressionContext.class);
@@ -2189,6 +2233,7 @@ public class ImageJMacroParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class SingleExpressionContext extends ParserRuleContext {
 		public SingleExpressionContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -2200,6 +2245,7 @@ public class ImageJMacroParser extends Parser {
 			super.copyFrom(ctx);
 		}
 	}
+	@SuppressWarnings("CheckReturnValue")
 	public static class TernaryExpressionContext extends SingleExpressionContext {
 		public List<SingleExpressionContext> singleExpression() {
 			return getRuleContexts(SingleExpressionContext.class);
@@ -2218,6 +2264,7 @@ public class ImageJMacroParser extends Parser {
 			if ( listener instanceof ImageJMacroListener ) ((ImageJMacroListener)listener).exitTernaryExpression(this);
 		}
 	}
+	@SuppressWarnings("CheckReturnValue")
 	public static class LogicalAndExpressionContext extends SingleExpressionContext {
 		public List<SingleExpressionContext> singleExpression() {
 			return getRuleContexts(SingleExpressionContext.class);
@@ -2236,6 +2283,7 @@ public class ImageJMacroParser extends Parser {
 			if ( listener instanceof ImageJMacroListener ) ((ImageJMacroListener)listener).exitLogicalAndExpression(this);
 		}
 	}
+	@SuppressWarnings("CheckReturnValue")
 	public static class PreIncrementExpressionContext extends SingleExpressionContext {
 		public TerminalNode PlusPlus() { return getToken(ImageJMacroParser.PlusPlus, 0); }
 		public SingleExpressionContext singleExpression() {
@@ -2251,6 +2299,7 @@ public class ImageJMacroParser extends Parser {
 			if ( listener instanceof ImageJMacroListener ) ((ImageJMacroListener)listener).exitPreIncrementExpression(this);
 		}
 	}
+	@SuppressWarnings("CheckReturnValue")
 	public static class LogicalOrExpressionContext extends SingleExpressionContext {
 		public List<SingleExpressionContext> singleExpression() {
 			return getRuleContexts(SingleExpressionContext.class);
@@ -2269,6 +2318,7 @@ public class ImageJMacroParser extends Parser {
 			if ( listener instanceof ImageJMacroListener ) ((ImageJMacroListener)listener).exitLogicalOrExpression(this);
 		}
 	}
+	@SuppressWarnings("CheckReturnValue")
 	public static class NotExpressionContext extends SingleExpressionContext {
 		public TerminalNode Not() { return getToken(ImageJMacroParser.Not, 0); }
 		public SingleExpressionContext singleExpression() {
@@ -2284,6 +2334,7 @@ public class ImageJMacroParser extends Parser {
 			if ( listener instanceof ImageJMacroListener ) ((ImageJMacroListener)listener).exitNotExpression(this);
 		}
 	}
+	@SuppressWarnings("CheckReturnValue")
 	public static class PreDecreaseExpressionContext extends SingleExpressionContext {
 		public TerminalNode MinusMinus() { return getToken(ImageJMacroParser.MinusMinus, 0); }
 		public SingleExpressionContext singleExpression() {
@@ -2299,6 +2350,7 @@ public class ImageJMacroParser extends Parser {
 			if ( listener instanceof ImageJMacroListener ) ((ImageJMacroListener)listener).exitPreDecreaseExpression(this);
 		}
 	}
+	@SuppressWarnings("CheckReturnValue")
 	public static class ArgumentsExpressionContext extends SingleExpressionContext {
 		public SingleExpressionContext singleExpression() {
 			return getRuleContext(SingleExpressionContext.class,0);
@@ -2316,6 +2368,7 @@ public class ImageJMacroParser extends Parser {
 			if ( listener instanceof ImageJMacroListener ) ((ImageJMacroListener)listener).exitArgumentsExpression(this);
 		}
 	}
+	@SuppressWarnings("CheckReturnValue")
 	public static class FunctionExpressionContext extends SingleExpressionContext {
 		public TerminalNode Function() { return getToken(ImageJMacroParser.Function, 0); }
 		public TerminalNode OpenParen() { return getToken(ImageJMacroParser.OpenParen, 0); }
@@ -2339,6 +2392,7 @@ public class ImageJMacroParser extends Parser {
 			if ( listener instanceof ImageJMacroListener ) ((ImageJMacroListener)listener).exitFunctionExpression(this);
 		}
 	}
+	@SuppressWarnings("CheckReturnValue")
 	public static class UnaryMinusExpressionContext extends SingleExpressionContext {
 		public TerminalNode Minus() { return getToken(ImageJMacroParser.Minus, 0); }
 		public SingleExpressionContext singleExpression() {
@@ -2354,6 +2408,7 @@ public class ImageJMacroParser extends Parser {
 			if ( listener instanceof ImageJMacroListener ) ((ImageJMacroListener)listener).exitUnaryMinusExpression(this);
 		}
 	}
+	@SuppressWarnings("CheckReturnValue")
 	public static class AssignmentExpressionContext extends SingleExpressionContext {
 		public List<SingleExpressionContext> singleExpression() {
 			return getRuleContexts(SingleExpressionContext.class);
@@ -2372,6 +2427,7 @@ public class ImageJMacroParser extends Parser {
 			if ( listener instanceof ImageJMacroListener ) ((ImageJMacroListener)listener).exitAssignmentExpression(this);
 		}
 	}
+	@SuppressWarnings("CheckReturnValue")
 	public static class PostDecreaseExpressionContext extends SingleExpressionContext {
 		public SingleExpressionContext singleExpression() {
 			return getRuleContext(SingleExpressionContext.class,0);
@@ -2387,6 +2443,7 @@ public class ImageJMacroParser extends Parser {
 			if ( listener instanceof ImageJMacroListener ) ((ImageJMacroListener)listener).exitPostDecreaseExpression(this);
 		}
 	}
+	@SuppressWarnings("CheckReturnValue")
 	public static class UnaryPlusExpressionContext extends SingleExpressionContext {
 		public TerminalNode Plus() { return getToken(ImageJMacroParser.Plus, 0); }
 		public SingleExpressionContext singleExpression() {
@@ -2402,6 +2459,7 @@ public class ImageJMacroParser extends Parser {
 			if ( listener instanceof ImageJMacroListener ) ((ImageJMacroListener)listener).exitUnaryPlusExpression(this);
 		}
 	}
+	@SuppressWarnings("CheckReturnValue")
 	public static class EqualityExpressionContext extends SingleExpressionContext {
 		public List<SingleExpressionContext> singleExpression() {
 			return getRuleContexts(SingleExpressionContext.class);
@@ -2421,6 +2479,7 @@ public class ImageJMacroParser extends Parser {
 			if ( listener instanceof ImageJMacroListener ) ((ImageJMacroListener)listener).exitEqualityExpression(this);
 		}
 	}
+	@SuppressWarnings("CheckReturnValue")
 	public static class BitXOrExpressionContext extends SingleExpressionContext {
 		public List<SingleExpressionContext> singleExpression() {
 			return getRuleContexts(SingleExpressionContext.class);
@@ -2439,6 +2498,7 @@ public class ImageJMacroParser extends Parser {
 			if ( listener instanceof ImageJMacroListener ) ((ImageJMacroListener)listener).exitBitXOrExpression(this);
 		}
 	}
+	@SuppressWarnings("CheckReturnValue")
 	public static class MultiplicativeExpressionContext extends SingleExpressionContext {
 		public List<SingleExpressionContext> singleExpression() {
 			return getRuleContexts(SingleExpressionContext.class);
@@ -2459,6 +2519,7 @@ public class ImageJMacroParser extends Parser {
 			if ( listener instanceof ImageJMacroListener ) ((ImageJMacroListener)listener).exitMultiplicativeExpression(this);
 		}
 	}
+	@SuppressWarnings("CheckReturnValue")
 	public static class BitShiftExpressionContext extends SingleExpressionContext {
 		public List<SingleExpressionContext> singleExpression() {
 			return getRuleContexts(SingleExpressionContext.class);
@@ -2478,6 +2539,7 @@ public class ImageJMacroParser extends Parser {
 			if ( listener instanceof ImageJMacroListener ) ((ImageJMacroListener)listener).exitBitShiftExpression(this);
 		}
 	}
+	@SuppressWarnings("CheckReturnValue")
 	public static class ParenthesizedExpressionContext extends SingleExpressionContext {
 		public TerminalNode OpenParen() { return getToken(ImageJMacroParser.OpenParen, 0); }
 		public ExpressionSequenceContext expressionSequence() {
@@ -2494,6 +2556,7 @@ public class ImageJMacroParser extends Parser {
 			if ( listener instanceof ImageJMacroListener ) ((ImageJMacroListener)listener).exitParenthesizedExpression(this);
 		}
 	}
+	@SuppressWarnings("CheckReturnValue")
 	public static class AdditiveExpressionContext extends SingleExpressionContext {
 		public List<SingleExpressionContext> singleExpression() {
 			return getRuleContexts(SingleExpressionContext.class);
@@ -2513,6 +2576,7 @@ public class ImageJMacroParser extends Parser {
 			if ( listener instanceof ImageJMacroListener ) ((ImageJMacroListener)listener).exitAdditiveExpression(this);
 		}
 	}
+	@SuppressWarnings("CheckReturnValue")
 	public static class RelationalExpressionContext extends SingleExpressionContext {
 		public List<SingleExpressionContext> singleExpression() {
 			return getRuleContexts(SingleExpressionContext.class);
@@ -2534,6 +2598,7 @@ public class ImageJMacroParser extends Parser {
 			if ( listener instanceof ImageJMacroListener ) ((ImageJMacroListener)listener).exitRelationalExpression(this);
 		}
 	}
+	@SuppressWarnings("CheckReturnValue")
 	public static class PostIncrementExpressionContext extends SingleExpressionContext {
 		public SingleExpressionContext singleExpression() {
 			return getRuleContext(SingleExpressionContext.class,0);
@@ -2549,6 +2614,7 @@ public class ImageJMacroParser extends Parser {
 			if ( listener instanceof ImageJMacroListener ) ((ImageJMacroListener)listener).exitPostIncrementExpression(this);
 		}
 	}
+	@SuppressWarnings("CheckReturnValue")
 	public static class MacroExpressionContext extends SingleExpressionContext {
 		public TerminalNode Macro() { return getToken(ImageJMacroParser.Macro, 0); }
 		public TerminalNode StringLiteral() { return getToken(ImageJMacroParser.StringLiteral, 0); }
@@ -2567,6 +2633,7 @@ public class ImageJMacroParser extends Parser {
 			if ( listener instanceof ImageJMacroListener ) ((ImageJMacroListener)listener).exitMacroExpression(this);
 		}
 	}
+	@SuppressWarnings("CheckReturnValue")
 	public static class BitNotExpressionContext extends SingleExpressionContext {
 		public TerminalNode BitNot() { return getToken(ImageJMacroParser.BitNot, 0); }
 		public SingleExpressionContext singleExpression() {
@@ -2582,6 +2649,7 @@ public class ImageJMacroParser extends Parser {
 			if ( listener instanceof ImageJMacroListener ) ((ImageJMacroListener)listener).exitBitNotExpression(this);
 		}
 	}
+	@SuppressWarnings("CheckReturnValue")
 	public static class LiteralExpressionContext extends SingleExpressionContext {
 		public LiteralContext literal() {
 			return getRuleContext(LiteralContext.class,0);
@@ -2596,6 +2664,7 @@ public class ImageJMacroParser extends Parser {
 			if ( listener instanceof ImageJMacroListener ) ((ImageJMacroListener)listener).exitLiteralExpression(this);
 		}
 	}
+	@SuppressWarnings("CheckReturnValue")
 	public static class ArrayLiteralExpressionContext extends SingleExpressionContext {
 		public ArrayLiteralContext arrayLiteral() {
 			return getRuleContext(ArrayLiteralContext.class,0);
@@ -2610,6 +2679,7 @@ public class ImageJMacroParser extends Parser {
 			if ( listener instanceof ImageJMacroListener ) ((ImageJMacroListener)listener).exitArrayLiteralExpression(this);
 		}
 	}
+	@SuppressWarnings("CheckReturnValue")
 	public static class MemberDotExpressionContext extends SingleExpressionContext {
 		public SingleExpressionContext singleExpression() {
 			return getRuleContext(SingleExpressionContext.class,0);
@@ -2628,6 +2698,7 @@ public class ImageJMacroParser extends Parser {
 			if ( listener instanceof ImageJMacroListener ) ((ImageJMacroListener)listener).exitMemberDotExpression(this);
 		}
 	}
+	@SuppressWarnings("CheckReturnValue")
 	public static class MemberIndexExpressionContext extends SingleExpressionContext {
 		public SingleExpressionContext singleExpression() {
 			return getRuleContext(SingleExpressionContext.class,0);
@@ -2647,6 +2718,7 @@ public class ImageJMacroParser extends Parser {
 			if ( listener instanceof ImageJMacroListener ) ((ImageJMacroListener)listener).exitMemberIndexExpression(this);
 		}
 	}
+	@SuppressWarnings("CheckReturnValue")
 	public static class IdentifierExpressionContext extends SingleExpressionContext {
 		public TerminalNode Identifier() { return getToken(ImageJMacroParser.Identifier, 0); }
 		public IdentifierExpressionContext(SingleExpressionContext ctx) { copyFrom(ctx); }
@@ -2659,6 +2731,7 @@ public class ImageJMacroParser extends Parser {
 			if ( listener instanceof ImageJMacroListener ) ((ImageJMacroListener)listener).exitIdentifierExpression(this);
 		}
 	}
+	@SuppressWarnings("CheckReturnValue")
 	public static class BitAndExpressionContext extends SingleExpressionContext {
 		public List<SingleExpressionContext> singleExpression() {
 			return getRuleContexts(SingleExpressionContext.class);
@@ -2677,6 +2750,7 @@ public class ImageJMacroParser extends Parser {
 			if ( listener instanceof ImageJMacroListener ) ((ImageJMacroListener)listener).exitBitAndExpression(this);
 		}
 	}
+	@SuppressWarnings("CheckReturnValue")
 	public static class BitOrExpressionContext extends SingleExpressionContext {
 		public List<SingleExpressionContext> singleExpression() {
 			return getRuleContexts(SingleExpressionContext.class);
@@ -2695,6 +2769,7 @@ public class ImageJMacroParser extends Parser {
 			if ( listener instanceof ImageJMacroListener ) ((ImageJMacroListener)listener).exitBitOrExpression(this);
 		}
 	}
+	@SuppressWarnings("CheckReturnValue")
 	public static class AssignmentOperatorExpressionContext extends SingleExpressionContext {
 		public List<SingleExpressionContext> singleExpression() {
 			return getRuleContexts(SingleExpressionContext.class);
@@ -2926,7 +3001,7 @@ public class ImageJMacroParser extends Parser {
 						if (!(precpred(_ctx, 17))) throw new FailedPredicateException(this, "precpred(_ctx, 17)");
 						setState(331);
 						_la = _input.LA(1);
-						if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << Multiply) | (1L << Divide) | (1L << Modulus))) != 0)) ) {
+						if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 29360128L) != 0)) ) {
 						_errHandler.recoverInline(this);
 						}
 						else {
@@ -2986,7 +3061,7 @@ public class ImageJMacroParser extends Parser {
 						if (!(precpred(_ctx, 14))) throw new FailedPredicateException(this, "precpred(_ctx, 14)");
 						setState(340);
 						_la = _input.LA(1);
-						if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << LessThan) | (1L << MoreThan) | (1L << LessThanEquals) | (1L << GreaterThanEquals))) != 0)) ) {
+						if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 2013265920L) != 0)) ) {
 						_errHandler.recoverInline(this);
 						}
 						else {
@@ -3006,7 +3081,7 @@ public class ImageJMacroParser extends Parser {
 						if (!(precpred(_ctx, 13))) throw new FailedPredicateException(this, "precpred(_ctx, 13)");
 						setState(343);
 						_la = _input.LA(1);
-						if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__1) | (1L << Equals) | (1L << NotEquals))) != 0)) ) {
+						if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 6442450948L) != 0)) ) {
 						_errHandler.recoverInline(this);
 						}
 						else {
@@ -3198,6 +3273,7 @@ public class ImageJMacroParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class AssignmentOperatorContext extends ParserRuleContext {
 		public TerminalNode MultiplyAssign() { return getToken(ImageJMacroParser.MultiplyAssign, 0); }
 		public TerminalNode DivideAssign() { return getToken(ImageJMacroParser.DivideAssign, 0); }
@@ -3226,7 +3302,7 @@ public class ImageJMacroParser extends Parser {
 			{
 			setState(394);
 			_la = _input.LA(1);
-			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << MultiplyAssign) | (1L << DivideAssign) | (1L << PlusAssign) | (1L << MinusAssign))) != 0)) ) {
+			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 4123168604160L) != 0)) ) {
 			_errHandler.recoverInline(this);
 			}
 			else {
@@ -3247,6 +3323,7 @@ public class ImageJMacroParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class LiteralContext extends ParserRuleContext {
 		public TerminalNode BooleanLiteral() { return getToken(ImageJMacroParser.BooleanLiteral, 0); }
 		public TerminalNode StringLiteral() { return getToken(ImageJMacroParser.StringLiteral, 0); }
@@ -3283,7 +3360,7 @@ public class ImageJMacroParser extends Parser {
 				{
 				setState(396);
 				_la = _input.LA(1);
-				if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << RegularExpressionLiteral) | (1L << BooleanLiteral) | (1L << StringLiteral))) != 0)) ) {
+				if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 576465150349934600L) != 0)) ) {
 				_errHandler.recoverInline(this);
 				}
 				else {
@@ -3317,6 +3394,7 @@ public class ImageJMacroParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class NumericLiteralContext extends ParserRuleContext {
 		public TerminalNode DecimalLiteral() { return getToken(ImageJMacroParser.DecimalLiteral, 0); }
 		public TerminalNode HexIntegerLiteral() { return getToken(ImageJMacroParser.HexIntegerLiteral, 0); }
@@ -3344,7 +3422,7 @@ public class ImageJMacroParser extends Parser {
 			{
 			setState(400);
 			_la = _input.LA(1);
-			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << DecimalLiteral) | (1L << HexIntegerLiteral) | (1L << OctalIntegerLiteral))) != 0)) ) {
+			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 61572651155456L) != 0)) ) {
 			_errHandler.recoverInline(this);
 			}
 			else {
@@ -3365,6 +3443,7 @@ public class ImageJMacroParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class IdentifierNameContext extends ParserRuleContext {
 		public TerminalNode Identifier() { return getToken(ImageJMacroParser.Identifier, 0); }
 		public ReservedWordContext reservedWord() {
@@ -3431,6 +3510,7 @@ public class ImageJMacroParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class ReservedWordContext extends ParserRuleContext {
 		public KeywordContext keyword() {
 			return getRuleContext(KeywordContext.class,0);
@@ -3496,6 +3576,7 @@ public class ImageJMacroParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class KeywordContext extends ParserRuleContext {
 		public TerminalNode Break() { return getToken(ImageJMacroParser.Break, 0); }
 		public TerminalNode Do() { return getToken(ImageJMacroParser.Do, 0); }
@@ -3531,7 +3612,7 @@ public class ImageJMacroParser extends Parser {
 			{
 			setState(410);
 			_la = _input.LA(1);
-			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << Macro) | (1L << Break) | (1L << Do) | (1L << Else) | (1L << Var) | (1L << Return) | (1L << Continue) | (1L << For) | (1L << While) | (1L << Function) | (1L << If))) != 0)) ) {
+			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 216102413369606144L) != 0)) ) {
 			_errHandler.recoverInline(this);
 			}
 			else {
@@ -3552,6 +3633,7 @@ public class ImageJMacroParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class EosContext extends ParserRuleContext {
 		public TerminalNode SemiColon() { return getToken(ImageJMacroParser.SemiColon, 0); }
 		public TerminalNode EOF() { return getToken(ImageJMacroParser.EOF, 0); }
@@ -3617,6 +3699,7 @@ public class ImageJMacroParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class EofContext extends ParserRuleContext {
 		public TerminalNode EOF() { return getToken(ImageJMacroParser.EOF, 0); }
 		public EofContext(ParserRuleContext parent, int invokingState) {
