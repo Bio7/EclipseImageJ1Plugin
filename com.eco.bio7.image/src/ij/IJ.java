@@ -2355,7 +2355,10 @@ public class IJ {
 			GifWriter.save(imp, path);
 			return;
 		} else if (format.indexOf("text image") != -1) {
-			path = updateExtension(path, ".txt");
+			String extension = ".txt";
+			if (path!=null && (path.endsWith(".csv")||path.endsWith(".CSV")))
+				extension = ".csv";
+			path = updateExtension(path, extension);
 			format = "Text Image...";
 		} else if (format.indexOf("text") != -1 || format.indexOf("txt") != -1) {
 			if (path != null && !path.endsWith(".xls") && !path.endsWith(".csv") && !path.endsWith(".tsv"))
