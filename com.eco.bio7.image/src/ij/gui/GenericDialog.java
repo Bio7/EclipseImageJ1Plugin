@@ -2228,7 +2228,11 @@ public class GenericDialog extends Dialog implements ActionListener, TextListene
 		@Override
 		public void drop(DropTargetDropEvent event) {
 			try {
-				text.setText(getString(event));
+				String path = getString(event);
+				path = Recorder.fixPath(path);
+				if (!path.endsWith("/")&& (new File(path)).isDirectory())
+					path = path + "/";
+				text.setText(path);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

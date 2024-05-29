@@ -1072,9 +1072,9 @@ public class RoiManager extends PlugInFrame implements ActionListener, ItemListe
 			out = new DataOutputStream(new BufferedOutputStream(zos));
 			RoiEncoder re = new RoiEncoder(out);
 			for (int i = 0; i < indexes.length; i++) {
-				IJ.showProgress(i, indexes.length);
-				String label = (String) listModel.getElementAt(i);
+				IJ.showProgress(i, indexes.length);			
 				Roi roi = (Roi) rois.get(indexes[i]);
+				String label = (String)listModel.getElementAt(indexes[i]);
 				if (IJ.debugMode)
 					IJ.log("saveMultiple: " + i + "  " + label + "  " + roi);
 				if (roi == null)
@@ -1615,7 +1615,7 @@ public class RoiManager extends PlugInFrame implements ActionListener, ItemListe
 				continue;
 			if (mode == FILL && (type == Roi.POLYLINE || type == Roi.FREELINE || type == Roi.ANGLE))
 				mode = DRAW;
-			String name = (String) listModel.getElementAt(indexes[i]);
+			String name = (String)listModel.getElementAt(indexes[i]);
 			int slice2 = getSliceNumber(roi, name);
 			if (slice2 >= 1 && slice2 <= imp.getStackSize()) {
 				imp.setSlice(slice2);
