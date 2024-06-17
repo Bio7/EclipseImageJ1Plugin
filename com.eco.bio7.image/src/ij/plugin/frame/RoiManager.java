@@ -1,13 +1,43 @@
 package ij.plugin.frame;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.io.*;
-import java.util.*;
+import java.awt.BorderLayout;
+import java.awt.Button;
+import java.awt.Checkbox;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.EventQueue;
+import java.awt.Font;
+import java.awt.Frame;
+import java.awt.GridLayout;
 import java.awt.List;
-import java.util.zip.*;
-import java.awt.geom.*;
-
+import java.awt.MenuItem;
+import java.awt.Panel;
+import java.awt.Point;
+import java.awt.PopupMenu;
+import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
+import java.awt.event.WindowEvent;
+import java.io.BufferedOutputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipException;
+import java.util.zip.ZipInputStream;
+import java.util.zip.ZipOutputStream;
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
@@ -15,24 +45,57 @@ import javax.swing.ListSelectionModel;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.swt.widgets.Display;
-
 import com.eco.bio7.ImageJPluginActions.ImageJContextMenuAction;
 import com.eco.bio7.image.Activator;
 import com.eco.bio7.image.Util;
-
-import ij.*;
-import ij.process.*;
-import ij.gui.*;
-import ij.io.*;
-import ij.plugin.filter.*;
-import ij.plugin.*;
-import ij.util.*;
-import ij.macro.*;
-import ij.measure.*;
+import ij.IJ;
+import ij.ImageJ;
+import ij.ImagePlus;
+import ij.ImageStack;
+import ij.Macro;
+import ij.Prefs;
+import ij.Undo;
+import ij.WindowManager;
+import ij.gui.ColorChooser;
+import ij.gui.GUI;
+import ij.gui.GenericDialog;
+import ij.gui.ImageCanvas;
+import ij.gui.ImageRoi;
+import ij.gui.MessageDialog;
+import ij.gui.Overlay;
+import ij.gui.Plot;
+import ij.gui.PointRoi;
+import ij.gui.PolygonRoi;
+import ij.gui.ProfilePlot;
+import ij.gui.Roi;
+import ij.gui.RoiProperties;
+import ij.gui.ShapeRoi;
+import ij.gui.TextRoi;
+import ij.gui.Toolbar;
+import ij.gui.YesNoCancelDialog;
+import ij.io.OpenDialog;
+import ij.io.Opener;
+import ij.io.RoiDecoder;
+import ij.io.RoiEncoder;
+import ij.io.SaveDialog;
+import ij.macro.Interpreter;
+import ij.macro.MacroRunner;
+import ij.measure.Calibration;
+import ij.measure.Measurements;
+import ij.measure.ResultsTable;
+import ij.plugin.Colors;
 import ij.plugin.OverlayCommands;
+import ij.plugin.OverlayLabels;
+import ij.plugin.RoiRotator;
+import ij.plugin.RoiScaler;
+import ij.plugin.filter.Analyzer;
+import ij.plugin.filter.Filler;
+import ij.process.FloatPolygon;
+import ij.process.ImageProcessor;
+import ij.process.ImageStatistics;
+import ij.util.Tools;
 
 /** This plugin implements the Analyze/Tools/ROI Manager command. */
 public class RoiManager extends PlugInFrame implements ActionListener, ItemListener, MouseListener, MouseWheelListener, ListSelectionListener, Iterable<Roi> {
@@ -42,7 +105,6 @@ public class RoiManager extends PlugInFrame implements ActionListener, ItemListe
 	private static final int DRAW = 0, FILL = 1, LABEL = 2;
 	private static final int SHOW_ALL = 0, SHOW_NONE = 1, LABELS = 2, NO_LABELS = 3;
 	private static final int MENU = 0, COMMAND = 1;
-	private static final int IGNORE_POSITION = -999; // ignore the ROI's built in position
 	private static final int CHANNEL = 0, SLICE = 1, FRAME = 2, SHOW_DIALOG = 3;
 	private static int rows = 15;
 	private static int lastNonShiftClick = -1;
@@ -417,7 +479,7 @@ public class RoiManager extends PlugInFrame implements ActionListener, ItemListe
 	}
 
 	boolean addRoi(boolean promptForName) {
-		return addRoi(null, promptForName, null, IGNORE_POSITION);
+		return addRoi(null, promptForName, null, -1);
 	}
 
 	boolean addRoi(Roi roi, boolean promptForName, Color color, int lineWidth) {
@@ -439,11 +501,6 @@ public class RoiManager extends PlugInFrame implements ActionListener, ItemListe
 			color = roi.getStrokeColor();
 		else if (color == null && defaultColor != null)
 			color = defaultColor;
-		boolean ignorePosition = false;
-		if (lineWidth == IGNORE_POSITION) {
-			ignorePosition = true;
-			lineWidth = -1;
-		}
 		if (lineWidth < 0) {
 			int sw = (int) roi.getStrokeWidth();
 			lineWidth = sw > 1 ? sw : defaultLineWidth;
@@ -451,7 +508,7 @@ public class RoiManager extends PlugInFrame implements ActionListener, ItemListe
 		if (lineWidth > 100)
 			lineWidth = 1;
 		int n = getCount();
-		int position = imp != null && !ignorePosition ? roi.getPosition() : 0;
+		int position = imp!=null?roi.getPosition():0;
 		int saveCurrentSlice = imp != null ? imp.getCurrentSlice() : 0;
 		if (position > 0 && position != saveCurrentSlice) {
 			if (imp.lock())
@@ -493,11 +550,10 @@ public class RoiManager extends PlugInFrame implements ActionListener, ItemListe
 		listModel.addElement(label);
 		roi.setName(label);
 		Roi roiCopy = (Roi) roi.clone();
-		if (ignorePosition && imp != null && imp.getStackSize() > 1 && imp.getWindow() != null && isVisible()) {
-			// set ROI position to current stack position if image and RoiManager are
-			// visible
+		// set ROI position to current stack position if image and RoiManager are visible
+				if (imp!=null && imp.getStackSize()>1 && imp.getWindow()!=null && isVisible())
 			roiCopy.setPosition(imp);
-		}
+		
 		if (lineWidth > 1)
 			roiCopy.setStrokeWidth(lineWidth);
 		if (color != null)

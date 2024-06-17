@@ -734,6 +734,7 @@ public class IJMacroFunctions {
 			"Table.deleteRows(index1,index2)####Deletes specified rows."+linSeparator + 
 			"Table.renameColumn(oldName,newName)####Renames a column."+linSeparator + 
 			"Table.deleteColumn(columnName)####deletes specified column."+linSeparator + 
+			"Table.showHistogramTable####Equivalent to clicking on \"List\" in a Histogram window. Requires 1.54j."+linSeparator + 
 			"Table.showRowNumbers(boolean)####Enable/disable row numbers."+linSeparator + 
 			"Table.saveColumnHeaders(boolean)####When set to 'true' the Table is saved with headers."+linSeparator + 
 			"Table.showArrays(titleAndOptions,array1,array2,...)####Displays arrays in a table (like Array.show)."+linSeparator + 

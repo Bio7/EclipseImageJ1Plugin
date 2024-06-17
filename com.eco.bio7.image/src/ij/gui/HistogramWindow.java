@@ -27,6 +27,7 @@ import ij.process.*;
 import ij.measure.*;
 import ij.plugin.filter.Analyzer;
 import ij.text.TextWindow;
+import ij.plugin.frame.Recorder;
 
 /** This class is an extended ImageWindow that displays histograms. */
 public class HistogramWindow extends ImageWindow
@@ -643,7 +644,7 @@ public class HistogramWindow extends ImageWindow
 		return rt;
 	}
 
-	protected void showList() {
+	public void showList() {
 		ResultsTable rt = getResultsTable();
 		rt.show(getTitle());
 	}
@@ -695,9 +696,11 @@ public class HistogramWindow extends ImageWindow
 			toggleLiveMode();
 		else if (b == rgb)
 			changeChannel();
-		else if (b == list)
+		else if (b==list) {
 			showList();
-		else if (b == copy)
+			if (!Recorder.scriptMode())
+				Recorder.record("Table.showHistogramTable");
+		} else if (b==copy)
 			copyToClipboard();
 		else if (b == log) {
 			logScale = !logScale;
