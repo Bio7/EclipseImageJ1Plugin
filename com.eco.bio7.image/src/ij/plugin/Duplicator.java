@@ -45,11 +45,12 @@ public class Duplicator implements PlugIn, TextListener, ItemListener {
 			Rectangle bounds = imp.getRoi().getBounds();
 			imp.setRoi(bounds);
 		}
+		boolean roiOutside = false;
 		if (roiA!=null) {
 			Rectangle r = roiA.getBounds();
 			if (r.x>=imp.getWidth() || r.y>=imp.getHeight() || r.x+r.width<=0 || r.y+r.height<=0) {
-				IJ.error("Roi is outside image");
-				return;
+				ignoreSelection = true;
+				roiOutside = true;
 			}
 		}
 		int stackSize = imp.getStackSize();
@@ -62,7 +63,7 @@ public class Duplicator implements PlugIn, TextListener, ItemListener {
 			if (imp.isHyperStack() || imp.isComposite()) {
 				duplicateHyperstack(imp, newTitle);			
 				if (isRotatedRect)
-					straightenRotatedRect(impA, roiA, IJ.getImage());																
+					straightenRotatedRect(impA, roiA, IJ.getImage());								
 				return;
 			} else
 				newTitle = showDialog(imp, "Duplicate...", "Title: ");
@@ -85,8 +86,11 @@ public class Duplicator implements PlugIn, TextListener, ItemListener {
 			imp2 = crop(imp);
 			recordCrop(imp);
 		}
-		if (ignoreSelection && roi!=null)
+		if (ignoreSelection && roi!=null) {
 			imp.setRoi(roi);
+			if (!roiOutside)
+				imp2.setRoi((Roi)roi.clone());
+		}
 		Calibration cal = imp2.getCalibration();
 		if (roi!=null && (cal.xOrigin!=0.0||cal.yOrigin!=0.0)) {
 			cal.xOrigin -= roi.getBounds().x;
@@ -94,7 +98,7 @@ public class Duplicator implements PlugIn, TextListener, ItemListener {
 		}	
 		imp2.setTitle(newTitle);
 		imp2.setProp("UniqueName","true");
-		if (roi!=null && roi.isArea() && roi.getType()!=Roi.RECTANGLE) {
+		if (roi!=null && !ignoreSelection && roi.isArea() && roi.getType()!=Roi.RECTANGLE) {
 			Roi roi2 = cropRoi(imp, roi);
 			if (roi2==null)
 				return;

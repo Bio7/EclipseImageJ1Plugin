@@ -695,7 +695,7 @@ public class GenericDialog extends Dialog implements ActionListener, TextListene
 	 * @param labels        the labels
 	 * @param defaultValues the initial states
 	 * @param headings      the column headings Example:
-	 *                      http://imagej.nih.gov/ij/plugins/multi-column-dialog/index.html
+	 * Example: http://imagej.net/ij/plugins/multi-column-dialog/index.html
 	 */
 	public void addCheckboxGroup(int rows, int columns, String[] labels, boolean[] defaultValues, String[] headings) {
 		JPanel panel = new JPanel();
@@ -2120,7 +2120,7 @@ public class GenericDialog extends Dialog implements ActionListener, TextListene
 	 * Adds a "Help" button that opens the specified URL in the default browser.
 	 * With v1.46b or later, displays an HTML formatted message if 'url' starts with
 	 * "<html>". There is an example at
-	 * http://imagej.nih.gov/ij/macros/js/DialogWithHelp.js If url is an empty
+	 * http://imagej.net/ij/macros/js/DialogWithHelp.js If url is an empty
 	 * String, pressing the "Help" button does nothing except calling the
 	 * DialogListeners (if any). See also: setHelpLabel.
 	 */
