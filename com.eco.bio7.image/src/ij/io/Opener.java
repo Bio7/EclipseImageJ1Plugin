@@ -44,6 +44,7 @@ public class Opener {
 	private static boolean bioformats;
 	private String url;
 	private boolean useHandleExtraFileTypes;
+	private boolean doNotUseBioFormats;
 	private static boolean errorMessage;// Changed for Bio7!
 
 	static {
@@ -839,7 +840,7 @@ public class Opener {
 	 */
 	public static void convertGrayJpegTo8Bits(ImagePlus imp) {
 		ImageProcessor ip = imp.getProcessor();
-		if (!Prefs.openGrayscaleJpegsAsRGB && ip.getBitDepth()==24 && ip.isGrayscale()) {
+		if (!Prefs.openGrayscaleJpegsAsRGB && ip.getBitDepth() == 24 && ip.isGrayscale()) {
 			IJ.showStatus("Converting to 8-bit grayscale");
 			new ImageConverter(imp).convertToGray8();
 		}
@@ -1389,7 +1390,7 @@ public class Opener {
 		if (name.endsWith(".lsm"))
 			return UNKNOWN; // The LSM Reader plugin opens these files
 		// OME TIFF
-		if (bioformats && name.contains(".ome.tif"))
+		if (!doNotUseBioFormats && bioformats && name.contains(".ome.tif"))
 			return UNKNOWN; // Open with Bio-formats plugin
 
 		// TIFF
@@ -1541,6 +1542,10 @@ public class Opener {
 	public static void setErrorMessage(boolean error) {
 		errorMessage = error;
 
+	}
+
+	public void doNotUseBioFormats() {
+		doNotUseBioFormats = true;
 	}
 
 }

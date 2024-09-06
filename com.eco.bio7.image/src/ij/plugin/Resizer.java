@@ -9,8 +9,6 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
 
-import com.eco.bio7.image.CanvasView;
-
 /** This plugin implements the Edit/Crop and Image/Adjust/Size commands. */
 public class Resizer implements PlugIn, TextListener, ItemListener  {
 	public static final int IN_PLACE=16, SCALE_T=32;
@@ -129,6 +127,10 @@ public class Resizer implements PlugIn, TextListener, ItemListener  {
 			interpolationMethod = gd.getNextChoiceIndex();
 			if (constrain && newWidth==0)
 				sizeToHeight = true;
+			String options = Macro.getOptions();
+			if (options != null && options.contains("constrain")
+					&& options.contains("height=") && !options.contains("width="))
+				sizeToHeight = true;
 			if (newWidth<=0.0 && !constrain)  newWidth = 50;
 			if (newHeight<=0.0) newHeight = 50;
 		}
@@ -203,9 +205,7 @@ public class Resizer implements PlugIn, TextListener, ItemListener  {
 			imp.setDisplayRange(min, max);
 			imp.updateAndDraw();
 		}
-		Scaler.record(imp, newWidth, newHeight, 1, interpolationMethod);
-		/*Changed for Bio7!*/
-		CanvasView.getCurrent().validate();
+		Scaler.record(imp, newWidth, newHeight, 1, interpolationMethod);	
 	}
 
 	public ImagePlus zScale(ImagePlus imp, int newDepth, int interpolationMethod) {
