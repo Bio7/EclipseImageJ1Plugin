@@ -548,6 +548,7 @@ public class IJMacroFunctions {
 			"roiManager(\"sort\")####Sorts the ROI list in alphanumeric order."+linSeparator + 
 			"roiManager(\"split\")####Splits the current selection (it must be a composite selection) into its component parts and adds them to the ROI Manager."+linSeparator +  
 			"roiManager(\"update\")####Replaces the selected ROI on the list with the current selection."+linSeparator +					
+			"RoiManager.delete(index)####Deletes the selection at the specified index."+linSeparator + 
 			"RoiManager.getName(index)####Returns the name of the selection with the specified index, or an empty string if the selection does not have a name."+linSeparator + 
 			"RoiManager.multiCrop(dir, options)####If 'options' contains \"save\", saves the contents of the selected ROIs in TIFF format as separate images, where 'dir' is the directory path. Add \" png\" or \" jpg\" to save in PNG or JPEG format. Add ' show' and the images will be displayed in a stack. Requires 1.53d."+linSeparator + 
 			"RoiManager.setGroup(group)####Sets the group of the selected ROIs. See also: Roi.setGroup, Roi.getGroup, Roi.setDefaultGroup and Roi.getDefaultGroup."+linSeparator + 

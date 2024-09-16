@@ -737,6 +737,19 @@ public class RoiManager extends PlugInFrame implements ActionListener, ItemListe
 			Recorder.record("roiManager", "Delete");
 		return true;
 	}
+	
+	public void delete(int index) {
+		int count = getCount();
+		if (count==0 || index>=count)
+			return;
+		if (EventQueue.isDispatchThread()) {
+			rois.remove(index);
+			listModel.remove(index);
+		} else
+			deleteOnEDT(index);
+		updateShowAll();
+		repaint();
+	}
 
 	// Delete ROI on event dispatch thread
 	private void deleteOnEDT(final int i) {

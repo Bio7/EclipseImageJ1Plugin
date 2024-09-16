@@ -8175,6 +8175,9 @@ public class Functions implements MacroConstants, Measurements {
 			} else
 				rm.rotate(angle, getNextArg(), getLastArg());
 			return null;
+		} else if (name.equals("delete")) {
+			rm.delete((int)getArg());
+			return null;
 		} else if (name.equals("translate")) {
 			rm.translate(getFirstArg(),getLastArg());
 			return null;
