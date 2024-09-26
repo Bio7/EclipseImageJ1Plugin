@@ -623,17 +623,17 @@ public class Functions implements MacroConstants, Measurements {
 			}
 		}
 		boolean newArray = interp.token==ARRAY_FUNCTION && pgm.table[interp.tokenAddress].type==NEW_ARRAY;
-		boolean arrayFunction = interp.token==ARRAY_FUNCTION && pgm.table[interp.tokenAddress].type==ARRAY_FUNC;
+		boolean arrayFunction = interp.token==ARRAY_FUNCTION;
 		if (!(interp.token==WORD||newArray||arrayFunction))
 			interp.error("Array expected");
 		Variable[] a = null;
 		if (newArray)
 			a = getArrayFunction(NEW_ARRAY);
 		else if (arrayFunction)
-			a = getArrayFunction(ARRAY_FUNC);
+			a = getArrayFunction(pgm.table[interp.tokenAddress].type);
 		else {
 			Variable v = interp.lookupVariable();
-			a= v.getArray();
+			a = v.getArray();
 			int size = v.getArraySize();
 			if (a!=null && a.length!=size) {
 				Variable[] a2 = new Variable[size];
@@ -7295,7 +7295,7 @@ public class Functions implements MacroConstants, Measurements {
 			interp.error("No histogram window");
 		return null;
 	}
-
+	
 	private Variable setTableLocAndSize() {
 		double x = getFirstArg();
 		double y = getNextArg();
@@ -8175,11 +8175,11 @@ public class Functions implements MacroConstants, Measurements {
 			} else
 				rm.rotate(angle, getNextArg(), getLastArg());
 			return null;
-		} else if (name.equals("delete")) {
-			rm.delete((int)getArg());
-			return null;
 		} else if (name.equals("translate")) {
 			rm.translate(getFirstArg(),getLastArg());
+			return null;
+		} else if (name.equals("delete")) {
+			rm.delete((int)getArg());
 			return null;
 		} else
 			interp.error("Unrecognized RoiManager function");

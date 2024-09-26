@@ -2275,8 +2275,8 @@ public class GenericDialog extends Dialog implements ActionListener, TextListene
 					path = directory + name;
 			}
 			if (path != null) {
-				if (IJ.isWindows())
-					path = path.replaceAll("\\\\", "/"); // replace "\" with "/"
+				//if (IJ.isWindows())
+				//	path = path.replaceAll("\\\\", "/"); // replace "\" with "/"
 				this.textField.setText(path);
 			}
 		}
