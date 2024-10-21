@@ -1120,7 +1120,7 @@ public class Toolbar extends JPanel implements MouseListener, MouseMotionListene
 			return;
 		g.dispose();
 		showMessage(current);
-		if (Recorder.record) {
+		if (IJ.recording()) {
 			String name = getName(current);
 			if (name != null && name.equals("dropper"))
 				disableRecording = true;

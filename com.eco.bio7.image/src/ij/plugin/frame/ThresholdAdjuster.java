@@ -394,7 +394,7 @@ public class ThresholdAdjuster extends PlugInDialog implements PlugIn, Measureme
 			mode = modeChoice.getSelectedIndex();
 			setLutColor(mode);
 			doStateChange = true;
-			if (Recorder.record) {
+			if (IJ.recording()) {
 				if (Recorder.scriptMode())
 					Recorder.recordCall("ThresholdAdjuster.setMode(\""+modes[mode]+"\");");
 				else
@@ -521,7 +521,7 @@ public class ThresholdAdjuster extends PlugInDialog implements PlugIn, Measureme
 		maxThreshold = scaleDown(ip, level2);
 		//IJ.log("autoSetLevels: "+level1+" "+level2+" "+methodAndOptions);
 		updateScrollBars();
-		if (Recorder.record) {
+		if (IJ.recording()) {
 			if (noReset && ip.getBitDepth()!=8) {
 				ImageStatistics stats2 = ip.getStats();
 				if (ip.getMin()>stats2.min || ip.getMax()<stats2.max)
@@ -742,7 +742,7 @@ public class ThresholdAdjuster extends PlugInDialog implements PlugIn, Measureme
 		if (ip.getBitDepth()!=8 && entireStack(imp))
 			ip.setMinAndMax(stats.min, stats.max);
 		updateScrollBars();
-		if (Recorder.record) {
+		if (IJ.recording()) {
 			if (Recorder.scriptMode())
 				Recorder.recordCall("IJ.resetThreshold(imp);");
 			else
@@ -801,7 +801,7 @@ public class ThresholdAdjuster extends PlugInDialog implements PlugIn, Measureme
 		previousImageID = 0;
 		setup(imp, false);
 		updateScrollBars();
-		if (Recorder.record) {
+		if (IJ.recording()) {
 			if (imp.getBitDepth()==32) {
 				if (Recorder.scriptMode())
 					Recorder.recordCall("IJ.setThreshold(imp, "+IJ.d2s(ip.getMinThreshold(),4)+", "+IJ.d2s(ip.getMaxThreshold(),4)+");");
@@ -864,7 +864,7 @@ public class ThresholdAdjuster extends PlugInDialog implements PlugIn, Measureme
  	void runThresholdCommand() {
 		Thresholder.setMethod(method);
 		Thresholder.setBackground(darkBackgroundCheckbox.getState()?"Dark":"Light");
-		if (Recorder.record) {
+		if (IJ.recording()) {
 			Recorder.setCommand("Convert to Mask");
 			(new Thresholder()).run("mask");
 			Recorder.saveCommand();

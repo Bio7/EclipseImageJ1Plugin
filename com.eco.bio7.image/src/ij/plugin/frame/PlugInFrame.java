@@ -49,7 +49,7 @@ public class PlugInFrame extends JFrame implements PlugIn, WindowListener, Focus
     public void windowClosing(WindowEvent e) {
     	if (e.getSource()==this) {
     		close();
-    		if (Recorder.record)
+    		if (IJ.recording())
     			Recorder.record("run", "Close");
     	}
     }

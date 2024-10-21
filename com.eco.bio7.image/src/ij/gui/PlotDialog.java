@@ -92,7 +92,7 @@ public class PlotDialog implements DialogListener {
 				plot.restorePlotObjects();
 			plot.update();
 		} else {
-			if (Recorder.record)
+			if (IJ.recording())
 				record();
 			String xAxisLabel = plot.getLabel('x');
 			if ((dialogType == AXIS_OPTIONS || dialogType == X_AXIS) && xAxisLabel != null && xAxisLabel.length() > 0)
@@ -566,7 +566,7 @@ public class PlotDialog implements DialogListener {
 			}
 		});
 
-		if (Recorder.record) {
+		if (IJ.recording()) {
 			if (Recorder.scriptMode()) {
 				Recorder.recordCall("plot.makeHighResolution(\"" + title + "\"," + hiResFactor + "," + hiResAntiAliased + ",true);");
 			} else {

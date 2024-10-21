@@ -256,7 +256,7 @@ public class GenericDialog extends Dialog implements ActionListener, TextListene
 			panel.add(new Label(" " + units));
 			add(panel, c);
 		}
-		if (Recorder.record || macro)
+		if (IJ.recording() || macro)
 			saveLabel(tf, label);
 	}
 
@@ -363,7 +363,7 @@ public class GenericDialog extends Dialog implements ActionListener, TextListene
 		defaultStrings.addElement(defaultText);
 		tf.setDropTarget(null);
 		new DropTarget(tf, new TextDropTarget(tf));
-		if (Recorder.record || macro)
+		if (IJ.recording() || macro)
 			saveLabel(tf, label);
 	}
 
@@ -403,7 +403,7 @@ public class GenericDialog extends Dialog implements ActionListener, TextListene
 		panel.add(button);
 		layout.setConstraints(panel, constraints);
 		add(panel);
-		if (Recorder.record || macro)
+		if (IJ.recording() || macro)
 			saveLabel(panel, label);
 	}
 
@@ -435,7 +435,7 @@ public class GenericDialog extends Dialog implements ActionListener, TextListene
 		panel.add(button);
 		layout.setConstraints(panel, constraints);
 		add(panel);
-		if (Recorder.record || macro)
+		if (IJ.recording() || macro)
 			saveLabel(panel, label);
 	}
 
@@ -737,7 +737,7 @@ public class GenericDialog extends Dialog implements ActionListener, TextListene
 				checkbox.addElement(cb);
 				cb.setState(defaultValues[i1]);
 				cb.addItemListener(this);
-				if (Recorder.record || macro)
+				if (IJ.recording() || macro)
 					saveLabel(cb, labels[i1]);
 				if (IJ.isLinux()) {
 					JPanel panel2 = new JPanel();
@@ -797,7 +797,7 @@ public class GenericDialog extends Dialog implements ActionListener, TextListene
 		c.anchor = GridBagConstraints.WEST;
 		c.insets = new Insets(insets.top, insets.left, 0, 0);
 		add(panel, c);
-		if (Recorder.record || macro)
+		if (IJ.recording() || macro)
 			saveLabel(cg, label);
 	}
 
@@ -847,7 +847,7 @@ public class GenericDialog extends Dialog implements ActionListener, TextListene
 		choice.addElement(thisChoice);
 		int index = thisChoice.getSelectedIndex();
 		defaultChoiceIndexes.addElement(Integer.valueOf(index));
-		if (Recorder.record || macro)
+		if (IJ.recording() || macro)
 			saveLabel(thisChoice, label);
 	}
 
@@ -1136,7 +1136,7 @@ public class GenericDialog extends Dialog implements ActionListener, TextListene
 		c.insets.left = 0;
 		c.insets.bottom -= 3;
 		add(panel, c);
-		if (Recorder.record || macro)
+		if (IJ.recording() || macro)
 			saveLabel(tf, label);
 	}
 

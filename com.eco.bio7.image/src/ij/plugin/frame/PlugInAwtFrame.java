@@ -43,7 +43,7 @@ public class PlugInAwtFrame extends Frame implements PlugIn, WindowListener, Foc
     public void windowClosing(WindowEvent e) {
     	if (e.getSource()==this) {
     		close();
-    		if (Recorder.record)
+    		if (IJ.recording())
     			Recorder.record("run", "Close");
     	}
     }

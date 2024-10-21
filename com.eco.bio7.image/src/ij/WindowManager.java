@@ -60,7 +60,7 @@ public class WindowManager {
 		activations.remove(win);
 		activations.add(win);
 		Menus.updateMenus();
-		if (Recorder.record && !IJ.isMacro())
+		if (IJ.recording() && !IJ.isMacro())
 			Recorder.record("selectImage", win.getImagePlus().getTitle());
 	}
 
@@ -634,7 +634,7 @@ public class WindowManager {
 				} else
 					((Dialog) win).toFront();
 				((CheckboxMenuItem) item).setState(false);
-				if (Recorder.record && !IJ.isMacro())
+				if (IJ.recording() && !IJ.isMacro())
 					Recorder.record("selectWindow", title);
 				return;
 			}

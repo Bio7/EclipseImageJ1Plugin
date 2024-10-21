@@ -1459,11 +1459,11 @@ public class IJ {
 					error(msg);
 					return PlugInFilter.DONE;
 				}
-				if (Recorder.record)
+				if (IJ.recording())
 					Recorder.recordOption("stack");
 				return flags | PlugInFilter.DOES_STACKS;
 			}
-			if (Recorder.record)
+			if (IJ.recording())
 				Recorder.recordOption("slice");
 		}
 		return flags;
@@ -2877,5 +2877,10 @@ public class IJ {
 		if (!protectStatusBar)
 			statusBarThread = null;
 	}
+	
+	public static boolean recording() {
+		return (!GraphicsEnvironment.isHeadless()&&Recorder.record);
+	}
+
 
 }
