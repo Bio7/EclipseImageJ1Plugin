@@ -527,9 +527,6 @@ public class HistogramWindow extends ImageWindow
 		ip.setAntialiasedText(true);
 		double hmin = cal.getCValue(stats.histMin);
 		double hmax = cal.getCValue(stats.histMax);
-		double range = hmax - hmin;
-		if (fixedRange && !cal.calibrated() && hmin == 0 && hmax == 255)
-			range = 256;
 		ip.drawString(d2s(hmin), x - 4, y);
 		ip.drawString(d2s(hmax), x + HIST_WIDTH - getWidth(hmax, ip) + 10, y);
 		if (rgbMode >= INTENSITY1) {
@@ -559,7 +556,7 @@ public class HistogramWindow extends ImageWindow
 			}
 			ip.setJustification(ImageProcessor.LEFT_JUSTIFY);
 		}
-		double binWidth = range / stats.nBins;
+		double binWidth = (hmax-hmin+1)/stats.nBins;
 		binWidth = Math.abs(binWidth);
 		showBins = binWidth != 1.0 || !fixedRange;
 		col1 = XMARGIN + 5;

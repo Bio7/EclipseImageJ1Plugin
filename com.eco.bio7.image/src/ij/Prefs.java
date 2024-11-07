@@ -486,7 +486,7 @@ public class Prefs {
 
 	/** Sets the path to the ImageJ directory. */
 	static void setHomeDir(String path) {
-		if (path.endsWith(File.separator))
+		if (path.endsWith(File.separator) || path.endsWith("/"))
 			path = path.substring(0, path.length() - 1);
 		ImageJDir = path;
 	}

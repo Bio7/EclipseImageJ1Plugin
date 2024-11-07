@@ -33,7 +33,7 @@ public class StackStatistics extends ImageStatistics {
 		double minThreshold = -Float.MAX_VALUE;
 		double maxThreshold = Float.MAX_VALUE;
         Calibration cal = imp.getCalibration();
-        if (limitToThreshold && ip.isThreshold()) {
+		if (limitToThreshold && ip.isThreshold()) {
 			minThreshold=cal.getCValue(ip.getMinThreshold());
 			maxThreshold=cal.getCValue(ip.getMaxThreshold());
 		}
@@ -146,7 +146,7 @@ public class StackStatistics extends ImageStatistics {
         calculateStdDev(longPixelCount, sum, sum2);
         histMin = cal.getRawValue(histMin); 
         histMax =  cal.getRawValue(histMax);
-        binSize = (histMax-histMin)/nBins;
+        binSize = (histMax-histMin+1)/nBins;
         int bits = imp.getBitDepth();
         if (histMin==0.0 && histMax==256.0 && (bits==8||bits==24))
         	histMax = 255.0;
@@ -154,7 +154,7 @@ public class StackStatistics extends ImageStatistics {
 		copyHistogram(nBins);
 		median = getMedian(longHistogram, (int)minThreshold, (int)maxThreshold, cal);
         IJ.showStatus("");
-        IJ.showProgress(1.0); 
+        IJ.showProgress(1.0);
     }
     
 	void sum8BitHistograms(ImagePlus imp) {
@@ -297,7 +297,7 @@ public class StackStatistics extends ImageStatistics {
 		nBins = 256;
 		histMin = min; 
 		histMax = max;
-		binSize = (histMax-histMin)/nBins;
+		binSize = (histMax-histMin+1)/nBins;
 		double scale = 1.0/binSize;
 		int hMin = (int)histMin;
 		longHistogram = new long[nBins]; // 256 bin histogram
