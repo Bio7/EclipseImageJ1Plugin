@@ -32,7 +32,7 @@ public class Interpreter implements MacroConstants {
 	boolean checkingType;
 	int prefixValue;
 	
-	public Variable[] stack;
+	Variable[] stack;
 	int topOfStack = -1;
 	int topOfGlobals = -1;
 	int startOfLocals = 0;
@@ -42,11 +42,11 @@ public class Interpreter implements MacroConstants {
 	static Vector imageTable; // images opened in batch mode
 	static Vector imageActivations; // images ordered by activation time
 	volatile boolean done;
-	public Program pgm;
+	Program pgm;
 	Functions func;
 	boolean inFunction;
 	String macroName;
-	public String argument;
+	String argument;
 	String returnValue;
 	boolean calledMacro; // macros envoked by eval() or runMacro()
 	boolean batchMacro; // macros envoked by Process/Batch commands
@@ -54,7 +54,7 @@ public class Interpreter implements MacroConstants {
 	boolean inPrint;
 	static String additionalFunctions;
 	Debugger debugger;
-	public int debugMode = Debugger.NOT_DEBUGGING;
+	int debugMode = Debugger.NOT_DEBUGGING;
 	boolean showDebugFunctions;
 	static boolean showVariables;
 	boolean wasError;
@@ -63,7 +63,6 @@ public class Interpreter implements MacroConstants {
 	int loopDepth;
 	static boolean tempShowMode;
 	boolean waitingForUser;
-	int selectCount;
 	
 	static TextWindow arrayWindow;
 	int inspectStkIndex = -1;
@@ -1355,7 +1354,7 @@ public class Interpreter implements MacroConstants {
 		}
 	}
 
-	public void error (String message) {
+	void error (String message) {
 		errorMessage = message;
 		if (ignoreErrors)
 			return;
@@ -1460,7 +1459,7 @@ public class Interpreter implements MacroConstants {
 
 	private static String[] prevVars; //previous variables for comparison
 
-	public String[] markChanges(String[] newVars) {//add asterisk if variable has changed
+	private String[] markChanges(String[] newVars) {//add asterisk if variable has changed
 		int len = newVars.length;
 		String[] copyOfNew = new String[len];
 		String[] hilitedVars = new String[len];
@@ -1975,8 +1974,6 @@ public class Interpreter implements MacroConstants {
 				str = ""+str.length();
 			} else if (tokenString.equals("contains")) {
 				str = ""+str.contains(func.getStringArg());
-			} else if (tokenString.equals("charAt")) {
-				str = ""+str.charAt((int)func.getArg());
 			} else if (tokenString.equals("replaceAll")) {
 				str = func.replace(str);
 			} else
@@ -2000,6 +1997,11 @@ public class Interpreter implements MacroConstants {
 				case TO_UPPER_CASE: getParens(); str = str.toUpperCase(Locale.US); break;
 				case REPLACE: str = func.replace(str); break;
 				case TRIM: getParens();  str = str.trim(); break;
+				case CHARAT:
+					int index = (int)func.getArg();
+					func.checkIndex(index, 0, str.length()-1);
+					str = ""+str.charAt(index);
+					break;
 				default:
 					str = null;
 			}
@@ -2094,11 +2096,6 @@ public class Interpreter implements MacroConstants {
 		}
 		if (func.unUpdatedTable!=null)
 			func.unUpdatedTable.show(func.unUpdatedTable.getTitle());
-		if (IJ.isMacOSX() && selectCount>0 && debugger==null) {
-			Frame frame = WindowManager.getFrontWindow();
-			if (frame!=null && (frame instanceof ImageWindow))
-				ImageWindow.setImageJMenuBar((ImageWindow)frame);
-		}
 	}
 	
 	/** Aborts currently running macro. */
@@ -2266,7 +2263,7 @@ public class Interpreter implements MacroConstants {
 		return imp2;
 	} 
  
-	/** Obsolete; replaced by the #include statement. */
+ 	/** Obsolete; replaced by the #include statement. */
  	public static void setAdditionalFunctions(String functions) {
  		additionalFunctions = functions;
 	} 
@@ -2519,18 +2516,7 @@ public class Interpreter implements MacroConstants {
 	}
 	
 	private static Interpreter lastInterp;
-	
-	public static boolean nonBatchMacroRunning() {
-		Interpreter interp = getInstance();
-		if (interp==null)
-			return false;
-		int count =  interp.selectCount;
-		if (interp==lastInterp)
-			interp.selectCount++;
-		lastInterp = interp;
-		return !interp.waitingForUser && interp.debugger==null && count>0 && !isBatchMode();
-	}
-	
+		
 	public void setApplyMacroTable(ResultsTable rt) {
 		applyMacroTable = rt;
 	}
@@ -2544,3 +2530,8 @@ public class Interpreter implements MacroConstants {
 	}
 			
 } // class Interpreter
+
+
+
+
+
