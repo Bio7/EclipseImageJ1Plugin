@@ -201,7 +201,7 @@ public class Prefs {
 	public static boolean showAllPoints;
 	/** Set MenuBar on Macs running Java 8. */
 	/* Changed for Bio7 instead of IJ.isMacOSX()! */
-	/** Set ImageJ menu bar on image window activation on Macs. */
+	/** Show ImageJ menu bar on image window activation on Macs. */
 	static IPreferenceStore store = Activator.getDefault().getPreferenceStore();
 	public static boolean setIJMenuBar = store.getBoolean("MAC_MENU_ENABLED");// IJ.isMacOSX();
 	/** "ImageJ" window is always on top. */
