@@ -334,7 +334,10 @@ public class HistogramPlot extends ImagePlus {
 			}
 			ip.setJustification(ImageProcessor.LEFT_JUSTIFY);
 		}
-		double binWidth = (hmax-hmin+1)/stats.nBins;
+		double range = hmax - hmin;
+		if (fixedRange && !cal.calibrated() && hmin == 0 && hmax == 255)
+			range = 256;
+		double binWidth = range / stats.nBins;
 		binWidth = Math.abs(binWidth);
 		showBins = binWidth != 1.0 || !fixedRange;
 		col1 = XMARGIN + 5;
@@ -348,13 +351,17 @@ public class HistogramPlot extends ImagePlus {
 		row5 = row4 + (int) (15 * SCALE);
 		long count = stats.longPixelCount > 0 ? stats.longPixelCount : stats.pixelCount;
 		String modeCount = " (" + stats.maxCount + ")";
-		if (histogram!=null) {// Add '*' if multi-modal histogram
-			int mcount = 0;;
-			for (int i=0; i<histogram.length; i++) {
-				if (histogram[i]==stats.maxCount) mcount++;
-				if (mcount>1) break;
+		if (histogram != null) {// Add '*' if multi-modal histogram
+			int mcount = 0;
+			;
+			for (int i = 0; i < histogram.length; i++) {
+				if (histogram[i] == stats.maxCount)
+					mcount++;
+				if (mcount > 1)
+					break;
 			}
-			if (mcount>1) modeCount=modeCount+"*";
+			if (mcount > 1)
+				modeCount = modeCount + "*";
 		}
 		if (modeCount.length() > 12)
 			modeCount = "";
