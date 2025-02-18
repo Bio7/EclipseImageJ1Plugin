@@ -30,8 +30,7 @@ import ij.text.TextWindow;
 import ij.plugin.frame.Recorder;
 
 /** This class is an extended ImageWindow that displays histograms. */
-public class HistogramWindow extends ImageWindow
-		implements Measurements, ActionListener, ClipboardOwner, ImageListener, RoiListener, Runnable {
+public class HistogramWindow extends ImageWindow implements Measurements, ActionListener, ClipboardOwner, ImageListener, RoiListener, Runnable {
 
 	private static final double SCALE = HistogramPlot.SCALE;
 	static final int HIST_WIDTH = HistogramPlot.HIST_WIDTH;
@@ -97,8 +96,7 @@ public class HistogramWindow extends ImageWindow
 
 	/** Displays a histogram using the title "Histogram of ImageName". */
 	public HistogramWindow(ImagePlus imp) {
-		super(NewImage.createRGBImage("Histogram of " + imp.getShortTitle(), WIN_WIDTH, WIN_HEIGHT, 1,
-				NewImage.FILL_WHITE));
+		super(NewImage.createRGBImage("Histogram of " + imp.getShortTitle(), WIN_WIDTH, WIN_HEIGHT, 1, NewImage.FILL_WHITE));
 		showHistogram(imp, 256, 0.0, 0.0);
 	}
 
@@ -154,9 +152,9 @@ public class HistogramWindow extends ImageWindow
 	public void showHistogram(ImagePlus imp, int bins, double histMin, double histMax) {
 		boolean limitToThreshold = (Analyzer.getMeasurements() & LIMIT) != 0;
 		ImageProcessor ip = imp.getProcessor();
-		if (ip.isThreshold() && ip.getLutUpdateMode()==ImageProcessor.NO_LUT_UPDATE)
+		if (ip.isThreshold() && ip.getLutUpdateMode() == ImageProcessor.NO_LUT_UPDATE)
 			limitToThreshold = false; // ignore invisible thresholds
-		if (imp.isRGB() && rgbMode<INTENSITY1)
+		if (imp.isRGB() && rgbMode < INTENSITY1)
 			rgbMode = INTENSITY1;
 		if (rgbMode == RED || rgbMode == GREEN || rgbMode == BLUE) {
 			int channel = rgbMode - 2;
@@ -168,8 +166,7 @@ public class HistogramWindow extends ImageWindow
 		} else if (rgbMode == RGB)
 			stats = RGBHistogram(imp, bins, histMin, histMax);
 		else
-			stats = imp.getStatistics(AREA + MEAN + MODE + MIN_MAX + (limitToThreshold ? LIMIT : 0), bins, histMin,
-					histMax);
+			stats = imp.getStatistics(AREA + MEAN + MODE + MIN_MAX + (limitToThreshold ? LIMIT : 0), bins, histMin, histMax);
 		showHistogram(imp, stats);
 	}
 
@@ -190,7 +187,7 @@ public class HistogramWindow extends ImageWindow
 
 	/** Draws the histogram using the specified title and ImageStatistics. */
 	public void showHistogram(ImagePlus srcImp, ImageStatistics stats) {
-		if (srcImp.isRGB() && rgbMode<INTENSITY1)
+		if (srcImp.isRGB() && rgbMode < INTENSITY1)
 			rgbMode = INTENSITY1;
 		stackHistogram = stats.stackStatistics;
 		if (list == null)
@@ -213,8 +210,8 @@ public class HistogramWindow extends ImageWindow
 		}
 		lut = srcImp.createLut();
 		int type = srcImp.getType();
-		boolean fixedRange = type==ImagePlus.GRAY8 || type==ImagePlus.COLOR_256 || srcImp.isRGB();
-		if (imp==null) {
+		boolean fixedRange = type == ImagePlus.GRAY8 || type == ImagePlus.COLOR_256 || srcImp.isRGB();
+		if (imp == null) {
 			IJ.showStatus("imp==null");
 			return;
 		}
@@ -241,32 +238,32 @@ public class HistogramWindow extends ImageWindow
 		 */
 		Color swtBackgroundToAWT = Util.getSWTBackgroundToAWT();
 		Color swtForegroundToAWT = Util.getSWTForegroundToAWT();
-		//if (Util.getOS().equals("Linux")) {
+		// if (Util.getOS().equals("Linux")) {
 		buttons.setBackground(swtBackgroundToAWT);
 		buttons.setForeground(swtForegroundToAWT);
-		//}
+		// }
 		buttons.setLayout(new GridLayout(10, 4, 0, 0));
 		int hgap = IJ.isMacOSX() || isRGB ? 1 : 5;
 		buttons.setLayout(new FlowLayout(FlowLayout.RIGHT, hgap, 0));
-		//int trim = IJ.isMacOSX() ? 6 : 0;
-		//Changed for Bio7!
+		// int trim = IJ.isMacOSX() ? 6 : 0;
+		// Changed for Bio7!
 		int trim = IJ.isMacOSX() ? 0 : 0;
 		list = new TrimmedButton("List", trim);
 		list.setBorderPainted(false);
 		list.setBackground(swtBackgroundToAWT);
 		list.setForeground(swtForegroundToAWT);
-		//list.setBackground(systemColour);
+		// list.setBackground(systemColour);
 		list.addActionListener(this);
 		buttons.add(list);
 		copy = new TrimmedButton("Copy", trim);
-		//copy.setBackground(systemColour);
+		// copy.setBackground(systemColour);
 		copy.setBorderPainted(false);
 		copy.setBackground(swtBackgroundToAWT);
 		copy.setForeground(swtForegroundToAWT);
 		copy.addActionListener(this);
 		buttons.add(copy);
 		log = new TrimmedButton("Log", trim);
-		//log.setBackground(systemColour);
+		// log.setBackground(systemColour);
 		log.setBorderPainted(false);
 		log.setBackground(swtBackgroundToAWT);
 		log.setForeground(swtForegroundToAWT);
@@ -274,7 +271,7 @@ public class HistogramWindow extends ImageWindow
 		buttons.add(log);
 		if (!stackHistogram) {
 			live = new TrimmedButton("Live", trim);
-			//live.setBackground(systemColour);
+			// live.setBackground(systemColour);
 			live.setBorderPainted(false);
 			live.setBackground(swtBackgroundToAWT);
 			live.setForeground(swtForegroundToAWT);
@@ -283,7 +280,7 @@ public class HistogramWindow extends ImageWindow
 		}
 		if (imp != null && isRGB && !stackHistogram) {
 			rgb = new TrimmedButton("RGB", trim);
-			//rgb.setBackground(systemColour);
+			// rgb.setBackground(systemColour);
 			rgb.setBorderPainted(false);
 			rgb.setBackground(swtBackgroundToAWT);
 			live.setForeground(swtForegroundToAWT);
@@ -322,7 +319,7 @@ public class HistogramWindow extends ImageWindow
 		if (ip == null)
 			return;
 		if ((frame != null) && x >= frame.x && x <= (frame.x + frame.width)) {
-			/*Changed for Bio7! We have no frame margin!*/
+			/* Changed for Bio7! We have no frame margin! */
 			x = x + 20 - frame.x;
 			x = (x - frame.x);
 			int index = (int) (x * (SCALE * histogram.length) / HIST_WIDTH / SCALE);
@@ -375,8 +372,7 @@ public class HistogramWindow extends ImageWindow
 		srcImageID = imp.getID();
 	}
 
-	void drawAlignedColorBar(ImagePlus imp, double xMin, double xMax, ImageProcessor ip, int x, int y, int width,
-			int height) {
+	void drawAlignedColorBar(ImagePlus imp, double xMin, double xMax, ImageProcessor ip, int x, int y, int width, int height) {
 		ImageProcessor ipSource = imp.getProcessor();
 		float[] pixels = null;
 		ImageProcessor ipRamp = null;
@@ -397,7 +393,7 @@ public class HistogramWindow extends ImageWindow
 		}
 		double min = ipSource.getMin();
 		double max = ipSource.getMax();
-		if (ipSource.getNChannels()==1) {
+		if (ipSource.getNChannels() == 1) {
 			ColorModel cm = null;
 			if (imp.isComposite()) {
 				if (stats != null && stats.pixelCount > ipSource.getPixelCount()) { // stack histogram
@@ -556,10 +552,7 @@ public class HistogramWindow extends ImageWindow
 			}
 			ip.setJustification(ImageProcessor.LEFT_JUSTIFY);
 		}
-		double range = hmax - hmin;
-		if (fixedRange && !cal.calibrated() && hmin == 0 && hmax == 255)
-			range = 256;
-		double binWidth = range / stats.nBins;
+		double binWidth = stats.binSize;
 		binWidth = Math.abs(binWidth);
 		showBins = binWidth != 1.0 || !fixedRange;
 		col1 = XMARGIN + 5;
@@ -573,11 +566,14 @@ public class HistogramWindow extends ImageWindow
 		row5 = row4 + (int) (15 * SCALE);
 		long count = stats.longPixelCount > 0 ? stats.longPixelCount : stats.pixelCount;
 		String modeCount = " (" + stats.maxCount + ")";
-		if (histogram!=null) {// Add '*' if multi-modal histogram
-			int mcount = 0;;
-			for (int i=0; i<histogram.length; i++)
-				if (histogram[i]==stats.maxCount) mcount++;
-			if (mcount>1) modeCount=modeCount+"*";
+		if (histogram != null) {// Add '*' if multi-modal histogram
+			int mcount = 0;
+			;
+			for (int i = 0; i < histogram.length; i++)
+				if (histogram[i] == stats.maxCount)
+					mcount++;
+			if (mcount > 1)
+				modeCount = modeCount + "*";
 		}
 		if (modeCount.length() > 12)
 			modeCount = "";
@@ -622,7 +618,7 @@ public class HistogramWindow extends ImageWindow
 	/** Returns the histogram values as a ResultsTable. */
 	public ResultsTable getResultsTable() {
 		int decimalPlaces = Analyzer.getPrecision();
-		if (digits==0 && stats.binSize!=1.0)
+		if (digits == 0 && stats.binSize != 1.0)
 			digits = decimalPlaces;
 		ResultsTable rt = new ResultsTable();
 		rt.setPrecision(digits);
@@ -664,8 +660,7 @@ public class HistogramWindow extends ImageWindow
 		CharArrayWriter aw = new CharArrayWriter(stats.nBins * 4);
 		PrintWriter pw = new PrintWriter(aw);
 		for (int i = 0; i < stats.nBins; i++)
-			pw.print(ResultsTable.d2s(cal.getCValue(stats.histMin + i * stats.binSize), digits) + "\t" + histogram[i]
-					+ "\n");
+			pw.print(ResultsTable.d2s(cal.getCValue(stats.histMin + i * stats.binSize), digits) + "\t" + histogram[i] + "\n");
 		String text = aw.toString();
 		pw.close();
 		StringSelection contents = new StringSelection(text);
@@ -696,11 +691,11 @@ public class HistogramWindow extends ImageWindow
 			toggleLiveMode();
 		else if (b == rgb)
 			changeChannel();
-		else if (b==list) {
+		else if (b == list) {
 			showList();
 			if (!Recorder.scriptMode())
 				Recorder.record("Table.showHistogramTable");
-		} else if (b==copy)
+		} else if (b == copy)
 			copyToClipboard();
 		else if (b == log) {
 			logScale = !logScale;
@@ -734,7 +729,7 @@ public class HistogramWindow extends ImageWindow
 
 	private void changeChannel() {
 		ImagePlus imp = WindowManager.getImage(srcImageID);
-		if (imp==null || !imp.isRGB())
+		if (imp == null || !imp.isRGB())
 			return;
 		else {
 			rgbMode++;
@@ -852,7 +847,7 @@ public class HistogramWindow extends ImageWindow
 		if (live != null) {
 			Font font = live.getFont();
 			live.setFont(new Font(font.getName(), Font.PLAIN, font.getSize()));
-			//live.setForeground(Color.black);
+			// live.setForeground(Color.black);
 			Color swtForegroundToAWT = Util.getSWTForegroundToAWT();
 			live.setForeground(swtForegroundToAWT);
 		}
