@@ -382,7 +382,8 @@ public class GenericDialog extends Dialog implements ActionListener, TextListene
 	 */
 	public void addDirectoryField(String label, String defaultPath) {
 		int columns = defaultPath != null ? Math.max(defaultPath.length(), 25) : 25;
-		if (columns>60) columns=60;
+		if (columns > 60)
+			columns = 60;
 		addDirectoryField(label, defaultPath, columns);
 	}
 
@@ -415,7 +416,8 @@ public class GenericDialog extends Dialog implements ActionListener, TextListene
 	 */
 	public void addFileField(String label, String defaultPath) {
 		int columns = defaultPath != null ? Math.max(defaultPath.length(), 25) : 25;
-		if (columns>60) columns=60;
+		if (columns > 60)
+			columns = 60;
 		addFileField(label, defaultPath, columns);
 	}
 
@@ -694,8 +696,8 @@ public class GenericDialog extends Dialog implements ActionListener, TextListene
 	 * @param columns       the number of columns
 	 * @param labels        the labels
 	 * @param defaultValues the initial states
-	 * @param headings      the column headings Example:
-	 * Example: http://imagej.net/ij/plugins/multi-column-dialog/index.html
+	 * @param headings      the column headings Example: Example:
+	 *                      http://imagej.net/ij/plugins/multi-column-dialog/index.html
 	 */
 	public void addCheckboxGroup(int rows, int columns, String[] labels, boolean[] defaultValues, String[] headings) {
 		JPanel panel = new JPanel();
@@ -1063,7 +1065,8 @@ public class GenericDialog extends Dialog implements ActionListener, TextListene
 			sliderDigits = new Vector(5);
 		}
 		Scrollbar s = new Scrollbar(Scrollbar.HORIZONTAL, (int) defaultValue, 1, (int) minValue, (int) maxValue + 1);
-		if (IJ.debugMode) IJ.log("Scrollbar: "+scale+" "+defaultValue+" "+minValue+" "+maxValue);
+		if (IJ.debugMode)
+			IJ.log("Scrollbar: " + scale + " " + defaultValue + " " + minValue + " " + maxValue);
 		GUI.fixScrollbar(s);
 		slider.addElement(s);
 		s.addAdjustmentListener(this);
@@ -1394,12 +1397,14 @@ public class GenericDialog extends Dialog implements ActionListener, TextListene
 		nfIndex++;
 		return value;
 	}
-	
+
 	int parseHex(String hexString) {
-		int n = 0;;
+		int n = 0;
+		;
 		try {
 			n = Integer.parseInt(hexString, 16);
-		} catch (NumberFormatException e) {}
+		} catch (NumberFormatException e) {
+		}
 		return n;
 	}
 
@@ -1421,6 +1426,8 @@ public class GenericDialog extends Dialog implements ActionListener, TextListene
 	}
 
 	private void recordCheckboxOption(Checkbox cb) {
+		if (labels == null)
+			return;
 		String label = (String) labels.get((Object) cb);
 		if (label != null) {
 			if (cb.getState()) // checked
@@ -1432,6 +1439,8 @@ public class GenericDialog extends Dialog implements ActionListener, TextListene
 
 	/* Bio7 extra method! */
 	private void recordCheckboxOption(JCheckBox cb) {
+		if (labels == null)
+			return;
 		String label = (String) labels.get((Object) cb);
 		if (label != null) {
 			if (cb.isSelected()) // checked
@@ -1948,7 +1957,7 @@ public class GenericDialog extends Dialog implements ActionListener, TextListene
 				if (!Double.isNaN(value)) {
 					Scrollbar sb = (Scrollbar) slider.elementAt(i);
 					double scale = ((Double) sliderScales.get(i)).doubleValue();
-					sb.setValue((int)Math.round(value*scale));
+					sb.setValue((int) Math.round(value * scale));
 				}
 			}
 		}
@@ -2122,9 +2131,9 @@ public class GenericDialog extends Dialog implements ActionListener, TextListene
 	 * Adds a "Help" button that opens the specified URL in the default browser.
 	 * With v1.46b or later, displays an HTML formatted message if 'url' starts with
 	 * "<html>". There is an example at
-	 * http://imagej.net/ij/macros/js/DialogWithHelp.js If url is an empty
-	 * String, pressing the "Help" button does nothing except calling the
-	 * DialogListeners (if any). See also: setHelpLabel.
+	 * http://imagej.net/ij/macros/js/DialogWithHelp.js If url is an empty String,
+	 * pressing the "Help" button does nothing except calling the DialogListeners
+	 * (if any). See also: setHelpLabel.
 	 */
 	public void addHelp(String url) {
 		help = new Button(helpLabel);
@@ -2232,7 +2241,7 @@ public class GenericDialog extends Dialog implements ActionListener, TextListene
 			try {
 				String path = getString(event);
 				path = Recorder.fixPath(path);
-				if (!path.endsWith("/")&& (new File(path)).isDirectory())
+				if (!path.endsWith("/") && (new File(path)).isDirectory())
 					path = path + "/";
 				text.setText(path);
 			} catch (Exception e) {
@@ -2257,7 +2266,7 @@ public class GenericDialog extends Dialog implements ActionListener, TextListene
 			String dialogTitle = label;
 			if (dialogTitle == null || dialogTitle.length() == 0)
 				dialogTitle = mode.equals("dir") ? "a Folder" : "a File";
-			else if (dialogTitle.endsWith(":"))	//remove trailing colon
+			else if (dialogTitle.endsWith(":")) // remove trailing colon
 				dialogTitle = dialogTitle.substring(0, dialogTitle.length() - 1);
 			dialogTitle = "Select " + dialogTitle;
 			if (mode.equals("dir")) {
@@ -2277,8 +2286,8 @@ public class GenericDialog extends Dialog implements ActionListener, TextListene
 					path = directory + name;
 			}
 			if (path != null) {
-				//if (IJ.isWindows())
-				//	path = path.replaceAll("\\\\", "/"); // replace "\" with "/"
+				// if (IJ.isWindows())
+				// path = path.replaceAll("\\\\", "/"); // replace "\" with "/"
 				this.textField.setText(path);
 			}
 		}
