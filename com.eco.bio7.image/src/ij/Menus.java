@@ -919,7 +919,10 @@ public class Menus {
 	}
 
 	private static Menu getMenu(String menuPath) {
-		return getMenu(menuPath, false);
+		if (GraphicsEnvironment.isHeadless())
+			return null;
+		else
+			return getMenu(menuPath, false);
 	}
 
 	/* Creates the menu and adds menus for the jar plugins! */
