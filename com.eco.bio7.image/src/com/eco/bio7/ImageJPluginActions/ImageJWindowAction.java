@@ -358,43 +358,7 @@ public class ImageJWindowAction extends Action implements IMenuCreator {
 		return fMenu;
 	}
 
-	private void createJavaFXOptionMenu() {
-
-		menuItemFx = new MenuItem(fMenu, SWT.CHECK);
-
-		menuItemFx.setText("Open in JavaFX Panel (exp.)");
-
-		IPreferenceStore store = Activator.getDefault().getPreferenceStore();
-		boolean openInFXPanel = store.getBoolean("JAVAFX_EMBEDDED");
-
-		if (openInFXPanel == false) {
-			menuItemFx.setSelection(false);
-		} else {
-			menuItemFx.setSelection(true);
-		}
-
-		menuItemFx.addSelectionListener(new SelectionListener() {
-
-			public void widgetSelected(SelectionEvent e) {
-
-				IPreferenceStore store = Activator.getDefault().getPreferenceStore();
-				boolean openInFXPanel = store.getBoolean("JAVAFX_EMBEDDED");
-				if (openInFXPanel == false) {
-					store.setValue("JAVAFX_EMBEDDED", true);
-					selected = true;
-
-				} else {
-					store.setValue("JAVAFX_EMBEDDED", false);
-					selected = false;
-				}
-
-			}
-
-			public void widgetDefaultSelected(SelectionEvent e) {
-
-			}
-		});
-	}
+	
 
 	public void dispose() {
 

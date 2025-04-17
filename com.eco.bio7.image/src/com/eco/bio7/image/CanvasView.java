@@ -162,7 +162,6 @@ public class CanvasView extends ViewPart {
 		canvas_view = this;
 
 		this.getViewSite();
-		// javafx.application.Platform.setImplicitExit(false);
 
 	}
 
@@ -418,17 +417,11 @@ public class CanvasView extends ViewPart {
 
 					if (selection.equals("PLOT_IMAGEJ_DISPLAYSIZE_CAIRO")) {
 
-						store.setValue("DEVICE_DEFINITION",
-								".bio7Device <- function(filename = \"" + pathTo + "tempDevicePlot%05d.tiff"
-										+ "\") { tiff(filename,width = " + (rec.width - 20) + ", height = "
-										+ (rec.height - correction)
-										+ ", type=\"cairo\")}; options(device=\".bio7Device\")");
+						store.setValue("DEVICE_DEFINITION", ".bio7Device <- function(filename = \"" + pathTo + "tempDevicePlot%05d.tiff" + "\") { tiff(filename,width = " + (rec.width - 20)
+								+ ", height = " + (rec.height - correction) + ", type=\"cairo\")}; options(device=\".bio7Device\")");
 					} else if (selection.equals("PLOT_IMAGEJ_DISPLAYSIZE")) {
-						store.setValue("DEVICE_DEFINITION",
-								".bio7Device <- function(filename = \"" + pathTo + "tempDevicePlot%05d.tiff"
-										+ "\") { tiff(filename,width =  " + (rec.width - 20) + ", height = "
-										+ (rec.height - correction)
-										+ ", units = \"px\")}; options(device=\".bio7Device\")");
+						store.setValue("DEVICE_DEFINITION", ".bio7Device <- function(filename = \"" + pathTo + "tempDevicePlot%05d.tiff" + "\") { tiff(filename,width =  " + (rec.width - 20)
+								+ ", height = " + (rec.height - correction) + ", units = \"px\")}; options(device=\".bio7Device\")");
 
 					}
 				}
@@ -471,8 +464,7 @@ public class CanvasView extends ViewPart {
 										if (frameSwtAwt != null)
 											// frameSwtAwt.dispatchEvent(new WindowEvent(frameSwtAwt,
 											// WindowEvent.WINDOW_ACTIVATED));
-											frameSwtAwt.dispatchEvent(
-													new WindowEvent(frameSwtAwt, WindowEvent.WINDOW_ACTIVATED));
+											frameSwtAwt.dispatchEvent(new WindowEvent(frameSwtAwt, WindowEvent.WINDOW_ACTIVATED));
 
 									}
 								}
@@ -565,11 +557,6 @@ public class CanvasView extends ViewPart {
 		dt.addDropListener(new DropTargetAdapter() {
 			public void drop(DropTargetEvent event) {
 
-				/*
-				 * IPreferenceStore store = Activator.getDefault().getPreferenceStore(); boolean
-				 * javaFXEmbedded = store.getBoolean("JAVAFX_EMBEDDED");
-				 */
-
 				FileTransfer ft = FileTransfer.getInstance();
 				if (ft.isSupportedType(event.currentDataType)) {
 					fileList = (String[]) event.data;
@@ -589,16 +576,7 @@ public class CanvasView extends ViewPart {
 									dragAndDrop.openFile(new File(fileList[x].toString()));
 
 								}
-								/*
-								 * if (javaFXEmbedded) {
-								 * 
-								 * openFile(new File(fileList[x].toString()));
-								 * 
-								 * } else { SwingUtilities.invokeLater(new Runnable() { // !! public void run()
-								 * {
-								 * 
-								 * openFile(new File(fileList[x].toString())); } }); }
-								 */
+								
 								monitor.worked(1);
 
 							}
@@ -708,27 +686,13 @@ public class CanvasView extends ViewPart {
 				ImagePlus plu = (ImagePlus) ve.get(0);
 
 				final ImageWindow win = (ImageWindow) ve.get(1);
-				IPreferenceStore store = Activator.getDefault().getPreferenceStore();
-				boolean javaFXEmbedded = store.getBoolean("JAVAFX_EMBEDDED");
-				if (javaFXEmbedded) {
-					java.awt.EventQueue.invokeLater(new Runnable() {
-						public void run() {
-							win.bio7TabClose(true);
-						}
-					});
-					/*
-					 * CTabItem cTabItem = (CTabItem) event.item; if
-					 * (cTabItem.getControl().isDisposed() == false) {
-					 * cTabItem.getControl().dispose(); }
-					 */
+				
 
-				} else {
-					java.awt.EventQueue.invokeLater(new Runnable() {
-						public void run() {
-							win.bio7TabClose(true);
-						}
-					});
-				}
+				java.awt.EventQueue.invokeLater(new Runnable() {
+					public void run() {
+						win.bio7TabClose(true);
+					}
+				});
 
 			}
 
@@ -828,7 +792,7 @@ public class CanvasView extends ViewPart {
 						// important to set current Panel!
 						current = (JPanel) ve.get(2); // current.requestFocus();
 						plu.getCanvas().repaint();
-						/*To show the status message!*/
+						/* To show the status message! */
 						win.repaint();
 
 					}
@@ -887,7 +851,7 @@ public class CanvasView extends ViewPart {
 				if (control instanceof CLabel) {
 					CLabel cLabel = (CLabel) control;
 
-					//cLabel.setFont(null);
+					// cLabel.setFont(null);
 					cLabel.setForeground(col);
 					break;
 
@@ -908,7 +872,7 @@ public class CanvasView extends ViewPart {
 		tbm.add(window);
 		tbm.add(help);
 		// tbm.add(new PlaceholderLabel().getPlaceholderLabel());
-		/*If we have a plugin which installs a main menu item!*/
+		/* If we have a plugin which installs a main menu item! */
 		Menus.updateBio7ImageJMenu();
 	}
 
@@ -917,11 +881,8 @@ public class CanvasView extends ViewPart {
 	}
 
 	public void dispose() {
-		IPreferenceStore store = Activator.getDefault().getPreferenceStore();
-		boolean javaFXEmbedded = store.getBoolean("JAVAFX_EMBEDDED");
-		if (javaFXEmbedded) {
-			IJTabs.deleteAllTabs();
-		}
+		//IPreferenceStore store = Activator.getDefault().getPreferenceStore();
+		
 	}
 
 	public static CanvasView getCanvas_view() {

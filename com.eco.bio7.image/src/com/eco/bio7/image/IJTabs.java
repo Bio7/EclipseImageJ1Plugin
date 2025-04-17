@@ -105,31 +105,29 @@ public class IJTabs {
 		dis.syncExec(new Runnable() {
 			public void run() {
 
-				IViewReference[] viewRefs = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
-						.getViewReferences();
+				IViewReference[] viewRefs = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getViewReferences();
 				for (int i = 0; i < viewRefs.length; i++) {
 					String id = viewRefs[i].getId();
 					if (id.equals("com.eco.bio7.image.detachedImage")) {
-						//IViewPart view = viewRefs[i].getView(false);
+						// IViewPart view = viewRefs[i].getView(false);
 						String secId = viewRefs[i].getSecondaryId();
 						if (secId.equals(sec)) {
 							IViewPart view = viewRefs[i].getView(false);
 							CustomDetachedImageJView cdview = (CustomDetachedImageJView) view;
 							if (cdview.isDetached()) {
 
-								IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-										.getActivePage();
+								IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
 								IViewPart activated = null;
 								try {
-									activated = page.showView("com.eco.bio7.image.detachedImage", sec,
-											IWorkbenchPage.VIEW_ACTIVATE);
+									activated = page.showView("com.eco.bio7.image.detachedImage", sec, IWorkbenchPage.VIEW_ACTIVATE);
 								} catch (PartInitException e) {
 									// TODO Auto-generated catch block
 									e.printStackTrace();
 								}
 								if (rec != null) {
 									IWorkbenchPartSite site = activated.getSite();
-									//activated = page.showView("com.eco.bio7.image.detachedImage", secId, IWorkbenchPage.VIEW_ACTIVATE);
+									// activated = page.showView("com.eco.bio7.image.detachedImage", secId,
+									// IWorkbenchPage.VIEW_ACTIVATE);
 									EModelService s = (EModelService) site.getService(EModelService.class);
 									MPartSashContainerElement p = (MPart) site.getService(MPart.class);
 
@@ -153,16 +151,14 @@ public class IJTabs {
 	 */
 	public static void deleteAllTabs() {
 		/* Close all detached views if available! */
-		IViewReference[] viewRefs = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
-				.getViewReferences();
+		IViewReference[] viewRefs = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getViewReferences();
 		for (int i = 0; i < viewRefs.length; i++) {
 			String id = viewRefs[i].getId();
 			if (id.equals("com.eco.bio7.image.detachedImage")) {
 				viewRefs[i].getPage().hideView(viewRefs[i]);
 			}
 		}
-		IPreferenceStore store = Activator.getDefault().getPreferenceStore();
-		boolean javaFXEmbedded = store.getBoolean("JAVAFX_EMBEDDED");
+
 		final CTabItem[] items = CanvasView.getCanvas_view().tabFolder.getItems();
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
@@ -171,43 +167,24 @@ public class IJTabs {
 		});
 		for (int i = 0; i < items.length; i++) {
 			final int tabcount = i;
-			if (javaFXEmbedded) {
-				if (items[tabcount].isDisposed() == false) {
-					// if (items[tabcount].getControl().isDisposed() == false) {
-					// items[tabcount].getControl().dispose();
-					/*We have to delete the control and children, too!*/
+
+			Display dis = CanvasView.getParent2().getDisplay();
+			dis.syncExec(new Runnable() {
+
+				public void run() {
+					/* We have to delete the control and children, too! */
 					Composite com = (Composite) items[tabcount].getControl();
 					Control compo[] = com.getChildren();
-					for (int u = 0; u < compo.length; u++) {
-						if (compo[u] != null && compo[u].isDisposed() == false) {
-							compo[u].dispose();
+					for (int i = 0; i < compo.length; i++) {
+						if (compo[i] != null && compo[i].isDisposed() == false) {
+							compo[i].dispose();
 						}
 					}
 					com.dispose();
 					items[tabcount].dispose();
-					// }
+
 				}
-
-			} else {
-
-				Display dis = CanvasView.getParent2().getDisplay();
-				dis.syncExec(new Runnable() {
-
-					public void run() {
-						/*We have to delete the control and children, too!*/
-						Composite com = (Composite) items[tabcount].getControl();
-						Control compo[] = com.getChildren();
-						for (int i = 0; i < compo.length; i++) {
-							if (compo[i] != null && compo[i].isDisposed() == false) {
-								compo[i].dispose();
-							}
-						}
-						com.dispose();
-						items[tabcount].dispose();
-
-					}
-				});
-			}
+			});
 
 		}
 
@@ -222,57 +199,32 @@ public class IJTabs {
 		final int nrdel = number;
 		final CTabItem[] items = CanvasView.getCanvas_view().tabFolder.getItems();
 		IPreferenceStore store = Activator.getDefault().getPreferenceStore();
-		boolean javaFXEmbedded = store.getBoolean("JAVAFX_EMBEDDED");
+
 		Display dis = CanvasView.getParent2().getDisplay();
 		dis.syncExec(new Runnable() {
 
 			public void run() {
 				Vector ve = (Vector) items[nrdel].getData();
 
-				if (javaFXEmbedded) {
-					SwingUtilities.invokeLater(new Runnable() {
-						// !!
-						public void run() {
-							ImagePlus plu = (ImagePlus) ve.get(0);
+				SwingUtilities.invokeLater(new Runnable() {
+					// !!
+					public void run() {
+						ImagePlus plu = (ImagePlus) ve.get(0);
 
-							final ImageWindow win = (ImageWindow) ve.get(1);
+						final ImageWindow win = (ImageWindow) ve.get(1);
 
-							win.bio7TabClose(true);
-
-						}
-					});
-					Composite com = (Composite) items[nrdel].getControl();
-					Control compo[] = com.getChildren();
-					for (int i = 0; i < compo.length; i++) {
-						if (compo[i] != null && compo[i].isDisposed() == false) {
-							compo[i].dispose();
-						}
+						win.bio7TabClose(true);
 					}
-					com.dispose();
-					items[nrdel].dispose();
-
-				} else {
-
-					SwingUtilities.invokeLater(new Runnable() {
-						// !!
-						public void run() {
-							ImagePlus plu = (ImagePlus) ve.get(0);
-
-							final ImageWindow win = (ImageWindow) ve.get(1);
-
-							win.bio7TabClose(true);
-						}
-					});
-					Composite com = (Composite) items[nrdel].getControl();
-					Control compo[] = com.getChildren();
-					for (int i = 0; i < compo.length; i++) {
-						if (compo[i] != null && compo[i].isDisposed() == false) {
-							compo[i].dispose();
-						}
+				});
+				Composite com = (Composite) items[nrdel].getControl();
+				Control compo[] = com.getChildren();
+				for (int i = 0; i < compo.length; i++) {
+					if (compo[i] != null && compo[i].isDisposed() == false) {
+						compo[i].dispose();
 					}
-					com.dispose();
-					items[nrdel].dispose();
 				}
+				com.dispose();
+				items[nrdel].dispose();
 
 			}
 		});
@@ -337,7 +289,7 @@ public class IJTabs {
 	 */
 	public static void deleteActiveTab() {
 		IPreferenceStore store = Activator.getDefault().getPreferenceStore();
-		boolean javaFXEmbedded = store.getBoolean("JAVAFX_EMBEDDED");
+
 		final CTabItem item = CanvasView.tabFolder.getSelection();
 		if (item != null) {
 			Display dis = CanvasView.getParent2().getDisplay();
@@ -345,41 +297,26 @@ public class IJTabs {
 
 				public void run() {
 					Vector ve = (Vector) item.getData();
-					if (javaFXEmbedded) {
 
-						final ImageWindow win = (ImageWindow) ve.get(1);
+					SwingUtilities.invokeLater(new Runnable() {
+						// !!
+						public void run() {
 
-						win.bio7TabClose(true);
-						Composite com = (Composite) item.getControl();
-						Control compo[] = com.getChildren();
-						for (int i = 0; i < compo.length; i++) {
-							if (compo[i] != null && compo[i].isDisposed() == false) {
-								compo[i].dispose();
-							}
+							final ImageWindow win = (ImageWindow) ve.get(1);
+
+							win.bio7TabClose(true);
 						}
-						com.dispose();
-						item.dispose();
-
-					} else {
-						SwingUtilities.invokeLater(new Runnable() {
-							// !!
-							public void run() {
-
-								final ImageWindow win = (ImageWindow) ve.get(1);
-
-								win.bio7TabClose(true);
-							}
-						});
-						Composite com = (Composite) item.getControl();
-						Control compo[] = com.getChildren();
-						for (int i = 0; i < compo.length; i++) {
-							if (compo[i] != null && compo[i].isDisposed() == false) {
-								compo[i].dispose();
-							}
+					});
+					Composite com = (Composite) item.getControl();
+					Control compo[] = com.getChildren();
+					for (int i = 0; i < compo.length; i++) {
+						if (compo[i] != null && compo[i].isDisposed() == false) {
+							compo[i].dispose();
 						}
-						com.dispose();
-						item.dispose();
 					}
+					com.dispose();
+					item.dispose();
+
 				}
 			});
 		}
@@ -535,15 +472,14 @@ public class IJTabs {
 		Display dis = CanvasView.getParent2().getDisplay();
 		dis.syncExec(new Runnable() {
 			public void run() {
-				IViewReference[] viewRefs = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
-						.getViewReferences();
+				IViewReference[] viewRefs = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getViewReferences();
 				for (int i = 0; i < viewRefs.length; i++) {
 					String id = viewRefs[i].getId();
 					if (id.equals("com.eco.bio7.image.detachedImage")) {
 						IViewPart view = viewRefs[i].getView(false);
 						String secId = viewRefs[i].getSecondaryId();
 						CustomDetachedImageJView cdview = (CustomDetachedImageJView) view;
-						
+
 						cdview.setFocus();
 						ImagePlus ip = WindowManager.getImage(Integer.valueOf(secId));
 						ImageCanvas canvas = ip.getCanvas();
@@ -569,20 +505,19 @@ public class IJTabs {
 		dis.syncExec(new Runnable() {
 
 			public void run() {
-				/*Check for detached views!*/
-				IViewReference[] viewRefs = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
-						.getViewReferences();
+				/* Check for detached views! */
+				IViewReference[] viewRefs = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getViewReferences();
 				for (int i = 0; i < viewRefs.length; i++) {
 					String id = viewRefs[i].getId();
 					if (id.equals("com.eco.bio7.image.detachedImage")) {
-						//IViewPart view = viewRefs[i].getView(false);
+						// IViewPart view = viewRefs[i].getView(false);
 						String secId = viewRefs[i].getSecondaryId();
-						//CustomDetachedImageJView cdview = (CustomDetachedImageJView) view;
+						// CustomDetachedImageJView cdview = (CustomDetachedImageJView) view;
 						/* Get the image from the detached secondary view id (same id)! */
 						ImagePlus plu = WindowManager.getImage(Integer.valueOf(secId));
 						if (plu != null) {
 							ImagePlus ip = WindowManager.getImage(Integer.valueOf(secId));
-							//ImageWindow currentWindow = WindowManager.getCurrentWindow();
+							// ImageWindow currentWindow = WindowManager.getCurrentWindow();
 							ImageWindow window = ip.getWindow();
 							if (refWin.equals(window)) {
 

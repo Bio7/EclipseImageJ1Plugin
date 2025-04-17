@@ -1,14 +1,15 @@
 package com.eco.bio7.image.preferences;
 
-import java.util.Iterator;
-
-import org.eclipse.jface.preference.*;
+import org.eclipse.jface.preference.BooleanFieldEditor;
+import org.eclipse.jface.preference.DirectoryFieldEditor;
+import org.eclipse.jface.preference.FieldEditorPreferencePage;
+import org.eclipse.jface.preference.IntegerFieldEditor;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.IWorkbenchPreferencePage;
+
 import com.eco.bio7.image.Activator;
 import com.eco.bio7.image.Util;
-import com.sun.glass.ui.Menu;
 
 import ij.Menus;
 
@@ -43,8 +44,6 @@ public class Bio7ImageJPreferences extends FieldEditorPreferencePage implements 
 		addField(new DirectoryFieldEditor("MACROS_PATH", "&Macros Path", getFieldEditorParent()));
 
 		addField(new SpacerFieldEditor(getFieldEditorParent()));
-
-		addField(new BooleanFieldEditor("JAVAFX_EMBEDDED", "&Use JavaFX to embedd the ImageJ canvas", getFieldEditorParent()));
 
 		addField(new BooleanFieldEditor("ROI_MANAGER", "&ROI Manager window on top", getFieldEditorParent()));
 

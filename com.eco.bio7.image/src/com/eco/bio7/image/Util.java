@@ -87,7 +87,7 @@ public class Util {
 
 				FontData fontData = dis.getSystemFont().getFontData()[0];
 
-				//int resolution = Toolkit.getDefaultToolkit().getScreenResolution();
+				// int resolution = Toolkit.getDefaultToolkit().getScreenResolution();
 				int awtFontSize = (int) Math.round((double) fontData.getHeight() * dis.getDPI().y / 72.0);
 
 				/* Font size correction! */
@@ -344,67 +344,6 @@ public class Util {
 	}
 
 	/**
-	 * Source from: http://www.guigarage.com/2013/01/invokeandwait-for-javafx/
-	 * Invokes a Runnable in JFX Thread and waits while it's finished. Like
-	 * SwingUtilities.invokeAndWait does for EDT.
-	 * 
-	 * @param run The Runnable that has to be called on JFX thread.
-	 * @throws InterruptedException f the execution is interrupted.
-	 * @throws ExecutionException   If a exception is occurred in the run method of
-	 *                              the Runnable
-	 */
-	/**
-	 * Simple helper class.
-	 * 
-	 * @author hendrikebbers
-	 * 
-	 */
-	private static class ThrowableWrapper {
-		Throwable t;
-	}
-
-	public static void runAndWait(final Runnable run) throws InterruptedException, ExecutionException {
-		if (javafx.application.Platform.isFxApplicationThread()) {
-			try {
-				run.run();
-			} catch (Exception e) {
-				throw new ExecutionException(e);
-			}
-		} else {
-			final Lock lock = new ReentrantLock();
-			final Condition condition = lock.newCondition();
-			final ThrowableWrapper throwableWrapper = new ThrowableWrapper();
-			lock.lock();
-			try {
-				javafx.application.Platform.runLater(new Runnable() {
-
-					@Override
-					public void run() {
-						lock.lock();
-						try {
-							run.run();
-						} catch (Throwable e) {
-							throwableWrapper.t = e;
-						} finally {
-							try {
-								condition.signal();
-							} finally {
-								lock.unlock();
-							}
-						}
-					}
-				});
-				condition.await();
-				if (throwableWrapper.t != null) {
-					throw new ExecutionException(throwableWrapper.t);
-				}
-			} finally {
-				lock.unlock();
-			}
-		}
-	}
-
-	/**
 	 * A method to detect if the dark theme is active.
 	 * 
 	 * @return a boolean value.
@@ -491,7 +430,7 @@ public class Util {
 
 	}
 
-	//Method source from: https://github.com/archimatetool/archi/
+	// Method source from: https://github.com/archimatetool/archi/
 
 	/**
 	 * Compare two version numbers with the format 1, 1.1, or 1.1.1
@@ -516,7 +455,7 @@ public class Util {
 	 * @return integer
 	 */
 
-	//Method source from: https://github.com/archimatetool/archi/
+	// Method source from: https://github.com/archimatetool/archi/
 	public static int versionNumberAsInt(String version) {
 		String[] vals = version.split("\\.");
 
@@ -533,7 +472,7 @@ public class Util {
 		return 0;
 	}
 
-	//Method source from: https://github.com/archimatetool/archi/
+	// Method source from: https://github.com/archimatetool/archi/
 
 	/**
 	 * Compare given version to current OS version and see if the current OS version

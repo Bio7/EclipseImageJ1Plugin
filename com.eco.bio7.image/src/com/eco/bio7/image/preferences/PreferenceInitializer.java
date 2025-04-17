@@ -28,7 +28,6 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
 		store.setDefault("PLUGINS_PATH", pluginsPath);
 		store.setDefault("MACROS_PATH", macrosPath);
 
-		store.setDefault("JAVAFX_EMBEDDED", false);
 		store.setDefault("ROI_MANAGER", false);
 		store.setDefault("RESULTS_TABLE", false);
 		store.setDefault("MACRO_RECORDER", false);

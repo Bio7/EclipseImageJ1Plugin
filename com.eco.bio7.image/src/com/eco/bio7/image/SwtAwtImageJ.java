@@ -16,30 +16,23 @@ import java.awt.EventQueue;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Vector;
+
 import javax.swing.JApplet;
 import javax.swing.JPanel;
 import javax.swing.JRootPane;
-import org.eclipse.jface.preference.IPreferenceStore;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.awt.SWT_AWT;
 import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.graphics.Rectangle;
-import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 
-import ij.IJ;
-import ij.ImageJ;
 import ij.ImagePlus;
 import ij.gui.ImageCanvas;
 import ij.gui.ImageLayout;
 import ij.gui.ImageWindow;
-import ij.gui.PointRoi;
-import ij.gui.Roi;
 import ij.gui.ScrollbarWithLabel;
-import ij.plugin.PointToolOptions;
-import ij.plugin.frame.Channels;
-import javafx.application.Platform;
 
 public class SwtAwtImageJ {
 
@@ -83,7 +76,7 @@ public class SwtAwtImageJ {
 		ve = new Vector();
 		ve.add(plus);
 		ve.add(win);
-		/* Create a new JavaFX Swing node! */
+		
 
 	}
 
@@ -96,58 +89,36 @@ public class SwtAwtImageJ {
 	}
 
 	public void addTab(final String title) {
-		/* Add JavaFX to embed the ImageJ canvas! */
-		IPreferenceStore store = Activator.getDefault().getPreferenceStore();
-		boolean javaFXEmbedded = store.getBoolean("JAVAFX_EMBEDDED");
-		if (javaFXEmbedded) {
-			SwingFxSwtView view = new SwingFxSwtView();
+		/* Add SWT_AWT to embed the ImageJ canvas! */
 
-			Display dis = Util.getDisplay();
+		Display dis = Util.getDisplay();
+		// new AwtDialogListener(Util.getDisplay());
+		if (Util.getOS().equals("Mac")) {
+			/*
+			 * On Mac we had to use async (no sync) else we got no keyboard focus! We also
+			 * have to change the StackEditor for Mac to avoid a deadlock when converting a
+			 * stack to images!
+			 */
 			dis.syncExec(new Runnable() {
 
 				public void run() {
 
-					createJavaFXTabDisplay(title, view);
+					createSwingTabDisplay(title);
 
 				}
 			});
 
 		} else {
-			/* Add SWT_AWT to embed the ImageJ canvas! */
+			dis.syncExec(new Runnable() {
 
-			Display dis = Util.getDisplay();
-			// new AwtDialogListener(Util.getDisplay());
-			if (Util.getOS().equals("Mac")) {
-				/*
-				 * On Mac we had to use async (no sync) else we got no keyboard focus! We also
-				 * have to change the StackEditor for Mac to avoid a deadlock when converting a
-				 * stack to images!
-				 */
-				dis.syncExec(new Runnable() {
+				public void run() {
 
-					public void run() {
-		               
+					createSwingTabDisplay(title);
 
-						createSwingTabDisplay(title);
-						
-						
-						
-                        
-					}
-				});
-				
-				
-			} else {
-				dis.syncExec(new Runnable() {
-
-					public void run() {
-
-						createSwingTabDisplay(title);
-
-					}
-				});
-			}
+				}
+			});
 		}
+
 	}
 
 	public JPanel getPanel() {
@@ -176,7 +147,10 @@ public class SwtAwtImageJ {
 		ci.setControl(top);
 
 		frame = SWT_AWT.new_Frame(top);
-		/*HighDPI fix for Windows frame layout which reverts the DPIUtil settings of the default implementation of the SWT_AWT class!*/
+		/*
+		 * HighDPI fix for Windows frame layout which reverts the DPIUtil settings of
+		 * the default implementation of the SWT_AWT class!
+		 */
 		if (Util.getOS().equals("Windows")) {
 			if (Util.getZoom() >= 175) {
 				Composite parent = top.getParent();
@@ -244,15 +218,12 @@ public class SwtAwtImageJ {
 		// CanvasView.getCurrent().doLayout();
 		// a.doLayout();
 		plus.setActivated(); // notify ImagePlus that image has been activated
-		/*if (Util.getOS().equals("Mac")) {
-			plus.setTitle(plus.getTitle());
-		} else {
-			EventQueue.invokeLater(() -> {
-				plus.setTitle(plus.getTitle());
-			});
-		}*/
+		/*
+		 * if (Util.getOS().equals("Mac")) { plus.setTitle(plus.getTitle()); } else {
+		 * EventQueue.invokeLater(() -> { plus.setTitle(plus.getTitle()); }); }
+		 */
 		ci.setText(plus.getTitle());
-		/*Fix to display an image on MacOSX!*/
+		/* Fix to display an image on MacOSX! */
 		if (Util.getOS().equals("Mac")) {
 			Composite parent = top.getParent();
 			final Rectangle clientArea = parent.getClientArea(); // To Pixels
@@ -262,54 +233,6 @@ public class SwtAwtImageJ {
 			});
 		}
 
-	}
-
-	private void createJavaFXTabDisplay(final String title, SwingFxSwtView view) {
-		ci = new CTabItem(CanvasView.tabFolder, SWT.CLOSE, CanvasView.insertMark + 1);
-		// ci.setData(plus);// add a reference to the image
-		// for use as
-		// selected tab
-		ci.setData(ve);// add a vector with the data from
-		// the
-		// ImageWindow and the Image!!
-		ci.setText(title);
-		ci.isShowing();
-
-		top = new Composite(CanvasView.tabFolder, SWT.NONE);
-		top.setLayout(new FillLayout());
-
-		ci.setControl(top);
-
-		a = new JPanel();
-		a.setBackground(ImageJ.getSystemColour());
-		/*
-		 * At this point we open and initialize the JavaFX toolkit by means of the
-		 * JavaFX SWT panel!
-		 */
-
-		view.embedd(top, a);
-		a.add(im);// Add the Image canvas to the JPanel
-		a.setLayout(new ImageLayout(im));
-
-		if (channelselect != null) {
-			a.add(channelselect);
-		}
-		if (sliceselect != null) {
-			a.add(sliceselect);
-		}
-		if (frameselect != null) {
-			a.add(frameselect);
-		}
-
-		ve.add(a); // Add to the vector for access
-		CanvasView.tabFolder.setLayout(null);
-		CanvasView.tabFolder.showItem(ci);
-		CanvasView.tabFolder.setSelection(ci);
-		CanvasView.setCurrent(a);
-		CanvasView.getCanvas_view().win = win;
-		// CanvasView.getCurrent().doLayout();
-		a.doLayout();
-		plus.setActivated(); // notify ImagePlus that image has been activated
 	}
 
 }

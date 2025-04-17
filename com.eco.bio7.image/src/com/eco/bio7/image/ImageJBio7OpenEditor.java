@@ -1,7 +1,7 @@
 package com.eco.bio7.image;
 
 import java.io.File;
-import javax.swing.SwingUtilities;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -9,7 +9,6 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.IJobChangeEvent;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.core.runtime.jobs.JobChangeAdapter;
-import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IEditorInput;
@@ -22,6 +21,7 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.ide.ResourceUtil;
 import org.eclipse.ui.part.EditorPart;
+
 import ij.IJ;
 import ij.io.OpenDialog;
 import ij.io.Opener;
@@ -37,49 +37,44 @@ public class ImageJBio7OpenEditor extends EditorPart {
 		IFile file = ResourceUtil.getFile(input);
 
 		fi = file.getRawLocation().toString();
-		/* If JavaFX embeds the ImageJ canvas! */
-		IPreferenceStore store = Activator.getDefault().getPreferenceStore();
-		boolean javaFXEmbedded = store.getBoolean("JAVAFX_EMBEDDED");
-		if (javaFXEmbedded) {
-			openFile(new File(fi));
-		} else {
-			// String dirPath = new File(fi).getParentFile().getPath().replace("\\", "/");
+		
+
+		// String dirPath = new File(fi).getParentFile().getPath().replace("\\", "/");
 //			SwingUtilities.invokeLater(new Runnable() {
 //				public void run() {
 //
 //					openFile(new File(fi));
 //				}
 //			});
-			Job job = new Job("Open...") {
-				@Override
-				protected IStatus run(IProgressMonitor monitor) {
-					monitor.beginTask("Opening...", IProgressMonitor.UNKNOWN);
+		Job job = new Job("Open...") {
+			@Override
+			protected IStatus run(IProgressMonitor monitor) {
+				monitor.beginTask("Opening...", IProgressMonitor.UNKNOWN);
 
-					openFile(new File(fi));
+				openFile(new File(fi));
 
-					monitor.done();
-					return Status.OK_STATUS;
+				monitor.done();
+				return Status.OK_STATUS;
+			}
+
+		};
+		job.addJobChangeListener(new JobChangeAdapter() {
+			public void done(IJobChangeEvent event) {
+				if (event.getResult().isOK()) {
+
+				} else {
+
 				}
-
-			};
-			job.addJobChangeListener(new JobChangeAdapter() {
-				public void done(IJobChangeEvent event) {
-					if (event.getResult().isOK()) {
-
-					} else {
-
-					}
-				}
-			});
-			// job.setUser(true);
-			job.schedule();
-		}
+			}
+		});
+		// job.setUser(true);
+		job.schedule();
 
 		openView("com.eco.bio7.imagej");
 		activateView("org.eclipse.ui.navigator.ProjectExplorer");
 
 		// RServe.openPDF(dirPath + "/", theName + ".pdf", useBrowser,
-		// openInJavaFXBrowser);
+		
 	}
 
 	public void init(IEditorSite site, IEditorInput input) {
@@ -111,7 +106,7 @@ public class ImageJBio7OpenEditor extends EditorPart {
 		}
 
 		public void partDeactivated(IWorkbenchPartReference partRef) { // TODO
-										// //
+			// //
 
 		}
 

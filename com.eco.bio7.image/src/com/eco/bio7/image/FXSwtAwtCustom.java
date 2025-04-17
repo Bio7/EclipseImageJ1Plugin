@@ -14,8 +14,6 @@ package com.eco.bio7.image;
 import java.awt.EventQueue;
 import java.awt.Panel;
 import java.util.Vector;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
 import javax.swing.JApplet;
 import javax.swing.JPanel;
 import javax.swing.JRootPane;
@@ -50,12 +48,6 @@ public class FXSwtAwtCustom {
 
 	private CustomDetachedImageJView view;
 
-	protected Scene scene;
-
-	protected Stage stage2;
-
-	SwingFxSwtView fxView;
-
 	protected Shell parent;
 
 	public FXSwtAwtCustom(JPanel Jpanel, CustomDetachedImageJView view) {
@@ -71,79 +63,61 @@ public class FXSwtAwtCustom {
 	}
 
 	public void addTab(final String title) {
-		/* Add JavaFX to embed the ImageJ canvas! */
-		IPreferenceStore store = Activator.getDefault().getPreferenceStore();
-		boolean javaFXEmbedded = store.getBoolean("JAVAFX_EMBEDDED");
-		if (javaFXEmbedded) {
-			SwingFxSwtView fxView = new SwingFxSwtView();
-			Composite comp = view.getCustomViewParent();
-			Display dis = comp.getDisplay();
-			dis.syncExec(new Runnable() {
-				public void run() {
-
-					top = new Composite(view.getCustomViewParent(), SWT.NONE);
-					top.setLayout(new FillLayout());
-					comp.setData(ve);
-					fxView.embedd(top, jpanel);
-
+		/* Add SWT_AWT to embed the ImageJ canvas! */
+		Composite customViewParent = view.getCustomViewParent();
+		Display dis = customViewParent.getDisplay();
+		dis.syncExec(new Runnable() {
+			public void run() {
+				parent = new Shell(Util.getDisplay());
+				top = new Composite(parent, SWT.NO_BACKGROUND | SWT.EMBEDDED);
+				try {
+					System.setProperty("sun.awt.noerasebackground", "true");
+				} catch (NoSuchMethodError error) {
 				}
-			});
-		}
 
-		else {
-			/* Add SWT_AWT to embed the ImageJ canvas! */
-			Composite customViewParent = view.getCustomViewParent();
-			Display dis = customViewParent.getDisplay();
-			dis.syncExec(new Runnable() {
-				public void run() {
-					parent = new Shell(Util.getDisplay());
-					top = new Composite(parent, SWT.NO_BACKGROUND | SWT.EMBEDDED);
-					try {
-						System.setProperty("sun.awt.noerasebackground", "true");
-					} catch (NoSuchMethodError error) {
-					}
-
-					
-					customViewParent.setData(ve);
-					frame = SWT_AWT.new_Frame(top);
-					/*HighDPI fix for Windows frame layout which reverts the DPIUtil settings of the default implementation of the SWT_AWT class!*/
-					if (Util.getOS().equals("Windows")) {
-						if (Util.getZoom() >= 175) {
-							customViewParent.getDisplay().asyncExec(() -> {
-								if (customViewParent.isDisposed())
-									return;
-								final Rectangle clientArea = customViewParent.getClientArea(); // To Pixels
-								EventQueue.invokeLater(() -> {
-									frame.setSize(clientArea.width, clientArea.height);
-									frame.validate();
-								});
+				customViewParent.setData(ve);
+				frame = SWT_AWT.new_Frame(top);
+				/*
+				 * HighDPI fix for Windows frame layout which reverts the DPIUtil settings of
+				 * the default implementation of the SWT_AWT class!
+				 */
+				if (Util.getOS().equals("Windows")) {
+					if (Util.getZoom() >= 175) {
+						customViewParent.getDisplay().asyncExec(() -> {
+							if (customViewParent.isDisposed())
+								return;
+							final Rectangle clientArea = customViewParent.getClientArea(); // To Pixels
+							EventQueue.invokeLater(() -> {
+								frame.setSize(clientArea.width, clientArea.height);
+								frame.validate();
 							});
-						}
-
+						});
 					}
 
-					//SwtAwt.setSwtAwtFocus(frame, top,Util.getDisplay());
-
-					panel = new JApplet() {
-						public void update(java.awt.Graphics g) {
-							// Do not erase the background
-							paint(g);
-						}
-					};
-
-					frame.add(panel);
-
-					JRootPane root = new JRootPane();
-					panel.add(root);
-					contentPane = root.getContentPane();
-
-					contentPane.add(jpanel);
-
-					customViewParent.layout();
-
 				}
-			});
-		}
+
+				// SwtAwt.setSwtAwtFocus(frame, top,Util.getDisplay());
+
+				panel = new JApplet() {
+					public void update(java.awt.Graphics g) {
+						// Do not erase the background
+						paint(g);
+					}
+				};
+
+				frame.add(panel);
+
+				JRootPane root = new JRootPane();
+				panel.add(root);
+				contentPane = root.getContentPane();
+
+				contentPane.add(jpanel);
+
+				customViewParent.layout();
+
+			}
+		});
+
 	}
 
 }

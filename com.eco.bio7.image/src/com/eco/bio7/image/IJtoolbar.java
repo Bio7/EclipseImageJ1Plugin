@@ -11,18 +11,12 @@
 
 package com.eco.bio7.image;
 
-import java.awt.GridLayout;
-import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
-
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IPartListener2;
 import org.eclipse.ui.IWorkbenchPartReference;
 import org.eclipse.ui.part.ViewPart;
-
-import ij.IJ;
 
 public class IJtoolbar extends ViewPart {
 
@@ -84,7 +78,7 @@ public class IJtoolbar extends ViewPart {
 			}
 
 			public void partClosed(IWorkbenchPartReference partRef) {
-				
+
 				Display dis = Util.getDisplay();
 				dis.syncExec(new Runnable() {
 
@@ -117,46 +111,21 @@ public class IJtoolbar extends ViewPart {
 
 			}
 		});
-		/*
-		 * On MacOSX the javaFX integration works fine and avoids some errors but has lower resolution!
-		 */
-		boolean enable = false;
-		if (enable) { //
-			SwingUtilities.invokeLater(new Runnable() {
-				// !!
-				public void run() {
-					// jpp.repaint();
-
-					JPanel jpp = new JPanel();
-					jpp.setLayout(new GridLayout(2, 1));
-					jpp.add(IJ.getInstance().toolbar);
-					jpp.add(IJ.getInstance().statusBar);
-					Display display = Util.getDisplay();
-					display.asyncExec(new Runnable() {
-						public void run() {
-							SwingFxSwtView view = new SwingFxSwtView();
-							view.embedd(parent, jpp);
-						}
-					});
-				}
-			});
-		}
 
 		/*
-		 * On Windows and Linux we use the SWT_AWT bridge!
+		 * We use the SWT_AWT bridge!
 		 */
-		else {
-			Display dis = Util.getDisplay();
-			dis.syncExec(new Runnable() {
 
-				public void run() {
-					Color col=parent.getBackground();
-					toolBar = new IJtoolbarSwtAwt(col);
-					topIJtoolbarSwtAwt = toolBar.getTop();
-					topIJtoolbarSwtAwt.setParent(parent);
-				}
-			});
-		}
+		Display dis = Util.getDisplay();
+		dis.syncExec(new Runnable() {
+
+			public void run() {
+				Color col = parent.getBackground();
+				toolBar = new IJtoolbarSwtAwt(col);
+				topIJtoolbarSwtAwt = toolBar.getTop();
+				topIJtoolbarSwtAwt.setParent(parent);
+			}
+		});
 
 	}
 

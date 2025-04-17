@@ -27,7 +27,6 @@ import ij.measure.Calibration;
 import ij.process.ImageProcessor;
 import ij.process.LUT;
 
-
 /** Implements the AddSlice, DeleteSlice and "Stack to Images" commands. */
 public class StackEditor implements PlugIn {
 	ImagePlus imp;
@@ -45,7 +44,7 @@ public class StackEditor implements PlugIn {
 		else if (arg.equals("delete"))
 			deleteSlice();
 		else if (arg.equals("toimages")) {
-				
+
 			Job job = new Job("Convert Stack to Images") {
 				@Override
 				protected IStatus run(IProgressMonitor monitor) {
@@ -56,7 +55,7 @@ public class StackEditor implements PlugIn {
 				}
 
 			};
-			
+
 			// job.setSystem(true);
 			job.schedule();
 			try {
@@ -65,10 +64,9 @@ public class StackEditor implements PlugIn {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
+
 		}
-		
-		
+
 	}
 
 	void addSlice() {
@@ -83,7 +81,7 @@ public class StackEditor implements PlugIn {
 		if (stack.size() == 1)
 			id = imp.getID();
 		/* Changed for Bio7! */
-		//IJTabs.deleteActiveTab();
+		// IJTabs.deleteActiveTab();
 		ImageProcessor ip = imp.getProcessor();
 		int n = imp.getCurrentSlice();
 		if (IJ.altKeyDown())
@@ -113,7 +111,8 @@ public class StackEditor implements PlugIn {
 		stack.deleteSlice(n);
 		if (stack.size() == 1) {
 			String label = stack.getSliceLabel(1);
-			if (label!=null) imp.setProp("Slice_Label", label);
+			if (label != null)
+				imp.setProp("Slice_Label", label);
 		}
 		imp.setStack(null, stack);
 		if (n-- < 1)
@@ -314,18 +313,16 @@ public class StackEditor implements PlugIn {
 		ImageStack stack = imp.getStack();
 		/* Changed for Bio7! */
 		IPreferenceStore store = Activator.getDefault().getPreferenceStore();
-		boolean javaFXEmbedded = store.getBoolean("JAVAFX_EMBEDDED");
 
 		int size = stack.size();
 		if (size > 30 && !IJ.isMacro()) {
-			boolean ok = IJ.showMessageWithCancel("Convert to Images?",
-					"Are you sure you want to convert this\nstack to " + size + " separate windows?");
+			boolean ok = IJ.showMessageWithCancel("Convert to Images?", "Are you sure you want to convert this\nstack to " + size + " separate windows?");
 			if (!ok) {
 				imp.unlock();
 				return;
 			}
 		}
-		//IJTabs.deleteActiveTab();
+		// IJTabs.deleteActiveTab();
 		Calibration cal = imp.getCalibration();
 		CompositeImage cimg = imp.isComposite() ? (CompositeImage) imp : null;
 		if (imp.getNChannels() != imp.getStackSize())
@@ -369,63 +366,27 @@ public class StackEditor implements PlugIn {
 			}
 
 			/* Changed for Bio7! */
-			if (javaFXEmbedded) {
-				try {
-					try {
-						SwingUtilities.invokeAndWait(new Runnable() {
 
-							public void run() {
+			if (Util.getOS().equals("Mac")) {
 
-								try {
-									Util.runAndWait(new Runnable() {
+				if (count == size)
+					lastImageID = imp2.getID();
+				/*
+				 * Wrap in sync method for MacOSX only!
+				 */
 
-										public void run() {
-											if (count == size)
-												lastImageID = imp2.getID();
-											imp2.show();
-
-										}
-									});
-								} catch (InterruptedException | ExecutionException e) {
-									// TODO Auto-generated catch block
-									e.printStackTrace();
-								}
-
-							}
-						});
-					} catch (InvocationTargetException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				imp2.show();
 
 			} else {
 
-				if (Util.getOS().equals("Mac")) {
+				if (count == size)
+					lastImageID = imp2.getID();
+				imp2.show();
 
-					if (count == size)
-						lastImageID = imp2.getID();
-					/*
-					 * Wrap in sync method for MacOSX only!
-					 */
-
-					
-							imp2.show();
-						
-				} else {
-
-					if (count == size)
-						lastImageID = imp2.getID();
-					imp2.show();
-
-					CanvasView canvasView = CanvasView.getCanvas_view();
-					canvasView.recalculateLayout();
-				}
-
+				CanvasView canvasView = CanvasView.getCanvas_view();
+				canvasView.recalculateLayout();
 			}
+
 		}
 		imp.changes = false;
 		ImageWindow win = imp.getWindow();

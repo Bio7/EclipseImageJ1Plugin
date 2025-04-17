@@ -97,7 +97,7 @@ public class ImageJ extends Frame implements ActionListener, MouseListener, KeyL
 	 * string.
 	 */
 
-	public static final String VERSION = "1.54q";	 
+	public static final String VERSION = "1.54q";
 	public static final String BUILD = "13";
 	public static Color backgroundColor;
 	/** SansSerif, 12-point, plain font. */
@@ -106,7 +106,7 @@ public class ImageJ extends Frame implements ActionListener, MouseListener, KeyL
 	public static final Font SansSerif14 = new Font("SansSerif", Font.PLAIN, 14);
 	/** Address of socket where Image accepts commands */
 	public static final int DEFAULT_PORT = 57294;
- 
+
 	/** Run as normal application. */
 	public static final int STANDALONE = 0;
 
@@ -115,7 +115,7 @@ public class ImageJ extends Frame implements ActionListener, MouseListener, KeyL
 
 	/** Run embedded and invisible in another application. */
 	public static final int NO_SHOW = 2;
-	
+
 	/** Run as the ImageJ application. */
 	public static final int IMAGEJ_APP = 3;
 
@@ -152,7 +152,7 @@ public class ImageJ extends Frame implements ActionListener, MouseListener, KeyL
 	private static boolean batchMode;
 	boolean hotkey;
 	private ImageJContextMenuAction imageContextMenuAction;
-	
+
 	public ImageJContextMenuAction getImageContextMenuAction() {
 		return imageContextMenuAction;
 	}
@@ -191,7 +191,7 @@ public class ImageJ extends Frame implements ActionListener, MouseListener, KeyL
 			IJ.setDebugMode(true);
 		mode = mode & 255;
 		boolean useExceptionHandler = false;
-		if (mode==IMAGEJ_APP) {
+		if (mode == IMAGEJ_APP) {
 			mode = STANDALONE;
 			useExceptionHandler = true;
 		}
@@ -200,7 +200,7 @@ public class ImageJ extends Frame implements ActionListener, MouseListener, KeyL
 		embedded = applet == null && (mode == EMBEDDED || mode == NO_SHOW);
 		this.applet = applet;
 		String err1 = Prefs.load(this, applet);
-		backgroundColor=Util.getSWTBackgroundToAWT();
+		backgroundColor = Util.getSWTBackgroundToAWT();
 		setBackground(backgroundColor);
 		Menus m = new Menus(this, applet);
 		String err2 = m.addMenuBar();
@@ -256,7 +256,7 @@ public class ImageJ extends Frame implements ActionListener, MouseListener, KeyL
 			setAlwaysOnTop(Prefs.alwaysOnTop);
 			pack();
 			/* Changed for Bio7! */
-			//setLocation(loc.x, loc.y);
+			// setLocation(loc.x, loc.y);
 			// setVisible(true);
 			/*
 			 * Dimension size = getSize(); if (size!=null) { if (IJ.debugMode)
@@ -273,28 +273,27 @@ public class ImageJ extends Frame implements ActionListener, MouseListener, KeyL
 			IJ.error(err1);
 		if (err2 != null) {
 			IJ.error(err2);
-			//IJ.runPlugIn("ij.plugin.ClassChecker", "");
+			// IJ.runPlugIn("ij.plugin.ClassChecker", "");
 		}
-		//Changed for Bio7. Adapter not needed anymore!
-		/*if (IJ.isMacintosh() && applet == null) {
-		
-			try {
-				if (IJ.javaVersion()>8) // newer JREs use different drag-drop, about mechanism
-					IJ.runPlugIn("ij.plugin.MacAdapter9", "");
-				else
-					IJ.runPlugIn("ij.plugin.MacAdapter", "");
-			} catch (Throwable e) {
-				
-			}
-			
-			
-		
-		}*/
+		// Changed for Bio7. Adapter not needed anymore!
+		/*
+		 * if (IJ.isMacintosh() && applet == null) {
+		 * 
+		 * try { if (IJ.javaVersion()>8) // newer JREs use different drag-drop, about
+		 * mechanism IJ.runPlugIn("ij.plugin.MacAdapter9", ""); else
+		 * IJ.runPlugIn("ij.plugin.MacAdapter", ""); } catch (Throwable e) {
+		 * 
+		 * }
+		 * 
+		 * 
+		 * 
+		 * }
+		 */
 		if (applet == null)
 			IJ.runPlugIn("ij.plugin.DragAndDrop", "");
 		if (!getTitle().contains("Fiji") && useExceptionHandler) {
 			Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());
-			System.setProperty("sun.awt.exception.handler",ExceptionHandler.class.getName());
+			System.setProperty("sun.awt.exception.handler", ExceptionHandler.class.getName());
 		}
 		String str = m.getMacroCount() == 1 ? " macro" : " macros";
 		configureProxy();
@@ -302,7 +301,7 @@ public class ImageJ extends Frame implements ActionListener, MouseListener, KeyL
 			loadCursors();
 		(new ij.macro.StartupRunner()).run(batchMode); // run RunAtStartup and AutoRun macros
 		IJ.showStatus(version() + m.getPluginCount() + " commands; " + m.getMacroCount() + str);
-	    imageContextMenuAction=new ImageJContextMenuAction();
+		imageContextMenuAction = new ImageJContextMenuAction();
 	}
 
 	/* Changed for Bio7! */
@@ -443,10 +442,10 @@ public class ImageJ extends Frame implements ActionListener, MouseListener, KeyL
 	public JPanel getStatusBar() {
 		return statusBar;
 	}
-	
+
 	public static String getStatusBarText() {
 		ImageJ ij = IJ.getInstance();
-		return ij!=null?ij.statusLine.getText():"";
+		return ij != null ? ij.statusLine.getText() : "";
 	}
 
 	/** Starts executing a menu command in a separate thread. */
@@ -709,7 +708,7 @@ public class ImageJ extends Frame implements ActionListener, MouseListener, KeyL
 				if (imp == null)
 					return;
 				Roi roi = imp.getRoi();
-				if (shift&&imp==Orthogonal_Views.getImage())
+				if (shift && imp == Orthogonal_Views.getImage())
 					return;
 				if (IJ.isMacOSX() && IJ.isJava18()) {
 					RoiManager rm = RoiManager.getInstance();
@@ -717,8 +716,8 @@ public class ImageJ extends Frame implements ActionListener, MouseListener, KeyL
 					if (rmActive && (keyCode == KeyEvent.VK_DOWN || keyCode == KeyEvent.VK_UP))
 						rm.repaint();
 				}
-				boolean stackKey = imp.getStackSize()>1 && (roi==null||shift);
-				boolean zoomKey = roi==null || shift || control;
+				boolean stackKey = imp.getStackSize() > 1 && (roi == null || shift);
+				boolean zoomKey = roi == null || shift || control;
 				if (stackKey && keyCode == KeyEvent.VK_RIGHT)
 					cmd = "Next Slice [>]";
 				else if (stackKey && keyCode == KeyEvent.VK_LEFT)
@@ -766,7 +765,7 @@ public class ImageJ extends Frame implements ActionListener, MouseListener, KeyL
 
 		if (cmd != null && !cmd.equals("")) {
 			commandName = cmd;
-			if (!control && !meta && (cmd.equals("Fill")||cmd.equals("Draw")))
+			if (!control && !meta && (cmd.equals("Fill") || cmd.equals("Draw")))
 				hotkey = true;
 			if (cmd.charAt(0) == MacroInstaller.commandPrefix)
 				MacroInstaller.runMacroShortcut(cmd);
@@ -786,12 +785,7 @@ public class ImageJ extends Frame implements ActionListener, MouseListener, KeyL
 			index = CanvasView.tabFolder.getSelectionIndex();
 			root = (JPanel) currentPanel.getParent();
 			if (full == null) {
-				IPreferenceStore store = Activator.getDefault().getPreferenceStore();
-				boolean javaFXEmbedded = store.getBoolean("JAVAFX_EMBEDDED");
-				if (javaFXEmbedded == false) {
-					full = new Fullscreen(currentPanel);
-
-				}
+				full = new Fullscreen(currentPanel);
 			}
 		}
 	}
@@ -832,8 +826,8 @@ public class ImageJ extends Frame implements ActionListener, MouseListener, KeyL
 			return true;
 		// Channels dialog?
 		Window window = WindowManager.getActiveWindow();
-		title = window!=null&&(window instanceof Dialog)?((Dialog)window).getTitle():null;
-		if (title!=null && title.equals("Channels"))
+		title = window != null && (window instanceof Dialog) ? ((Dialog) window).getTitle() : null;
+		if (title != null && title.equals("Channels"))
 			return true;
 		ImageWindow win = imp.getWindow();
 		// LOCI Data Browser window?
@@ -845,8 +839,10 @@ public class ImageJ extends Frame implements ActionListener, MouseListener, KeyL
 	public void keyTyped(KeyEvent e) {
 		char keyChar = e.getKeyChar();
 		int flags = e.getModifiers();
-		//if (IJ.debugMode) IJ.log("keyTyped: char=\"" + keyChar + "\" (" + (int)keyChar 
-		//	+ "), flags= "+Integer.toHexString(flags)+ " ("+KeyEvent.getKeyModifiersText(flags)+")");
+		// if (IJ.debugMode) IJ.log("keyTyped: char=\"" + keyChar + "\" (" +
+		// (int)keyChar
+		// + "), flags= "+Integer.toHexString(flags)+ "
+		// ("+KeyEvent.getKeyModifiersText(flags)+")");
 		if (keyChar == '\\' || keyChar == 171 || keyChar == 223) {
 			if (((flags & Event.ALT_MASK) != 0))
 				doCommand("Animation Options...");
@@ -895,7 +891,7 @@ public class ImageJ extends Frame implements ActionListener, MouseListener, KeyL
 		if (IJ.isMacintosh() && !quitting) {
 			IJ.wait(10); // may be needed for Java 1.4 on OS X
 			MenuBar mb = Menus.getMenuBar();
-			if (mb!=null && mb!=getMenuBar() && !IJ.isMacro()) {
+			if (mb != null && mb != getMenuBar() && !IJ.isMacro()) {
 				setMenuBar(mb);
 				Menus.setMenuBarCount++;
 				if (IJ.debugMode)
@@ -990,7 +986,7 @@ public class ImageJ extends Frame implements ActionListener, MouseListener, KeyL
 			}
 		}
 		// If existing ImageJ instance, pass arguments to it and quit.
-		boolean passArgs = (mode==IMAGEJ_APP||mode==STANDALONE) && !noGUI;
+		boolean passArgs = (mode == IMAGEJ_APP || mode == STANDALONE) && !noGUI;
 		if (IJ.isMacOSX() && !commandLine)
 			passArgs = false;
 		if (passArgs && isRunning(args))
@@ -1031,7 +1027,7 @@ public class ImageJ extends Frame implements ActionListener, MouseListener, KeyL
 				IJ.open(file.getAbsolutePath());
 			}
 		}
-		if (IJ.debugMode && IJ.getInstance()==null && !GraphicsEnvironment.isHeadless())
+		if (IJ.debugMode && IJ.getInstance() == null && !GraphicsEnvironment.isHeadless())
 			new JavaProperties().run("");
 		if (noGUI)
 			System.exit(0);
@@ -1172,34 +1168,34 @@ public class ImageJ extends Frame implements ActionListener, MouseListener, KeyL
 		progressBar.init((int) (ProgressBar.WIDTH * scale), (int) (ProgressBar.HEIGHT * scale));
 		pack();
 	}
-	
-	 /** Handles exceptions on the EDT. */
-	  public static class ExceptionHandler implements Thread.UncaughtExceptionHandler {
 
-	    // for EDT exceptions
-	    public void handle(Throwable thrown) {
-	      handleException(Thread.currentThread().getName(), thrown);
-	    }
+	/** Handles exceptions on the EDT. */
+	public static class ExceptionHandler implements Thread.UncaughtExceptionHandler {
 
-	    // for other uncaught exceptions
-	    public void uncaughtException(Thread thread, Throwable thrown) {
-	      handleException(thread.getName(), thrown);
-	    }
+		// for EDT exceptions
+		public void handle(Throwable thrown) {
+			handleException(Thread.currentThread().getName(), thrown);
+		}
 
-	    protected void handleException(String tname, Throwable e) {
-	    	if (Macro.MACRO_CANCELED.equals(e.getMessage()))
+		// for other uncaught exceptions
+		public void uncaughtException(Thread thread, Throwable thrown) {
+			handleException(thread.getName(), thrown);
+		}
+
+		protected void handleException(String tname, Throwable e) {
+			if (Macro.MACRO_CANCELED.equals(e.getMessage()))
 				return;
 			CharArrayWriter caw = new CharArrayWriter();
 			PrintWriter pw = new PrintWriter(caw);
 			e.printStackTrace(pw);
 			String s = caw.toString();
-			if (s!=null && s.contains("ij.")) {
-				if (IJ.getInstance()!=null)
-					s = IJ.getInstance().getInfo()+"\n"+s;
+			if (s != null && s.contains("ij.")) {
+				if (IJ.getInstance() != null)
+					s = IJ.getInstance().getInfo() + "\n" + s;
 				IJ.log(s);
 			}
-	    }
+		}
 
-	  } // inner class ExceptionHandler
+	} // inner class ExceptionHandler
 
 }
